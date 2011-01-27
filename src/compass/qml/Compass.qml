@@ -88,11 +88,15 @@ Item {
             enabled: false
             anchors {
                 fill: parent
-                leftMargin: compass.width * 0.2
+                leftMargin: compass.width * 0.15
                 rightMargin: compass.width * 0.3
             }
 
             drag.axis: Drag.XandYAxis
+            drag.minimumX: -compass.width * 0.5
+            drag.minimumY: -compass.height * 0.5
+            drag.maximumX: ui.width - compass.width * 0.5
+            drag.maximumY: ui.height - compass.height * 0.5
             drag.target: parent
         }
 

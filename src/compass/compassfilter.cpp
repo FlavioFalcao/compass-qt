@@ -9,4 +9,5 @@ CompassFilter::CompassFilter()
 bool CompassFilter::filter(QCompassReading *reading)
 {
     emit azimuthChanged(reading->azimuth(), reading->calibrationLevel());
+    return false;
 }

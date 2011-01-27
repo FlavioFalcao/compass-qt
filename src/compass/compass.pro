@@ -29,3 +29,4 @@ symbian {
 
     ICON = icons/compass.svg
 }
+
