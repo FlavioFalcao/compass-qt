@@ -183,6 +183,7 @@ Item {
             onClicked: ui.toggleMode()
             onPressed: toggleButton.scale = 0.9
             onReleased: toggleButton.scale = 1.0
+            scale: 3
         }
     }
 
@@ -213,6 +214,7 @@ Item {
                 onClicked: Qt.quit()
                 onPressed: closeButton.scale = 0.9
                 onReleased: closeButton.scale = 1.0
+                scale: 3
             }
 
         }
@@ -230,7 +232,7 @@ Item {
             PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 292 }
             PropertyChanges { target: compassRotateArea; enabled: false }
             PropertyChanges { target: compassMoveArea; enabled: false }
-            PropertyChanges { target: mapHider; opacity: 0.95 }
+            PropertyChanges { target: mapHider; opacity: 0.85 }
         }
     ]
 

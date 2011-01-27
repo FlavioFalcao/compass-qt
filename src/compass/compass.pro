@@ -2,7 +2,7 @@
 
 QT       += core gui declarative opengl
 CONFIG   += mobility
-MOBILITY += sensors
+MOBILITY += sensors systeminfo
 
 TARGET = compass
 TEMPLATE = app

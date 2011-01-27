@@ -2,6 +2,7 @@
 
 CompassFilter::CompassFilter()
 {
+    m_ScreenSaver.setScreenSaverInhibit();
 }
 
 
