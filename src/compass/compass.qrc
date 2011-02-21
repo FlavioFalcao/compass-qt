@@ -1,11 +1,14 @@
 <RCC>
     <qresource prefix="/">
+        <file>qml/Ui.qml</file>
         <file>qml/Compass.qml</file>
+        <file>qml/CalibrationView.qml</file>
         <file>qml/images/Walkers_compass_transparent.png</file>
         <file>qml/images/compassneedle.png</file>
         <file>qml/images/Scale.png</file>
         <file>qml/images/iconcompass.png</file>
         <file>qml/images/iconovimaps.png</file>
         <file>qml/images/exit.png</file>
+        <file>qml/images/innovamap.jpg</file>
     </qresource>
 </RCC>

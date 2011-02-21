@@ -9,24 +9,24 @@ TEMPLATE = app
 
 VERSION = 0.1
 
-HEADERS += compassfilter.h
+HEADERS += compassfilter.h \
+           arc.h \
+           mainwindow.h
 
 SOURCES += main.cpp \
-           compassfilter.cpp
+           compassfilter.cpp \
+           mainwindow.cpp
 
-OTHER_FILES += qml/*.qml
+OTHER_FILES += qml/*.qml \
+               qml/CalibrationView.qml
 
 RESOURCES = compass.qrc
 
-
 symbian {
     TARGET = Compass
-
     TARGET.CAPABILITY = NetworkServices
 
     # To lock the application to landscape orientation
     LIBS += -lcone -leikcore -lavkon
-
     ICON = icons/compass.svg
 }
-
