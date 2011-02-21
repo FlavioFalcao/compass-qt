@@ -4,6 +4,8 @@ import CustomElements 1.0
 Rectangle {
     id: view
 
+    signal calibrated()
+
     property real calibrationLevel: 0
 
     width: 640; height: 360

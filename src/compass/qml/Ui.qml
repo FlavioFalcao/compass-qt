@@ -5,11 +5,15 @@ Rectangle {
     id: ui
 
     property real northdeg: 45
-    property real calLevel: 0
 
     function handleAzimuth(azimuth, calLevel) {
+        calibrationView.calibrationLevel = calLevel
+
+        if(calLevel < 1.0) {
+            ui.state = ""
+        }
+
         ui.northdeg = -azimuth
-        ui.calLevel = calLevel
     }
 
     function toggleMode() {
@@ -26,12 +30,14 @@ Rectangle {
     Flickable {
         id: flickableMap
 
-        anchors.fill: parent; anchors.margins: 20
+        anchors.fill: parent; anchors.margins: 30
         contentWidth: map.width
         contentHeight: map.height
+        clip: true
 
         Image {
             id: map
+
             source: "images/innovamap.jpg"
         }
     }
@@ -42,6 +48,7 @@ Rectangle {
         opacity: 0
         anchors.fill: parent
         calibrationLevel: ui.calLevel
+        onCalibrated: ui.state = "NavigationMode"
     }
 
     Compass {
@@ -121,7 +128,6 @@ Rectangle {
             PropertyChanges { target: flickableMap; opacity: 0.1 }
         },
         State {
-            when: ui.calLevel < 1
             name: "CalibrationMode"
             PropertyChanges { target: compass; opacity: 0 }
             PropertyChanges { target: calibrationView; opacity: 1 }

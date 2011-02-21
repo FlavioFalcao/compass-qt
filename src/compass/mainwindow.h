@@ -21,6 +21,8 @@ protected:
     QDeclarativeView *view;
     QtMobility::QCompass *compass;
     CompassFilter *filter;
+
+    bool viewportEvent(QEvent *event);
 };
 
 
