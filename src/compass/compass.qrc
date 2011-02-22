@@ -11,7 +11,7 @@
         <file>qml/images/iconcompass.png</file>
         <file>qml/images/iconovimaps.png</file>
         <file>qml/images/icontool.png</file>
+        <file>qml/images/iconinfo.png</file>
         <file>qml/images/exit.png</file>
-        <file>qml/images/innovamap.jpg</file>
     </qresource>
 </RCC>

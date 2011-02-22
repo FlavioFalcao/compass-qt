@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QDebug>
 
+
 class DeclarativeView : public QDeclarativeView
 {
     Q_OBJECT
@@ -53,7 +54,8 @@ protected:
                     currentScaleFactor = 1;
                 }
 
-                emit scaleFactor(QVariant(totalScaleFactor * currentScaleFactor), QPointF(l.x2(), l.y2()));
+                //emit scaleFactor(QVariant(totalScaleFactor * currentScaleFactor), QPointF(l.x2(), l.y2()));
+                emit scaleFactor(totalScaleFactor * currentScaleFactor, QPointF(l.x2(), l.y2()));
             }
 
             return true;
@@ -67,13 +69,20 @@ protected:
     }
 
 signals:
-    void scaleFactor(const QVariant &scale, const QVariant &point);
+    void scaleFactor(qreal scale, const QPointF &point);
 };
 
 
-namespace QtMobility { class QCompass; }
+namespace QtMobility {
+    class QCompass;
+    class QGeoServiceProvider;
+    class QGeoMappingManager;
+    class QGraphicsGeoMap;
+}
 
 class CompassFilter;
+
+
 
 class MainWindow : public QMainWindow
 {
@@ -83,12 +92,15 @@ public:
     ~MainWindow();
 
 public slots:
-    void initializeQMLComponent();
+    void scaleChanged(qreal scale, const QPointF &center);
 
 protected:
     DeclarativeView *view;
-    QtMobility::QCompass *compass;
     CompassFilter *filter;
+    QtMobility::QCompass *compass;
+    QtMobility::QGeoServiceProvider *serviceProvider;
+    QtMobility::QGeoMappingManager *manager;
+    QtMobility::QGraphicsGeoMap *geoMap;
 
     bool viewportEvent(QEvent *event);
 };

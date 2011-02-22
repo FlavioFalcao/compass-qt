@@ -2,7 +2,7 @@
 
 QT       += core gui declarative opengl
 CONFIG   += mobility
-MOBILITY += sensors systeminfo
+MOBILITY += sensors systeminfo location
 
 TARGET = compass
 TEMPLATE = app
@@ -19,8 +19,8 @@ SOURCES += main.cpp \
 
 OTHER_FILES += qml/*.qml \
                qml/CalibrationView.qml \
-    qml/SettingsPane.qml \
-    qml/Button.qml
+               qml/SettingsPane.qml \
+               qml/Button.qml
 
 RESOURCES = compass.qrc
 
@@ -31,4 +31,7 @@ symbian {
     # To lock the application to landscape orientation
     LIBS += -lcone -leikcore -lavkon
     ICON = icons/compass.svg
+
+    TARGET.EPOCHEAPSIZE = 0x100000 0x2000000
+    TARGET.EPOCSTACKSIZE = 0x14000
 }

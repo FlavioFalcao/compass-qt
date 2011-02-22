@@ -10,16 +10,18 @@ Item {
         calibrationView.calibrationLevel = calLevel
 
         if(calLevel < 1.0) {
-            ui.state = "CalibrationMode"
+            //ui.state = "CalibrationMode"
         }
 
         ui.northdeg = -azimuth
     }
 
     function scaleChanged(scale, pos) {
+        /*
         map.xorig = pos.x
         map.yorig = pos.y
         map.scaleFactor = scale
+        */
     }
 
     function toggleMode() {
@@ -32,33 +34,6 @@ Item {
     width: 640; height: 360
     anchors.fill: parent
 
-
-    Flickable {
-        id: flickableMap
-
-        anchors.fill: parent
-        contentWidth: map.width
-        contentHeight: map.height
-
-        Image {
-            id: map
-
-            property real xorig
-            property real yorig
-            property real scaleFactor: 1.0
-
-            source: "images/innovamap.jpg"
-            smooth: true
-
-            transform: Scale {
-                origin.x: map.xorig
-                origin.y: map.yorig
-                xScale: map.scaleFactor
-                yScale: map.scaleFactor
-            }
-        }
-    }
-
     CalibrationView {
         id: calibrationView
 
@@ -66,7 +41,6 @@ Item {
         anchors.fill: parent
         onCalibrated: ui.state = "NavigationMode"
     }
-
 
     Compass {
         id: compass
@@ -83,10 +57,23 @@ Item {
             left: parent.left; leftMargin: shown ? -10 : -width - 3
         }
 
-        width: parent.width * 0.2
+        width: parent.width * 0.3
 
         Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuart } }
     }
+
+    Button {
+        id: infoScreen
+
+        anchors {
+            left: parent.left; leftMargin: 5
+            top: parent.top; topMargin: 5
+        }
+
+        source: "images/iconinfo.png"
+        //onClicked:
+    }
+
 
     Button {
         id: toggleButton
@@ -143,7 +130,6 @@ Item {
             PropertyChanges { target: compass; width: 260; height: 0.45625 * width; rotable: true; movable: true }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
-            PropertyChanges { target: flickableMap; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
         },
         State {
@@ -151,8 +137,8 @@ Item {
             PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 292; rotable: false; movable: false }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
-            PropertyChanges { target: flickableMap; opacity: 0.1 }
             PropertyChanges { target: settingsButton; opacity: 0 }
+            StateChangeScript { script: settingsPane.shown = false }
         },
         State {
             name: "CalibrationMode"
