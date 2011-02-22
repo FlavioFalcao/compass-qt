@@ -8,7 +8,7 @@
 
 
 #ifndef QT_NO_OPENGL
-    #include <QGLWidget>
+#include <QGLWidget>
 #endif
 
 QTM_USE_NAMESPACE
@@ -17,7 +17,7 @@ QTM_USE_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    view = new QDeclarativeView;
+    view = new DeclarativeView;
     compass = new QCompass;
     filter = new CompassFilter;
     compass->addFilter(filter);
@@ -43,11 +43,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject *rootObject = dynamic_cast<QObject*>(view->rootObject());
 
-    QObject::connect(filter, SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
-                     rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
 
-    QObject::connect((QObject*)view->engine(), SIGNAL(quit()),
-                     qApp, SLOT(quit()));
+    connect(filter, SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
+            rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
+
+    connect(view, SIGNAL(scaleFactor(const QVariant&, const QVariant&)),
+            rootObject, SLOT(scaleChanged(const QVariant&, const QVariant&)));
+
+    connect((QObject*)view->engine(), SIGNAL(quit()),
+            qApp, SLOT(quit()));
 
     compass->start();
 }

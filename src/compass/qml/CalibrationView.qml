@@ -10,6 +10,13 @@ Rectangle {
 
     width: 640; height: 360
 
+    onCalibrationLevelChanged: {
+        if(calibrationLevel >= 1.0) {
+           calibrationCompletedAnimation.start()
+        }
+    }
+
+
     Image {
         id: scale
 
@@ -58,6 +65,54 @@ Rectangle {
             text: "8"
             rotation: 90
             font.pixelSize: 90
+        }
+    }
+
+    Rectangle {
+        id: calibrationCompletedDialog
+
+        anchors {
+            fill: parent
+            margins: 100
+        }
+
+        color: "black"
+        border.color: "#303030"
+        border.width: 2
+        opacity: 0
+        radius: 15
+
+        Text {
+            anchors.centerIn: parent
+            color: "white"
+            text: "Calibration complete"
+            font.pixelSize: parent.width * 0.1
+        }
+    }
+
+    SequentialAnimation {
+        id: calibrationCompletedAnimation
+
+        PauseAnimation { duration: 1000 }
+
+        PropertyAnimation {
+            target: calibrationCompletedDialog
+            property: "opacity"
+            to: 1.0
+            duration: 400
+        }
+
+        PauseAnimation { duration: 1000 }
+
+        PropertyAnimation {
+            target: view
+            property: "opacity"
+            to: 0.0
+            duration: 1000
+        }
+
+        ScriptAction {
+            script: view.calibrated()
         }
     }
 }

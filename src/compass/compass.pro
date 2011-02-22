@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Nokia Corporation.
+# Copyright (c) 2011 Nokia Corporation.
 
 QT       += core gui declarative opengl
 CONFIG   += mobility

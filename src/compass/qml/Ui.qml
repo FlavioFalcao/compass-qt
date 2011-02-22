@@ -1,7 +1,7 @@
 import Qt 4.7
 import QtWebKit 1.0
 
-Rectangle {
+Item {
     id: ui
 
     property real northdeg: 45
@@ -10,10 +10,16 @@ Rectangle {
         calibrationView.calibrationLevel = calLevel
 
         if(calLevel < 1.0) {
-            ui.state = ""
+            ui.state = "CalibrationMode"
         }
 
         ui.northdeg = -azimuth
+    }
+
+    function scaleChanged(scale, pos) {
+        map.xorig = pos.x
+        map.yorig = pos.y
+        map.scaleFactor = scale
     }
 
     function toggleMode() {
@@ -25,20 +31,31 @@ Rectangle {
 
     width: 640; height: 360
     anchors.fill: parent
-    color: "gray"
+
 
     Flickable {
         id: flickableMap
 
-        anchors.fill: parent; anchors.margins: 30
+        anchors.fill: parent
         contentWidth: map.width
         contentHeight: map.height
-        clip: true
 
         Image {
             id: map
 
+            property real xorig
+            property real yorig
+            property real scaleFactor: 1.0
+
             source: "images/innovamap.jpg"
+            smooth: true
+
+            transform: Scale {
+                origin.x: map.xorig
+                origin.y: map.yorig
+                xScale: map.scaleFactor
+                yScale: map.scaleFactor
+            }
         }
     }
 
@@ -47,7 +64,6 @@ Rectangle {
 
         opacity: 0
         anchors.fill: parent
-        calibrationLevel: ui.calLevel
         onCalibrated: ui.state = "NavigationMode"
     }
 
