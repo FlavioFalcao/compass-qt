@@ -67,32 +67,52 @@ Item {
         onCalibrated: ui.state = "NavigationMode"
     }
 
+
     Compass {
         id: compass
     }
 
-    Image {
+    SettingsPane {
+        id: settingsPane
+
+        property bool shown: false
+
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            left: parent.left; leftMargin: shown ? -10 : -width - 3
+        }
+
+        width: parent.width * 0.2
+
+        Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuart } }
+    }
+
+    Button {
         id: toggleButton
+
         anchors {
             right: parent.right; rightMargin: 5
             bottom: parent.bottom; bottomMargin: 5
         }
 
-        opacity: 0.8
         source: ui.state == "MapMode"
                 ? "images/iconcompass.png"
                 : "images/iconovimaps.png"
-        smooth: true
 
-        Behavior on scale { PropertyAnimation { duration: 50 } }
+        onClicked: ui.toggleMode()
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: ui.toggleMode()
-            onPressed: toggleButton.scale = 0.9
-            onReleased: toggleButton.scale = 1.0
-            scale: 3
+    Button {
+        id: settingsButton
+
+        anchors {
+            left: parent.left; leftMargin: 5
+            bottom: parent.bottom; bottomMargin: 5
         }
+
+        source: "images/icontool.png"
+        onClicked: settingsPane.shown = !settingsPane.shown
     }
 
     Rectangle {
@@ -108,23 +128,12 @@ Item {
         opacity: 0.8
         radius: 6
 
-        Image {
+        Button {
             id: closeButton
 
             anchors.centerIn: parent
-
             source: "images/exit.png"
-            smooth: true
-
-            Behavior on scale { PropertyAnimation { duration: 50 } }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: Qt.quit()
-                onPressed: closeButton.scale = 0.9
-                onReleased: closeButton.scale = 1.0
-                scale: 3
-            }
+            onClicked: Qt.quit()
         }
     }
 
@@ -135,6 +144,7 @@ Item {
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
             PropertyChanges { target: flickableMap; opacity: 1 }
+            PropertyChanges { target: settingsButton; opacity: 1 }
         },
         State {
             name: "NavigationMode"
@@ -142,6 +152,7 @@ Item {
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
             PropertyChanges { target: flickableMap; opacity: 0.1 }
+            PropertyChanges { target: settingsButton; opacity: 0 }
         },
         State {
             name: "CalibrationMode"
@@ -149,6 +160,7 @@ Item {
             PropertyChanges { target: calibrationView; opacity: 1 }
             PropertyChanges { target: toggleButton; opacity: 0 }
             PropertyChanges { target: flickableMap; opacity: 0 }
+            PropertyChanges { target: settingsButton; opacity: 0 }
         }
     ]
 

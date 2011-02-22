@@ -18,7 +18,9 @@ SOURCES += main.cpp \
            mainwindow.cpp
 
 OTHER_FILES += qml/*.qml \
-               qml/CalibrationView.qml
+               qml/CalibrationView.qml \
+    qml/SettingsPane.qml \
+    qml/Button.qml
 
 RESOURCES = compass.qrc
 
