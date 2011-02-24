@@ -11,11 +11,13 @@ VERSION = 0.1
 
 HEADERS += compassfilter.h \
            arc.h \
-           mainwindow.h
+           mainwindow.h \
+           declarativeview.h
 
 SOURCES += main.cpp \
            compassfilter.cpp \
-           mainwindow.cpp
+           mainwindow.cpp \
+    declarativeview.cpp
 
 OTHER_FILES += qml/*.qml \
                qml/CalibrationView.qml \
@@ -34,4 +36,13 @@ symbian {
 
     TARGET.EPOCHEAPSIZE = 0x100000 0x2000000
     TARGET.EPOCSTACKSIZE = 0x14000
+}
+
+unix:!symbian {
+    maemo5 {
+        target.path = /opt/usr/bin
+    } else {
+        target.path = /usr/local/bin
+    }
+    INSTALLS += target
 }

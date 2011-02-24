@@ -1,11 +1,8 @@
 #include <QtGui>
-#include <QDeclarativeEngine>
-#include <QDeclarativeView>
+#include <QtDeclarative>
 #include <QCompass>
-#include <QGeoServiceProvider>
-#include <QGraphicsGeoMap>
-#include <QGeoCoordinate>
 #include "arc.h"
+#include "declarativeview.h"
 #include "mainwindow.h"
 #include "compassfilter.h"
 
@@ -18,16 +15,19 @@ QTM_USE_NAMESPACE
 
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), geoMap(0)
+    : QMainWindow(parent)
 {
     view = new DeclarativeView;
+    view->engine();
+
     compass = new QCompass;
     filter = new CompassFilter;
     compass->addFilter(filter);
 
     qmlRegisterType<Arc>("CustomElements", 1, 0, "Arc");
 
-    /*
+    setCentralWidget(view);
+
 #ifndef QT_NO_OPENGL
     // Use QGLWidget to get the opengl support if available
     QGLFormat format = QGLFormat::defaultFormat();
@@ -37,31 +37,17 @@ MainWindow::MainWindow(QWidget *parent)
     glWidget->setAutoFillBackground(false);
     view->setViewport(glWidget);     // ownership of glWidget is taken
 #endif
-    */
-
-    setCentralWidget(view);
-
 
     view->setSource(QUrl("qrc:/qml/Ui.qml"));
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-
-    serviceProvider = new QGeoServiceProvider("nokia");
-    manager = serviceProvider->mappingManager();
-    geoMap = new QGraphicsGeoMap(manager);
-    QGeoCoordinate coordinate(62.2409209, 25.7611155);
-    geoMap->resize(640, 360);
-    geoMap->setCenter(coordinate);
-    geoMap->setZValue(-1);
-    view->scene()->addItem(geoMap);
-
 
     QObject *rootObject = dynamic_cast<QObject*>(view->rootObject());
 
     connect(filter, SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
             rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
 
-    connect(view, SIGNAL(scaleFactor(qreal, const QPointF&)),
-            this, SLOT(scaleChanged(qreal, const QPointF&)));
+    connect(view, SIGNAL(scaleFactor(const QVariant&)),
+            rootObject, SLOT(scaleChanged(const QVariant&)));
 
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
@@ -72,30 +58,18 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete view;
-    view = 0;
-}
-
-
-void MainWindow::scaleChanged(qreal scale, const QPointF &center)
-{
-    if(geoMap == 0) {
-        return;
+    if(compass) {
+        delete compass;
+        compass = 0;
     }
 
-    qreal minimum = geoMap->minimumZoomLevel();
-    qreal maximum = geoMap->maximumZoomLevel();
-
-    qDebug() << "Minimum: " << minimum;
-    qDebug() << "Maximum: " << maximum;
-    qDebug() << "Current: " << geoMap->zoomLevel();
-
-    if(scale > 1) {
-        geoMap->setZoomLevel(geoMap->zoomLevel() + 1);
+    if(filter) {
+        delete filter;
+        filter = 0;
     }
-    else {
-        geoMap->setZoomLevel(geoMap->zoomLevel() - 1);
+
+    if(view) {
+        delete view;
+        view = 0;
     }
 }
-
-

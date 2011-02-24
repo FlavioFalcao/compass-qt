@@ -1,7 +1,7 @@
-import Qt 4.7
-import QtWebKit 1.0
+import QtQuick 1.0
+import QtMobility.location 1.1
 
-Item {
+Rectangle {
     id: ui
 
     property real northdeg: 45
@@ -10,18 +10,18 @@ Item {
         calibrationView.calibrationLevel = calLevel
 
         if(calLevel < 1.0) {
-            //ui.state = "CalibrationMode"
+            ui.state = "CalibrationMode"
         }
 
         ui.northdeg = -azimuth
     }
 
-    function scaleChanged(scale, pos) {
-        /*
-        map.xorig = pos.x
-        map.yorig = pos.y
-        map.scaleFactor = scale
-        */
+    function scaleChanged(scale) {
+        if(scale > map.maximumZoomLevel || scale < map.minimumZoomLevel) {
+            return
+        }
+
+        map.zoomLevel = Math.floor(scale)
     }
 
     function toggleMode() {
@@ -32,7 +32,53 @@ Item {
     }
 
     width: 640; height: 360
+    color: "gray"
     anchors.fill: parent
+
+    Map {
+        id: map
+
+        plugin : Plugin { name : "nokia" }
+        size.width: parent.width
+        size.height: parent.height
+        zoomLevel: 8
+        connectivityMode: Map.HybridMode
+        center: Coordinate {
+            latitude: 62.2404611
+            longitude: 25.7614159
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        property bool mouseDown: false
+        property int lastX: -1
+        property int lastY: -1
+
+        hoverEnabled: true
+        onPressed: {
+            mouseDown = true
+            lastX = mouse.x
+            lastY = mouse.y
+        }
+
+        onReleased: {
+            mouseDown = false
+            lastX = -1
+            lastY = -1
+        }
+
+        onPositionChanged: {
+            if (mouseDown) {
+                var dx = mouse.x - lastX
+                var dy = mouse.y - lastY
+                map.pan(-dx, -dy)
+                lastX = mouse.x
+                lastY = mouse.y
+            }
+        }
+    }
 
     CalibrationView {
         id: calibrationView
@@ -46,24 +92,8 @@ Item {
         id: compass
     }
 
-    SettingsPane {
-        id: settingsPane
-
-        property bool shown: false
-
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            left: parent.left; leftMargin: shown ? -10 : -width - 3
-        }
-
-        width: parent.width * 0.3
-
-        Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuart } }
-    }
-
     Button {
-        id: infoScreen
+        id: infoScreenButton
 
         anchors {
             left: parent.left; leftMargin: 5
@@ -90,18 +120,6 @@ Item {
         onClicked: ui.toggleMode()
     }
 
-    Button {
-        id: settingsButton
-
-        anchors {
-            left: parent.left; leftMargin: 5
-            bottom: parent.bottom; bottomMargin: 5
-        }
-
-        source: "images/icontool.png"
-        onClicked: settingsPane.shown = !settingsPane.shown
-    }
-
     Rectangle {
 
         anchors {
@@ -124,6 +142,35 @@ Item {
         }
     }
 
+    SettingsPane {
+        id: settingsPane
+
+        property bool shown: false
+
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            left: parent.left
+            leftMargin: shown ? -10 : -width - border.width / 2
+        }
+
+        width: parent.width * 0.3
+
+        Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuad } }
+    }
+
+    Button {
+        id: settingsButton
+
+        anchors {
+            left: settingsPane.right; leftMargin: 5
+            bottom: parent.bottom; bottomMargin: 5
+        }
+
+        source: "images/icontool.png"
+        onClicked: settingsPane.shown = !settingsPane.shown
+    }
+
     states: [
         State {
             name: "MapMode"
@@ -131,6 +178,7 @@ Item {
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
+            PropertyChanges { target: infoScreenButton; opacity: 1 }
         },
         State {
             name: "NavigationMode"
@@ -138,6 +186,8 @@ Item {
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }
+            PropertyChanges { target: infoScreenButton; opacity: 0 }
+            PropertyChanges { target: map; opacity: 0.2 }
             StateChangeScript { script: settingsPane.shown = false }
         },
         State {
@@ -145,8 +195,8 @@ Item {
             PropertyChanges { target: compass; opacity: 0 }
             PropertyChanges { target: calibrationView; opacity: 1 }
             PropertyChanges { target: toggleButton; opacity: 0 }
-            PropertyChanges { target: flickableMap; opacity: 0 }
             PropertyChanges { target: settingsButton; opacity: 0 }
+            PropertyChanges { target: infoScreenButton; opacity: 0 }
         }
     ]
 
