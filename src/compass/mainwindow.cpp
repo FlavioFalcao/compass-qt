@@ -1,6 +1,5 @@
 #include <QtGui>
 #include <QtDeclarative>
-#include <QCompass>
 #include "arc.h"
 #include "declarativeview.h"
 #include "mainwindow.h"
@@ -23,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
     compass = new QCompass;
     filter = new CompassFilter;
     compass->addFilter(filter);
+    compass->start();
+
+    geoPositionInfoSource = QGeoPositionInfoSource::createDefaultSource(this);
+    geoPositionInfoSource->setUpdateInterval(10000);
 
     qmlRegisterType<Arc>("CustomElements", 1, 0, "Arc");
 
@@ -49,10 +52,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(view, SIGNAL(scaleFactor(const QVariant&)),
             rootObject, SLOT(scaleChanged(const QVariant&)));
 
+    connect(geoPositionInfoSource, SIGNAL(positionUpdated(const QGeoPositionInfo&)), this, SLOT(positionUpdated(const QGeoPositionInfo &)));
+
+    connect(this, SIGNAL(position(const QVariant&, const QVariant&)),
+            rootObject, SLOT(position(const QVariant&, const QVariant&)));
+
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
 
-    compass->start();
+    geoPositionInfoSource->startUpdates();
 }
 
 
@@ -72,4 +80,12 @@ MainWindow::~MainWindow()
         delete view;
         view = 0;
     }
+}
+
+
+void MainWindow::positionUpdated(const QGeoPositionInfo &update)
+{
+    QGeoCoordinate c = update.coordinate();
+    qDebug() << "Position: " << c.latitude() << ", " << c.longitude();
+    emit position(c.latitude(), c.longitude());
 }

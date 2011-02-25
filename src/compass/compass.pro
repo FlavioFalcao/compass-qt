@@ -28,7 +28,8 @@ RESOURCES = compass.qrc
 
 symbian {
     TARGET = Compass
-    TARGET.CAPABILITY = NetworkServices
+    TARGET.CAPABILITY = NetworkServices \
+                        Location
 
     # To lock the application to landscape orientation
     LIBS += -lcone -leikcore -lavkon

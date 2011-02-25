@@ -2,10 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGeoPositionInfo>
+#include <QGeoPositionInfoSource>
+#include <QCompass>
 
-namespace QtMobility {
-    class QCompass;
-}
+QTM_USE_NAMESPACE
 
 class CompassFilter;
 class DeclarativeView;
@@ -18,10 +19,17 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected slots:
+    void positionUpdated(const QGeoPositionInfo &update);
+
+signals:
+    void position(const QVariant &latitude, const QVariant &longitude);
+
 protected:
     DeclarativeView *view;
     CompassFilter *filter;
-    QtMobility::QCompass *compass;
+    QCompass *compass;
+    QGeoPositionInfoSource *geoPositionInfoSource;
 };
 
 
