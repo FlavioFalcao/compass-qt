@@ -17,7 +17,7 @@ HEADERS += compassfilter.h \
 SOURCES += main.cpp \
            compassfilter.cpp \
            mainwindow.cpp \
-    declarativeview.cpp
+           declarativeview.cpp
 
 OTHER_FILES += qml/*.qml \
                qml/CalibrationView.qml \

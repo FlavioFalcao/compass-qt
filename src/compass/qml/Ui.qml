@@ -16,6 +16,13 @@ Rectangle {
         ui.northdeg = -azimuth
     }
 
+
+    Component.onCompleted: {
+
+        // Used to debug software remove THIS!!!!!!!!
+        //ui.state = "NavigationMode"
+    }
+
     function scaleChanged(scale) {
         if(ui.state != "MapMode") {
             return
@@ -127,6 +134,8 @@ Rectangle {
     }
 
 
+
+
     Button {
         id: toggleButton
 
@@ -197,7 +206,7 @@ Rectangle {
         State {
             name: "MapMode"
             PropertyChanges { target: map; opacity: 1.0; rotation: 0 }
-            PropertyChanges { target: compass; width: 260; height: 0.45625 * width; rotable: true; movable: true }
+            PropertyChanges { target: compass; width: 260; height: 0.453125 * width; rotable: true; movable: true }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
@@ -205,8 +214,8 @@ Rectangle {
         },
         State {
             name: "NavigationMode"
-            PropertyChanges { target: map; opacity: 0.5; rotation: -compass.rotationOnMap }
-            PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 292; rotable: false; movable: false }
+            PropertyChanges { target: map; opacity: 1.0; rotation: -compass.rotationOnMap }
+            PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 290; rotable: false; movable: false }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: toggleButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }

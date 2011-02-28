@@ -12,10 +12,22 @@ Rectangle {
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
-           calibrationCompletedAnimation.start()
+            calibrationCompletedAnimation.start()
         }
     }
 
+
+    Image {
+        id: shadow
+
+        anchors {
+            fill: scale
+            margins: parent.width * -0.013
+        }
+
+        source: "images/scaleshadow.png"
+        smooth: true
+    }
 
     Image {
         id: scale
@@ -28,13 +40,16 @@ Rectangle {
     }
 
     Image {
-        anchors.centerIn: scale
+        id: needle
 
-        width: height * 0.209; height: scale.paintedHeight * 0.63
+        anchors.centerIn: scale
+        width: height * 0.1214; height: scale.paintedHeight * 0.63
         source: "images/compassneedle.png"
         rotation: calibrationLevel * 360
 
         Behavior on rotation { PropertyAnimation { duration: 1000 } }
+
+        smooth: true
     }
 
     Arc {
@@ -112,7 +127,9 @@ Rectangle {
         }
 
         ScriptAction {
-            script: view.calibrated()
+            script: {
+                view.calibrated()
+            }
         }
     }
 }

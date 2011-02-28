@@ -35,12 +35,6 @@ public:
         }
 
         painter->drawArc(0, 0, width(), height(), m_startAngle, m_spanAngle);
-
-
-        pen.setColor(QColor(50,50,50));
-        pen.setWidth(1);
-        painter->setPen(pen);
-        painter->drawRect(boundingRect());
     }
 
 

@@ -5,7 +5,6 @@
         <file>qml/CalibrationView.qml</file>
         <file>qml/SettingsPane.qml</file>
         <file>qml/Button.qml</file>
-        <file>qml/images/Walkers_compass_transparent.png</file>
         <file>qml/images/compassneedle.png</file>
         <file>qml/images/Scale.png</file>
         <file>qml/images/iconcompass.png</file>
@@ -13,5 +12,7 @@
         <file>qml/images/icontool.png</file>
         <file>qml/images/iconinfo.png</file>
         <file>qml/images/exit.png</file>
+        <file>qml/images/compassplate.png</file>
+        <file>qml/images/scaleshadow.png</file>
     </qresource>
 </RCC>

@@ -8,7 +8,7 @@ Image {
 
     y: 34
     width: 640; height: 292
-    source: "images/Walkers_compass_transparent.png"
+    source: "images/compassplate.png"
     fillMode: Image.PreserveAspectFit
     smooth: true
 
@@ -62,11 +62,23 @@ Image {
     }
 
     Image {
+        id: shadow
+
+        anchors {
+            fill: scale
+            margins: parent.width * -0.013
+        }
+
+        source: "images/scaleshadow.png"
+    }
+
+    Image {
         id: scale
 
         anchors {
-            right: parent.right; rightMargin: parent.width * 0.157
-            top: parent.top; bottom: parent.bottom
+            right: parent.right; rightMargin: parent.width * 0.18
+            top: parent.top; topMargin: parent.height * 0.06
+            bottom: parent.bottom; bottomMargin: parent.height * 0.06
         }
 
         width: height
@@ -90,7 +102,7 @@ Image {
             onDoubleClicked: RotationAnimation {
                 target: scale
                 property: "rotation"
-                to: -compass.rotation + 90
+                to: -compass.rotation
                 duration: 250
                 direction: RotationAnimation.Shortest
             }
@@ -115,7 +127,7 @@ Image {
 
         anchors.centerIn: scale
         height: scale.paintedHeight * 0.63
-        width: height * 0.209
+        width: height * 0.1214
 
         source: "images/compassneedle.png"
         smooth: true
@@ -123,7 +135,7 @@ Image {
         rotation: ui.northdeg - compass.rotation
         Behavior on rotation {
             RotationAnimation {
-                duration: 250
+                duration: 100
                 direction: RotationAnimation.Shortest
             }
         }
