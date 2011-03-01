@@ -65,7 +65,7 @@ Rectangle {
         size.width: parent.width * 2
         size.height: parent.height * 2
         zoomLevel: 8
-        connectivityMode: Map.HybridMode
+        connectivityMode: Map.OnlineMode
         center: Coordinate {
             latitude: 62.2404611
             longitude: 25.7614159
@@ -118,59 +118,6 @@ Rectangle {
         id: compass
 
         property real rotationOnMap: 0
-        onRotationOnMapChanged: console.log(rotationOnMap)
-    }
-
-    Button {
-        id: infoScreenButton
-
-        anchors {
-            left: parent.left; leftMargin: 5
-            top: parent.top; topMargin: 5
-        }
-
-        source: "images/iconinfo.png"
-        //onClicked:
-    }
-
-
-
-
-    Button {
-        id: toggleButton
-
-        anchors {
-            right: parent.right; rightMargin: 5
-            bottom: parent.bottom; bottomMargin: 5
-        }
-
-        source: ui.state == "MapMode"
-                ? "images/iconcompass.png"
-                : "images/iconovimaps.png"
-
-        onClicked: ui.toggleMode()
-    }
-
-    Rectangle {
-
-        anchors {
-            right: parent.right; rightMargin: 5
-            top: parent.top; topMargin: 5
-        }
-
-        width: 40; height: 40
-
-        color: "#303000"
-        opacity: 0.8
-        radius: 6
-
-        Button {
-            id: closeButton
-
-            anchors.centerIn: parent
-            source: "images/exit.png"
-            onClicked: Qt.quit()
-        }
     }
 
     SettingsPane {
@@ -191,15 +138,52 @@ Rectangle {
     }
 
     Button {
+        id: modeButton
+
+        anchors {
+            right: parent.right; rightMargin: 10
+            bottom: parent.bottom
+        }
+
+        text: ui.state == "MapMode" ? "Map\nmode" : "Navigation\nmode"
+        onClicked: ui.toggleMode()
+    }
+
+    Button {
+        id: closeButton
+
+        anchors {
+            right: parent.right; rightMargin: 10
+            top: parent.top
+        }
+
+        text: "Close"
+        upSideDown: true
+        onClicked: Qt.quit()
+    }
+
+    Button {
         id: settingsButton
 
         anchors {
-            left: settingsPane.right; leftMargin: 5
-            bottom: parent.bottom; bottomMargin: 5
+            left: parent.left; leftMargin: 5
+            bottom: parent.bottom
         }
 
-        source: "images/icontool.png"
+        text: "Settings"
         onClicked: settingsPane.shown = !settingsPane.shown
+    }
+
+    Button {
+        id: infoScreenButton
+
+        anchors {
+            left: settingsButton.right; leftMargin: 20
+            bottom: parent.bottom
+        }
+
+        text: "Info"
+        onClicked: {}
     }
 
     states: [
@@ -208,7 +192,7 @@ Rectangle {
             PropertyChanges { target: map; opacity: 1.0; rotation: 0 }
             PropertyChanges { target: compass; width: 260; height: 0.453125 * width; rotable: true; movable: true }
             PropertyChanges { target: calibrationView; opacity: 0 }
-            PropertyChanges { target: toggleButton; opacity: 1 }
+            PropertyChanges { target: modeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
             PropertyChanges { target: infoScreenButton; opacity: 1 }
         },
@@ -217,7 +201,7 @@ Rectangle {
             PropertyChanges { target: map; opacity: 1.0; rotation: -compass.rotationOnMap }
             PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 290; rotable: false; movable: false }
             PropertyChanges { target: calibrationView; opacity: 0 }
-            PropertyChanges { target: toggleButton; opacity: 1 }
+            PropertyChanges { target: modeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
             StateChangeScript { script: settingsPane.shown = false }
@@ -226,7 +210,7 @@ Rectangle {
             name: "CalibrationMode"
             PropertyChanges { target: compass; opacity: 0 }
             PropertyChanges { target: calibrationView; opacity: 1 }
-            PropertyChanges { target: toggleButton; opacity: 0 }
+            PropertyChanges { target: modeButton; opacity: 0 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
         }

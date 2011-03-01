@@ -48,12 +48,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(filter, SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
             rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
-
     connect(view, SIGNAL(scaleFactor(const QVariant&)),
             rootObject, SLOT(scaleChanged(const QVariant&)));
-
-    connect(geoPositionInfoSource, SIGNAL(positionUpdated(const QGeoPositionInfo&)), this, SLOT(positionUpdated(const QGeoPositionInfo &)));
-
+    connect(geoPositionInfoSource, SIGNAL(positionUpdated(QGeoPositionInfo)),
+            this, SLOT(positionUpdated(QGeoPositionInfo)));
     connect(this, SIGNAL(position(const QVariant&, const QVariant&)),
             rootObject, SLOT(position(const QVariant&, const QVariant&)));
 
@@ -83,7 +81,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::positionUpdated(const QGeoPositionInfo &update)
+void MainWindow::positionUpdated(QGeoPositionInfo update)
 {
     QGeoCoordinate c = update.coordinate();
     qDebug() << "Position: " << c.latitude() << ", " << c.longitude();

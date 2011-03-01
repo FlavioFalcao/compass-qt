@@ -1,34 +1,9 @@
 import QtQuick 1.0
 
-Rectangle {
+Image {
     id: pane
 
-    width: 640 * 0.2; height: 360
-    radius: 8
-    color: "darkgray"
-    border.color: "black"
-    border.width: 2
-
-    gradient: Gradient {
-        GradientStop { color: "#AAAAAA"; position: 0.0 }
-        GradientStop { color: "#EEEEEE"; position: 0.4 }
-        GradientStop { color: "#EEEEEE"; position: 0.6 }
-        GradientStop { color: "#AAAAAA"; position: 1.0 }
-    }
-
-    Text {
-        id: settingsText
-
-        anchors {
-            verticalCenter: parent.verticalCenter
-        }
-        rotation: -90
-        text: "Settings"
-        color: "white"
-        font.pixelSize: 16
-        font.bold: true
-    }
-
+    source: "images/desk.png"
 
     ListModel {
         id: settingsModel
@@ -69,12 +44,13 @@ Rectangle {
             Text {
                 id: nameText
 
-                x: settingsText.width - 10
+                x: 10
 
                 width: parent.width - x - 10
                 text: name
-                color: "black"
+                color: "white"
                 wrapMode: Text.WordWrap
+                font.bold: true
                 font.pixelSize: 14
             }
 

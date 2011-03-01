@@ -20,7 +20,7 @@ public:
     ~MainWindow();
 
 protected slots:
-    void positionUpdated(const QGeoPositionInfo &update);
+    void positionUpdated(QGeoPositionInfo update);
 
 signals:
     void position(const QVariant &latitude, const QVariant &longitude);

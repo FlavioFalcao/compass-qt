@@ -36,7 +36,7 @@ Rectangle {
         width: height; height: parent.height
         source: "images/Scale.png"
         smooth: true
-        rotation: 90
+        rotation: 0
     }
 
     Image {
