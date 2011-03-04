@@ -1,51 +1,37 @@
 import QtQuick 1.0
+import "settings.js" as DB
 
 Image {
     id: pane
 
+    property bool autoNorthInMap
+    property bool bearingTurnInTrackMode
+    property int mapMode
+    property bool screenSaverInhibited: false
+
+    onAutoNorthInMapChanged: console.log("autoNorhInMap: " + autoNorthInMap)
+    onBearingTurnInTrackModeChanged: console.log("bearingTurnInTrackMode " + bearingTurnInTrackMode)
+    onMapModeChanged: console.log("mapMode " + mapMode)
+    onScreenSaverInhibitedChanged: console.log("screenSaverInhibited " + screenSaverInhibited)
+
     source: "images/desk.png"
+    width: 400; height: 300
 
-    ListModel {
-        id: settingsModel
-
-        ListElement {
-            name: "Map mode"
-            value: 0 // 0 = Map.StreetMap
-                     // 1 = Map.SatelliteMapDay
-                     // 2 = Map.SatelliteMapNight
-                     // 3 = Map.TerrainMap
-        }
-
-        ListElement {
-            name: "Auto-north in map mode"
-            value: 0 // 0 = false
-                     // 1 = true
-        }
-
-        ListElement {
-            name: "Enable scale turn in navigation mode"
-            value: 0 // 0 = false
-                     // 1 = true
-        }
-
-        ListElement {
-            name: "Screensaver prohibited"
-            value: 0 // 0 = not prohibited
-                     // 1 = prohibited
-        }
+    Component.onCompleted: {
+        DB.resetDB()
+        view.model = DB.readSettings()
     }
 
     Component {
         id: delegate
 
         Item {
-            width: view.width; height: 150
+            width: view.width; height: 50
 
             Text {
                 id: nameText
 
                 x: 10
-
                 width: parent.width - x - 10
                 text: name
                 color: "white"
@@ -62,10 +48,30 @@ Image {
                     left: nameText.left
                 }
 
-
                 text: value
-                color: "gray"
+                color: "white"
                 wrapMode: Text.WordWrap
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    var item = view.model.get(index)
+                    if(item.name == "MapMode") {
+
+                    }
+                    else {
+                        if(item.value == 0) {
+                            item.value = 1
+                        }
+                        else {
+                            item.value = 0
+                        }
+                    }
+                    // Not very pretty code here.. :|
+                    DB.saveSetting(item.name, item.value)
+                    DB.updateProperties(item)
+                }
             }
         }
     }
@@ -81,8 +87,6 @@ Image {
         }
 
         offset: 20
-
-        model: settingsModel
         delegate: delegate
         path: Path {
             startX: view.width / 2; startY:  0

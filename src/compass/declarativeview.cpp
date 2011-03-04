@@ -5,7 +5,7 @@ DeclarativeView::DeclarativeView(QWidget *parent)
     : QDeclarativeView(parent)
 {
     setAttribute(Qt::WA_AcceptTouchEvents);
-    totalScaleFactor = 8;
+    totalScaleFactor = 14;
 }
 
 

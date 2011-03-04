@@ -12,17 +12,21 @@ VERSION = 0.1
 HEADERS += compassfilter.h \
            arc.h \
            mainwindow.h \
-           declarativeview.h
+           declarativeview.h \
+           orientationfilter.h
 
 SOURCES += main.cpp \
            compassfilter.cpp \
            mainwindow.cpp \
            declarativeview.cpp
 
-OTHER_FILES += qml/*.qml \
+OTHER_FILES += qml/Ui.qml \
                qml/CalibrationView.qml \
                qml/SettingsPane.qml \
-               qml/Button.qml
+               qml/Button.qml \
+               qml/PannableMap.qml \
+               qml/InfoView.qml \
+    qml/settings.js
 
 RESOURCES = compass.qrc
 

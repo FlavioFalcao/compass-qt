@@ -21,9 +21,11 @@ public:
 signals:
     void azimuthChanged(const QVariant &azimuth, const QVariant &calibrationLevel);
 
+public slots:
+    void screenSaverInhibit(const QVariant &inhibit);
 
 protected:
-    QSystemScreenSaver m_ScreenSaver;
+    QSystemScreenSaver *m_ScreenSaver;
 };
 
 

@@ -16,20 +16,24 @@ QTM_USE_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    view = new DeclarativeView;
+    view.reset(new DeclarativeView);
     view->engine();
 
-    compass = new QCompass;
-    filter = new CompassFilter;
-    compass->addFilter(filter);
+    orientationSensor.reset(new QOrientationSensor);
+    orientationFilter.reset(new OrientationFilter);
+    orientationSensor->addFilter(orientationFilter.data());
+    orientationSensor->start();
+
+    compass.reset(new QCompass);
+    compassFilter.reset(new CompassFilter);
+    compass->addFilter(compassFilter.data());
     compass->start();
 
-    geoPositionInfoSource = QGeoPositionInfoSource::createDefaultSource(this);
-    geoPositionInfoSource->setUpdateInterval(10000);
+    geoPositionInfoSource.reset(QGeoPositionInfoSource::createDefaultSource(this));
+    geoPositionInfoSource->setUpdateInterval(1000);
 
     qmlRegisterType<Arc>("CustomElements", 1, 0, "Arc");
-
-    setCentralWidget(view);
+    setCentralWidget(view.data());
 
 #ifndef QT_NO_OPENGL
     // Use QGLWidget to get the opengl support if available
@@ -46,17 +50,31 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject *rootObject = dynamic_cast<QObject*>(view->rootObject());
 
-    connect(filter, SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
+    connect(orientationFilter.data(), SIGNAL(orientationChanged(const QVariant&)),
+            rootObject, SLOT(orientationChanged(const QVariant&)));
+    connect(compassFilter.data(), SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
             rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
-    connect(view, SIGNAL(scaleFactor(const QVariant&)),
+    connect(rootObject, SIGNAL(inhibitScreensaver(const QVariant&)),
+            compassFilter.data(), SLOT(screenSaverInhibit(const QVariant&)));
+    connect(view.data(), SIGNAL(scaleFactor(const QVariant&)),
             rootObject, SLOT(scaleChanged(const QVariant&)));
-    connect(geoPositionInfoSource, SIGNAL(positionUpdated(QGeoPositionInfo)),
-            this, SLOT(positionUpdated(QGeoPositionInfo)));
+
+    // GPS connections
+    connect(geoPositionInfoSource.data(), SIGNAL(positionUpdated(const QGeoPositionInfo&)),
+            this, SLOT(positionUpdated(const QGeoPositionInfo&)));
+    connect(geoPositionInfoSource.data(), SIGNAL(updateTimeout()),
+            this, SLOT(updateTimeout()));
     connect(this, SIGNAL(position(const QVariant&, const QVariant&)),
             rootObject, SLOT(position(const QVariant&, const QVariant&)));
-
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
+
+    QGeoPositionInfo geoPositionInfo = geoPositionInfoSource->lastKnownPosition();
+    if(geoPositionInfo.isValid()) {
+        qDebug() << "Setting the last known position to map";
+        QGeoCoordinate coordinate = geoPositionInfo.coordinate();
+        emit position(coordinate.latitude(), coordinate.longitude());
+    }
 
     geoPositionInfoSource->startUpdates();
 }
@@ -64,26 +82,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    if(compass) {
-        delete compass;
-        compass = 0;
-    }
-
-    if(filter) {
-        delete filter;
-        filter = 0;
-    }
-
-    if(view) {
-        delete view;
-        view = 0;
-    }
 }
 
 
-void MainWindow::positionUpdated(QGeoPositionInfo update)
+void MainWindow::positionUpdated(const QGeoPositionInfo &update)
 {
     QGeoCoordinate c = update.coordinate();
     qDebug() << "Position: " << c.latitude() << ", " << c.longitude();
     emit position(c.latitude(), c.longitude());
+}
+
+
+
+void MainWindow::updateTimeout()
+{
+    qDebug() << "GPS timeout";
+    geoPositionInfoSource->startUpdates();
 }

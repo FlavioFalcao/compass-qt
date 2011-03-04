@@ -4,7 +4,9 @@ Image {
     id: compass
 
     property alias movable: compassMoveArea.enabled
-    property alias rotable: compassRotateArea.enabled
+    property alias bearingRotable: bearingMouseArea.enabled
+    property alias bearing: scale.rotation
+    property alias compassRotable: compassRotateArea.enabled
 
     y: 34
     width: 640; height: 292
@@ -87,6 +89,8 @@ Image {
         smooth: true
 
         MouseArea {
+            id: bearingMouseArea
+
             property real centerx: width / 2
             property real centery: height / 2
             property int previousX: 0

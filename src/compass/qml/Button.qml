@@ -5,6 +5,7 @@ Item {
 
     property bool upSideDown: false
     property alias text: text.text
+    property color buttonColor: "#80000000"
 
     signal clicked()
 
@@ -17,24 +18,24 @@ Item {
             topMargin: button.upSideDown ? -10 : 0
         }
 
+        radius: 8
+        smooth: true
         gradient: upSideDown ? upSideDownGradient
                              : normalGradient
 
         Gradient {
             id: normalGradient
 
-            GradientStop { position: 0.0; color: "#99505050" }
-            GradientStop { position: 0.8; color: "#99000000" }
+            GradientStop { position: 0.0; color: Qt.lighter(button.buttonColor, 1.8) }
+            GradientStop { position: 0.8; color: button.buttonColor }
         }
 
         Gradient {
             id: upSideDownGradient
 
-            GradientStop { position: 0.2; color: "#99000000" }
-            GradientStop { position: 1.0; color: "#99505050" }
+            GradientStop { position: 0.2; color: button.buttonColor }
+            GradientStop { position: 1.0; color: Qt.lighter(button.buttonColor, 1.8) }
         }
-
-        radius: 8
     }
 
     Text {
@@ -44,7 +45,7 @@ Item {
         font.bold: true
         font.pixelSize: 10
         style: Text.Raised
-        styleColor: "gray"
+        styleColor: "black"
         color: "white"
     }
 
@@ -57,6 +58,6 @@ Item {
         onClicked: button.clicked()
         onPressed: button.scale = 0.9
         onReleased: button.scale = 1.0
-        scale: 2
+        scale: 1.5
     }
 }

@@ -16,7 +16,6 @@ Rectangle {
         }
     }
 
-
     Image {
         id: shadow
 
@@ -32,24 +31,16 @@ Rectangle {
     Image {
         id: scale
 
-        anchors.right: parent.right
-        width: height; height: parent.height
-        source: "images/Scale.png"
+        anchors {
+            top: parent.top; topMargin: 15
+            bottom: parent.bottom; bottomMargin: 15
+            right: parent.right; rightMargin: 15
+        }
+
+        width: height
+        source: "images/scale100.png"
         smooth: true
         rotation: 0
-    }
-
-    Image {
-        id: needle
-
-        anchors.centerIn: scale
-        width: height * 0.1214; height: scale.paintedHeight * 0.63
-        source: "images/compassneedle.png"
-        rotation: calibrationLevel * 360
-
-        Behavior on rotation { PropertyAnimation { duration: 1000 } }
-
-        smooth: true
     }
 
     Arc {
@@ -65,6 +56,18 @@ Rectangle {
         Behavior on spanAngle { PropertyAnimation { duration: 1000 } }
     }
 
+    Image {
+        id: needle
+
+        anchors.centerIn: scale
+        width: height * 0.1214; height: scale.paintedHeight * 0.63
+        source: "images/compassneedle.png"
+        rotation: calibrationLevel * 360
+
+        Behavior on rotation { PropertyAnimation { duration: 1000 } }
+
+        smooth: true
+    }
 
     Item {
         anchors {
@@ -72,14 +75,33 @@ Rectangle {
             right: scale.left
             top: parent.top
             bottom: parent.bottom
+            margins: 20
+        }
+
+        Image {
+            anchors {
+                top: parent.top
+                bottom: parent.verticalCenter
+                left: parent.left
+                right: parent.right
+            }
+            smooth: true
+
+            source: "images/calibration8.png"
         }
 
         Text {
-            anchors.centerIn: parent
+            anchors {
+                top: parent.verticalCenter; topMargin: 20
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
 
-            text: "8"
-            rotation: 90
-            font.pixelSize: 90
+            text: "Rotate the phone with figure of eight to calibrate the magnetometer sensor."
+            color: "black"
+            wrapMode: Text.WordWrap
+            font.pixelSize: 25
         }
     }
 

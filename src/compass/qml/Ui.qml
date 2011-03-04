@@ -1,10 +1,17 @@
 import QtQuick 1.0
-import QtMobility.location 1.1
 
 Rectangle {
     id: ui
 
     property real northdeg: 45
+    property bool portrait: false
+
+    signal inhibitScreensaver(variant inhibit);
+
+    function orientationChanged(portrait) {
+        console.log("Orientation: " + portrait);
+        ui.portrait = portrait
+    }
 
     function handleAzimuth(azimuth, calLevel) {
         calibrationView.calibrationLevel = calLevel
@@ -16,14 +23,10 @@ Rectangle {
         ui.northdeg = -azimuth
     }
 
-
-    Component.onCompleted: {
-
-        // Used to debug software remove THIS!!!!!!!!
-        //ui.state = "NavigationMode"
-    }
-
     function scaleChanged(scale) {
+        text.zoomLevel = scale
+        return
+
         if(ui.state != "MapMode") {
             return
         }
@@ -36,94 +39,97 @@ Rectangle {
     }
 
     function position(latitude, longitude) {
-        map.center.latitude = latitude
-        map.center.longitude = longitude
-    }
+        console.log("Setting coordinates: " + latitude + ", " + longitude)
 
+        if(ui.state == "TrackMode") {
+            map.mapCenter.latitude = latitude
+            map.mapCenter.longitude = longitude
 
-    function toggleMode() {
-        if(state == "NavigationMode")
-            state = "MapMode"
-        else if(state == "MapMode") {
-            compass.rotationOnMap = compass.rotation
-            state = "NavigationMode"
+            map.hereCenter.latitude = latitude
+            map.hereCenter.longitude = longitude
+        }
+        else {
+            map.hereCenter.latitude = latitude
+            map.hereCenter.longitude = longitude
         }
     }
 
+    anchors.fill: parent
     width: 640; height: 360
     color: "gray"
-    anchors.fill: parent
 
-    Map {
-        id: map
+    Text {
+        id: text
+
+        property real zoomLevel
+
+        onZoomLevelChanged: {
+            text.opacity = 1.0
+            fadeText.start()
+        }
 
         anchors.centerIn: parent
-        width: parent.width * 2
-        height: parent.height * 2
+        opacity: 1.0
 
-        plugin : Plugin { name : "nokia" }
-        size.width: parent.width * 2
-        size.height: parent.height * 2
-        zoomLevel: 8
-        connectivityMode: Map.OnlineMode
-        center: Coordinate {
-            latitude: 62.2404611
-            longitude: 25.7614159
+        z: 100
+        text: "Zoom level: " + zoomLevel
+        color: "blue"
+        font.bold: true
+        font.pixelSize: 20
+
+        SequentialAnimation {
+            id: fadeText
+            PropertyAnimation { target: text; property: "opacity"; to: 0.0; duration: 1000 }
         }
-        smooth: true
+
     }
 
-    MouseArea {
+    PannableMap {
+        id: map
+
+        mapType: settingsPane.mapMode
         anchors.fill: parent
-
-        property bool mouseDown: false
-        property int lastX: -1
-        property int lastY: -1
-
-        enabled: ui.state == "MapMode"
-
-        hoverEnabled: true
-        onPressed: {
-            mouseDown = true
-            lastX = mouse.x
-            lastY = mouse.y
-        }
-
-        onReleased: {
-            mouseDown = false
-            lastX = -1
-            lastY = -1
-        }
-
-        onPositionChanged: {
-            if (mouseDown) {
-                var dx = mouse.x - lastX
-                var dy = mouse.y - lastY
-                map.pan(-dx, -dy)
-                lastX = mouse.x
-                lastY = mouse.y
-            }
-        }
     }
+
 
     CalibrationView {
         id: calibrationView
 
-        opacity: 0
         anchors.fill: parent
-        onCalibrated: ui.state = "NavigationMode"
+        opacity: 0
+        onCalibrated: ui.state = "TrackMode"
     }
 
     Compass {
         id: compass
 
         property real rotationOnMap: 0
+
+        onRotationChanged: {
+            if(settingsPane.autoNorthInMap && ui.state == "MapMode") {
+                compass.bearing = -compass.rotation
+            }
+        }
+
+        compassRotable: ui.state == "MapMode" ? true : false
+
+        bearingRotable: {
+            if(ui.state == "MapMode" && !settingsPane.autoNorthInMap) {
+                return true
+            }
+            if(ui.state == "TrackMode" && settingsPane.bearingTurnInTrackMode) {
+                return true
+            }
+            return false
+        }
     }
 
     SettingsPane {
         id: settingsPane
 
         property bool shown: false
+
+        onScreenSaverInhibitedChanged: ui.inhibitScreensaver(screenSaverInhibited)
 
         anchors {
             top: parent.top
@@ -137,16 +143,47 @@ Rectangle {
         Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuad } }
     }
 
+    InfoView {
+        id: infoView
+
+        anchors {
+            fill: parent
+            leftMargin: 10
+            rightMargin: 10
+            topMargin: 30
+            bottomMargin: 30
+        }
+    }
+
     Button {
-        id: modeButton
+        id: navigationModeButton
 
         anchors {
             right: parent.right; rightMargin: 10
             bottom: parent.bottom
         }
 
-        text: ui.state == "MapMode" ? "Map\nmode" : "Navigation\nmode"
-        onClicked: ui.toggleMode()
+        text: "Track\nmode"
+        buttonColor: ui.state == "TrackMode" ? "#8001A300" : "#80000000"
+        onClicked: {
+            if(ui.state != "TrackMode") {
+                compass.rotationOnMap = compass.rotation
+            }
+            ui.state = "TrackMode"
+        }
+    }
+
+    Button {
+        id: mapModeButton
+
+        anchors {
+            right: navigationModeButton.left; rightMargin: 20
+            bottom: parent.bottom
+        }
+
+        text: "Map\nmode"
+        buttonColor: ui.state == "MapMode" ? "#8001A300" : "#80000000"
+        onClicked: ui.state = "MapMode"
     }
 
     Button {
@@ -157,9 +194,15 @@ Rectangle {
             top: parent.top
         }
 
-        text: "Close"
+        width: 60
+
         upSideDown: true
         onClicked: Qt.quit()
+
+        Image {
+            anchors.centerIn: parent
+            source: "images/closex.png"
+        }
     }
 
     Button {
@@ -171,7 +214,13 @@ Rectangle {
         }
 
         text: "Settings"
-        onClicked: settingsPane.shown = !settingsPane.shown
+        buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
+        onClicked: {
+            settingsPane.shown = !settingsPane.shown
+            if(settingsPane.shown) {
+                infoView.shown = false
+            }
+        }
     }
 
     Button {
@@ -183,34 +232,49 @@ Rectangle {
         }
 
         text: "Info"
-        onClicked: {}
+        buttonColor: infoView.shown ? "#8001A300" : "#80000000"
+        onClicked: {
+            infoView.shown = !infoView.shown
+            if(infoView.shown) {
+                settingsPane.shown = false
+            }
+        }
     }
 
     states: [
         State {
             name: "MapMode"
             PropertyChanges { target: map; opacity: 1.0; rotation: 0 }
-            PropertyChanges { target: compass; width: 260; height: 0.453125 * width; rotable: true; movable: true }
+            PropertyChanges { target: compass; width: 260; height: 0.453125 * width; movable: true }
             PropertyChanges { target: calibrationView; opacity: 0 }
-            PropertyChanges { target: modeButton; opacity: 1 }
+            PropertyChanges { target: mapModeButton; opacity: 1 }
+            PropertyChanges { target: navigationModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
             PropertyChanges { target: infoScreenButton; opacity: 1 }
         },
         State {
-            name: "NavigationMode"
+            name: "TrackMode"
             PropertyChanges { target: map; opacity: 1.0; rotation: -compass.rotationOnMap }
-            PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 290; rotable: false; movable: false }
+            PropertyChanges { target: compass; rotation: 0; x: 0; y: 34; width: 640; height: 290; movable: false }
             PropertyChanges { target: calibrationView; opacity: 0 }
-            PropertyChanges { target: modeButton; opacity: 1 }
+            PropertyChanges { target: mapModeButton; opacity: 1 }
+            PropertyChanges { target: navigationModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
-            StateChangeScript { script: settingsPane.shown = false }
+            StateChangeScript {
+                script: {
+
+                    settingsPane.shown = false
+                    infoView.shown = false
+                }
+            }
         },
         State {
             name: "CalibrationMode"
             PropertyChanges { target: compass; opacity: 0 }
             PropertyChanges { target: calibrationView; opacity: 1 }
-            PropertyChanges { target: modeButton; opacity: 0 }
+            PropertyChanges { target: mapModeButton; opacity: 0 }
+            PropertyChanges { target: navigationModeButton; opacity: 0 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
         }
