@@ -1,6 +1,6 @@
 
 var db = openDatabaseSync("CompassDb", "1.0", "Compass database", 100000);
-
+var model = null
 
 function resetDB()
 {
@@ -8,17 +8,18 @@ function resetDB()
                        //tx.executeSql('DROP TABLE IF EXISTS settings');
                        var createSql;
                        createSql  = 'CREATE TABLE IF NOT EXISTS settings(';
-                       createSql += 'name TEXT PRIMARY KEY,';
-                       createSql += 'value NUMERIC)';
+                       createSql += 'id NUMERIC PRIMARY KEY,';
+                       createSql += 'name TEXT UNIQUE,';
+                       createSql += 'value NUMERIC NOT NULL)';
                        tx.executeSql(createSql);
                    });
 
     try {
         db.transaction(function(tx) {
-                           tx.executeSql('INSERT INTO settings VALUES(?, ?)', ['AutoNorthInMap', 0]);
-                           tx.executeSql('INSERT INTO settings VALUES(?, ?)', ['BearingTurnInTrackMode', 0]);
-                           tx.executeSql('INSERT INTO settings VALUES(?, ?)', ['MapMode', 0]);
-                           tx.executeSql('INSERT INTO settings VALUES(?, ?)', ['ScreenSaverInhibited', 0]);
+                           tx.executeSql('INSERT INTO settings VALUES(?, ?, ?)', [1, 'AutoNorthInMap', 0]);
+                           tx.executeSql('INSERT INTO settings VALUES(?, ?, ?)', [2, 'BearingTurnInTrackMode', 0]);
+                           tx.executeSql('INSERT INTO settings VALUES(?, ?, ?)', [3, 'MapMode', 0]);
+                           tx.executeSql('INSERT INTO settings VALUES(?, ?, ?)', [4, 'ScreenSaverInhibited', 0]);
                        });
     }
     catch(err) {
@@ -34,7 +35,12 @@ function readSettings()
                        result = tx.executeSql('SELECT * FROM settings ORDER BY name');
                    });
 
-    var model = Qt.createQmlObject('import QtQuick 1.0; ListModel {}', pane);
+    if(model != null) {
+        model.destroy()
+        model = null
+    }
+
+    model = Qt.createQmlObject('import QtQuick 1.0; ListModel {}', pane);
 
     for(var i = 0; i < result.rows.length; i++) {
         var item = result.rows.item(i);

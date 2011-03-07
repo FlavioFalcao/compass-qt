@@ -39,14 +39,17 @@ bool DeclarativeView::event(QEvent *event)
                     totalScaleFactor = 18.0;
                 }
                 currentScaleFactor = 1;
-            }
 
-            qreal scale = totalScaleFactor * currentScaleFactor;
-            if(scale > 18.0) {
-                scale = 18.0;
+                emit scaleFactorEnd(QVariant(totalScaleFactor));
             }
+            else {
+                qreal scale = totalScaleFactor * currentScaleFactor;
+                if(scale > 18.0) {
+                    scale = 18.0;
+                }
 
-            emit scaleFactor(QVariant(scale));
+                emit scaleFactor(QVariant(scale));
+            }
         }
 
         return true;

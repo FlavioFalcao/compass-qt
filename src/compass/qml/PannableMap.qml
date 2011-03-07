@@ -8,6 +8,7 @@ Item {
     property alias mapCenter: map.center
     property alias mapType: map.mapType
     property alias hereCenter: mapCircle.coordinate
+    property alias panEnable: panMouseArea.enabled
 
     Map {
         id: map
@@ -31,13 +32,13 @@ Item {
     }
 
     MouseArea {
+        id: panMouseArea
+
         anchors.fill: parent
 
         property bool mouseDown: false
         property int lastX: -1
         property int lastY: -1
-
-        enabled: ui.state == "MapMode"
 
         hoverEnabled: true
         onPressed: {

@@ -58,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
             compassFilter.data(), SLOT(screenSaverInhibit(const QVariant&)));
     connect(view.data(), SIGNAL(scaleFactor(const QVariant&)),
             rootObject, SLOT(scaleChanged(const QVariant&)));
+    connect(view.data(), SIGNAL(scaleFactorEnd(const QVariant&)),
+            rootObject, SLOT(scaleChangedEnd(const QVariant&)));
 
     // GPS connections
     connect(geoPositionInfoSource.data(), SIGNAL(positionUpdated(const QGeoPositionInfo&)),

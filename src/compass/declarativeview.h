@@ -18,6 +18,7 @@ protected:
 
 signals:
     void scaleFactor(const QVariant &scale);
+    void scaleFactorEnd(const QVariant &scale);
 };
 
 #endif // DECLARATIVEVIEW_H

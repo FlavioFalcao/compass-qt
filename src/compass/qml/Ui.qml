@@ -5,12 +5,19 @@ Rectangle {
 
     property real northdeg: 45
     property bool portrait: false
+    property bool pinching: false
 
     signal inhibitScreensaver(variant inhibit);
 
-    function orientationChanged(portrait) {
+    function orientationChanged(orientation) {
         console.log("Orientation: " + portrait);
-        ui.portrait = portrait
+
+        if(orientation == 1) {
+            ui.portrait = true
+        }
+        else if(orientation == 4) {
+            ui.portrait = false
+        }
     }
 
     function handleAzimuth(azimuth, calLevel) {
@@ -24,18 +31,34 @@ Rectangle {
     }
 
     function scaleChanged(scale) {
-        text.zoomLevel = scale
-        return
+        pinching = true
 
         if(ui.state != "MapMode") {
             return
         }
 
-        if(scale > map.maximumZoomLevel || scale < map.minimumZoomLevel) {
+        map.scale = Math.pow(2, scale - map.zoomLevel)
+        map.scale = map.scale
+    }
+
+    function scaleChangedEnd(scale) {
+        pinching = false
+        map.scale = 1
+
+        if(ui.state != "MapMode") {
             return
         }
 
-        map.zoomLevel = Math.floor(scale)
+        var zoom = Math.round(scale)
+
+        if(zoom > map.maximumZoomLevel) {
+            zoom = map.maximumZoomLevel
+        }
+        else if(scale < map.minimumZoomLevel) {
+            zoom = map.minimumZoomLevel
+        }
+
+        map.zoomLevel = zoom
     }
 
     function position(latitude, longitude) {
@@ -58,37 +81,23 @@ Rectangle {
     width: 640; height: 360
     color: "gray"
 
-    Text {
-        id: text
-
-        property real zoomLevel
-
-        onZoomLevelChanged: {
-            text.opacity = 1.0
-            fadeText.start()
-        }
-
-        anchors.centerIn: parent
-        opacity: 1.0
-
-        z: 100
-        text: "Zoom level: " + zoomLevel
-        color: "blue"
-        font.bold: true
-        font.pixelSize: 20
-
-        SequentialAnimation {
-            id: fadeText
-            PropertyAnimation { target: text; property: "opacity"; to: 0.0; duration: 1000 }
-        }
-
-    }
-
     PannableMap {
         id: map
 
         mapType: settingsPane.mapMode
         anchors.fill: parent
+
+        panEnable: {
+            if(ui.state != "MapMode") {
+                return false
+            }
+
+            if(ui.pinching) {
+                return false
+            }
+
+            return true
+        }
     }
 
 
@@ -129,7 +138,10 @@ Rectangle {
 
         property bool shown: false
 
-        onScreenSaverInhibitedChanged: ui.inhibitScreensaver(screenSaverInhibited)
+        onScreenSaverInhibitedChanged: {
+            console.log("Signalling inhibitScreensaver: " + screenSaverInhibited)
+            ui.inhibitScreensaver(screenSaverInhibited)
+        }
 
         anchors {
             top: parent.top
