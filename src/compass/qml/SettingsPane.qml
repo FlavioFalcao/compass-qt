@@ -6,13 +6,18 @@ Image {
 
     property bool autoNorthInMap
     property bool bearingTurnInTrackMode
-    property int mapMode
+    property bool satelliteMap
     property bool screenSaverInhibited: false
 
+    function saveRouteCoordinate(time, latitude, longitude, accuracyInMeters) {
+        console.log("Saving route coordinate")
+        DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
+    }
+
     onAutoNorthInMapChanged: console.log("autoNorhInMap: " + autoNorthInMap)
-    onBearingTurnInTrackModeChanged: console.log("bearingTurnInTrackMode " + bearingTurnInTrackMode)
-    onMapModeChanged: console.log("mapMode " + mapMode)
-    onScreenSaverInhibitedChanged: console.log("screenSaverInhibited " + screenSaverInhibited)
+    onBearingTurnInTrackModeChanged: console.log("bearingTurnInTrackMode: " + bearingTurnInTrackMode)
+    onSatelliteMapChanged: console.log("satelliteMap: " + satelliteMap)
+    onScreenSaverInhibitedChanged: console.log("screenSaverInhibited: " + screenSaverInhibited)
 
     source: "images/desk.png"
     width: 400; height: 300
@@ -26,12 +31,12 @@ Image {
         id: delegate
 
         Item {
-            width: view.width; height: 50
+            width: view.width; height: view.height / 4
 
             Text {
                 id: nameText
 
-                x: 10
+                x: 20
                 width: parent.width - x - 10
                 text: name
                 color: "white"
@@ -40,35 +45,65 @@ Image {
                 font.pixelSize: 14
             }
 
-            Text {
+            Rectangle {
                 id: valueText
 
+                property bool enabled: value
+
                 anchors {
-                    top: nameText.bottom;
-                    left: nameText.left
+                    top: nameText.bottom; topMargin: 2
+                    left: nameText.left; leftMargin: 0
+                    right: parent.right; rightMargin: 20
+                    bottom: parent.bottom; bottomMargin: 25
                 }
 
-                text: value
-                color: "white"
-                wrapMode: Text.WordWrap
+                radius: 4
+                color: "#999999"
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: parent.width / 5
+
+                    color: "white"
+                    text: "On"
+
+                    font.bold: true
+                }
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: parent.width / 5 * 3
+
+                    color: "white"
+                    text: "Off"
+
+                    font.bold: true
+                }
+
+                Rectangle {
+                    x: valueText.enabled ? parent.width / 2 : 2
+                    y: 2
+
+                    Behavior on x { PropertyAnimation { duration: 100 } }
+
+                    width: parent.width / 2 - 4; height: parent.height - 4
+                    radius: 4
+                    color: "#707070"
+                }
             }
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     var item = view.model.get(index)
-                    if(item.name == "MapMode") {
 
+                    if(item.value == 0) {
+                        item.value = 1
                     }
                     else {
-                        if(item.value == 0) {
-                            item.value = 1
-                        }
-                        else {
-                            item.value = 0
-                        }
+                        item.value = 0
                     }
-                    // Not very pretty code here.. :|
+
                     DB.saveSetting(item.name, item.value)
                     DB.updateProperties(item)
                 }
@@ -89,8 +124,8 @@ Image {
         offset: 20
         delegate: delegate
         path: Path {
-            startX: view.width / 2; startY:  0
-            PathLine { x: view.width / 2; y: view.height }
+            startX: view.width / 2; startY:  -50
+            PathLine { x: view.width / 2; y: view.height + 50}
         }
     }
 }

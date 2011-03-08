@@ -26,7 +26,7 @@ bool DeclarativeView::event(QEvent *event)
             qreal posLineLength = QLineF(touchPoint0.pos(), touchPoint1.pos()).length();
             qreal startPosLineLength = QLineF(touchPoint0.startPos(), touchPoint1.startPos()).length();
 
-            qreal currentScaleFactor = (posLineLength - ((posLineLength - startPosLineLength) * 0.85)) / startPosLineLength;
+            qreal currentScaleFactor = (posLineLength - ((posLineLength - startPosLineLength) * 0.90)) / startPosLineLength;
 
             //qreal currentScaleFactor = posLineLength / startPosLineLength;
 

@@ -6,6 +6,7 @@ Rectangle {
 
     signal calibrated()
 
+    property bool portrait
     property real calibrationLevel: 0
 
     width: 640; height: 360
@@ -135,7 +136,7 @@ Rectangle {
         PropertyAnimation {
             target: calibrationCompletedDialog
             property: "opacity"
-            to: 1.0
+            to: 0.9
             duration: 400
         }
 

@@ -3,25 +3,24 @@ import QtQuick 1.0
 Item {
     id: button
 
-    property bool upSideDown: false
+    property bool portrait: false
     property alias text: text.text
     property color buttonColor: "#80000000"
+    property alias icon: icon.source
 
     signal clicked()
 
-    width: 70; height: 35
+    width: 60; height: 60
 
     Rectangle {
         anchors {
             fill: parent
-            bottomMargin: button.upSideDown ? 0 : -10
-            topMargin: button.upSideDown ? -10 : 0
+            rightMargin: -10
         }
 
         radius: 8
         smooth: true
-        gradient: upSideDown ? upSideDownGradient
-                             : normalGradient
+        gradient: normalGradient
 
         Gradient {
             id: normalGradient
@@ -29,12 +28,19 @@ Item {
             GradientStop { position: 0.0; color: Qt.lighter(button.buttonColor, 1.8) }
             GradientStop { position: 0.8; color: button.buttonColor }
         }
+    }
 
-        Gradient {
-            id: upSideDownGradient
+    Image {
+        id: icon
 
-            GradientStop { position: 0.2; color: button.buttonColor }
-            GradientStop { position: 1.0; color: Qt.lighter(button.buttonColor, 1.8) }
+        anchors.centerIn: parent
+
+        rotation: button.portrait ? -90 : 0
+        Behavior on rotation {
+            RotationAnimation {
+                duration: 100
+                direction: RotationAnimation.Shortest
+            }
         }
     }
 
@@ -42,11 +48,19 @@ Item {
         id: text
 
         anchors.centerIn: parent
+
         font.bold: true
         font.pixelSize: 10
         style: Text.Raised
         styleColor: "black"
         color: "white"
+        rotation: button.portrait ? -90 : 0
+        Behavior on rotation {
+            RotationAnimation {
+                duration: 100
+                direction: RotationAnimation.Shortest
+            }
+        }
     }
 
     opacity: 0.8

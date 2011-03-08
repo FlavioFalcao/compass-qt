@@ -6,29 +6,52 @@ Item {
 
     property alias zoomLevel: map.zoomLevel
     property alias mapCenter: map.center
-    property alias mapType: map.mapType
-    property alias hereCenter: mapCircle.coordinate
+    property bool satelliteMap: false
+    property alias hereCenter: mapCircle.center
+    property alias hereAccuracy: mapCircle.radius
     property alias panEnable: panMouseArea.enabled
+
+    function addRoute(latitude, longitude) {
+        /*
+        console.log("Adding route to map")
+        var coordinate = Qt.createQmlObject('import QtQuick 1.0; import QtMobility.location 1.1; Coordinate {}', route);
+        coordinate.latitude = latitude
+        coordinate.longitude = longitude
+        */
+    }
 
     Map {
         id: map
 
         anchors.centerIn: parent
-        width: parent.width * 2
-        height: parent.height * 2
+        width: parent.width; height: parent.height
+        size.width: width; size.height: height
 
         plugin : Plugin { name : "nokia" }
-        size.width: parent.width * 2
-        size.height: parent.height * 2
         zoomLevel: 14
         connectivityMode: Map.OnlineMode
-        smooth: true
+        mapType: mapholder.satelliteMap ? Map.SatelliteMapDay
+                                        : Map.StreetMap
 
-        MapImage {
+        MapCircle {
             id: mapCircle
 
-            source: "images/here.png"
+            color: "#40FF0000"
+            border.color: Qt.darker(color)
+            border.width: 3
+
+            Behavior on center.latitude { PropertyAnimation { duration: 300 } }
+            Behavior on center.longitude { PropertyAnimation { duration: 300 } }
+            Behavior on radius { PropertyAnimation { duration: 300 } }
         }
+
+        MapPolyline {
+            id: route
+
+            border.color: "blue"
+
+        }
+
     }
 
     MouseArea {
@@ -41,6 +64,7 @@ Item {
         property int lastY: -1
 
         hoverEnabled: true
+
         onPressed: {
             mouseDown = true
             lastX = mouse.x

@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     compass->start();
 
     geoPositionInfoSource.reset(QGeoPositionInfoSource::createDefaultSource(this));
-    geoPositionInfoSource->setUpdateInterval(1000);
+    geoPositionInfoSource->setUpdateInterval(2000);
 
     qmlRegisterType<Arc>("CustomElements", 1, 0, "Arc");
     setCentralWidget(view.data());
@@ -66,16 +66,16 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(positionUpdated(const QGeoPositionInfo&)));
     connect(geoPositionInfoSource.data(), SIGNAL(updateTimeout()),
             this, SLOT(updateTimeout()));
-    connect(this, SIGNAL(position(const QVariant&, const QVariant&)),
-            rootObject, SLOT(position(const QVariant&, const QVariant&)));
+    connect(this, SIGNAL(position(const QVariant&, const QVariant&, const QVariant&, const QVariant&)),
+            rootObject, SLOT(position(const QVariant&, const QVariant&, const QVariant&, const QVariant&)));
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
 
     QGeoPositionInfo geoPositionInfo = geoPositionInfoSource->lastKnownPosition();
     if(geoPositionInfo.isValid()) {
-        qDebug() << "Setting the last known position to map";
         QGeoCoordinate coordinate = geoPositionInfo.coordinate();
-        emit position(coordinate.latitude(), coordinate.longitude());
+        emit position(0, coordinate.latitude(), coordinate.longitude(),
+                      geoPositionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
     }
 
     geoPositionInfoSource->startUpdates();
@@ -89,9 +89,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::positionUpdated(const QGeoPositionInfo &update)
 {
+
+
+    qreal accuracy = update.attribute(QGeoPositionInfo::HorizontalAccuracy);
+    qDebug() << "Got GPS position, accuracy: " << accuracy;
+
+    uint secsFrom1970 = QDateTime::currentDateTime().toTime_t();
     QGeoCoordinate c = update.coordinate();
-    qDebug() << "Position: " << c.latitude() << ", " << c.longitude();
-    emit position(c.latitude(), c.longitude());
+
+    emit position(secsFrom1970, c.latitude(), c.longitude(), accuracy);
 }
 
 
@@ -99,5 +105,5 @@ void MainWindow::positionUpdated(const QGeoPositionInfo &update)
 void MainWindow::updateTimeout()
 {
     qDebug() << "GPS timeout";
-    geoPositionInfoSource->startUpdates();
+    // We could show GPS not available icon now..
 }
