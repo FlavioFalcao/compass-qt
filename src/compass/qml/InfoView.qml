@@ -67,8 +67,29 @@ Item {
                 width: flickable.width
                 color: "white"
                 text: "Compass is an application that teaches the use of " +
-                      "traditional compass and allows the user to have a bearing " +
-                      "to the desired place using the Ovi maps."
+                      "traditional compass and allows the user to have a " +
+                      "bearing to the desired place using the Ovi maps.\n" +
+                      "The application consists two modes: Track mode and " +
+                      "Map mode.\n" +
+                      "In the Map mode you are able to view the map  with " +
+                      "your current position retrieved by GPS and shown " +
+                      "with a red circle. The radius of the red circle will " +
+                      "change according to the GPS fix accuracy. The more " +
+                      "accurate fix the more smaller circle is shown giving " +
+                      "you more precise location of you current whereabout. " +
+                      "The map can be panned by dragging the map with a " +
+                      "finger. The zoom level can be changed by pinching the " +
+                      "map with two fingers.\n" +
+                      "To navigate to some position in a map do the " +
+                      "following, first switch to the Map mode, place the " +
+                      "edge of the compass on the map so that it connects " +
+                      "the current location with the desired destination " +
+                      "and turn the scale of the compass to the map north. " +
+                      "Now, enter to the Track mode and turn with the phone " +
+                      "as long as the compass needle is positioned on top of " +
+                      "the outlined orientating arrow. The desired bearing " +
+                      "is now at your front."
+
                 wrapMode: Text.WordWrap
             }
         }
