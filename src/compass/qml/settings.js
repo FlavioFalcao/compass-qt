@@ -13,12 +13,14 @@ function createDB()
                        createSql += 'value NUMERIC NOT NULL)';
                        tx.executeSql(createSql);
 
+                       /*
                        createSql  = 'CREATE TABLE IF NOT EXISTS route(';
                        createSql += 'time NUMERIC PRIMARY KEY,';
                        createSql += 'latitude REAL,';
                        createSql += 'longitude REAL,';
                        createSql += 'accuracyInMeters REAL)'
                        tx.executeSql(createSql);
+                       */
                    });
 
     try {
@@ -45,7 +47,7 @@ function resetDB()
     createDB();
 }
 
-
+/*
 function removeRoute()
 {
     db.transaction(function(tx) {
@@ -60,6 +62,7 @@ function insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
                        tx.executeSql('INSERT INTO route VALUES(?, ?, ?, ?)', [time, latitude, longitude, accuracyInMeters]);
                    });
 }
+*/
 
 function readSettings()
 {

@@ -3,8 +3,8 @@ import QtQuick 1.0
 Rectangle {
     id: ui
 
-    property real northdeg: 45
-    property bool portrait: false
+    property real northdeg: 0
+    property bool portrait: true
     property bool pinching: false
 
     signal inhibitScreensaver(variant inhibit);
@@ -73,7 +73,7 @@ Rectangle {
         }
 
         if(time == 0) {
-            // This is lask known position and the application is just staring
+            // This is last known position and the application is just starting
             map.mapCenter.latitude = latitude
             map.mapCenter.longitude = longitude
 
@@ -99,6 +99,8 @@ Rectangle {
     anchors.fill: parent
     width: 640; height: 360
     color: "#f8f8f0"
+
+    Component.onCompleted: ui.state = "CalibrationMode"
 
     PannableMap {
         id: map
@@ -131,6 +133,8 @@ Rectangle {
         id: compass
 
         property real rotationOnMap: 0
+
+        opacity: 0
 
         onRotationChanged: {
             if(settingsPane.autoNorthInMap && ui.state == "MapMode") {
@@ -168,7 +172,7 @@ Rectangle {
             leftMargin: shown ? -10 : -width - border.width / 2
         }
 
-        width: parent.width * 0.3
+        width: parent.width * 0.5
 
         Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuad } }
     }
@@ -179,47 +183,81 @@ Rectangle {
         portrait: ui.portrait
 
         anchors {
-            left: parent.left; leftMargin: 10
-            right: buttonColumn.left; rightMargin: 10
-            top: parent.top; topMargin: 10
-            bottom: parent.bottom; bottomMargin: 10
+            top: parent.top; topMargin: 2
+            bottom: buttonColumn.top; bottomMargin: 2
+            left: parent.left; leftMargin: 2
+            right: parent.right; rightMargin: 2
         }
     }
 
     Item {
         id: buttonColumn
 
-        property real buttonHeight: height / 6
+        property real buttonWidth: width / 6
 
         anchors {
-            top: parent.top; topMargin: 10
-            bottom: parent.bottom; bottomMargin: 10
-            right: parent.right
+            bottom: parent.bottom
+            left: parent.left; leftMargin: 10
+            right: parent.right; rightMargin: 10
         }
 
-        width: closeButton.width
+        height: mapModeButton.height
 
         Button {
-            id: closeButton
+            id: mapModeButton
 
-            height: parent.buttonHeight
+            anchors.left: parent.left
+
+            width: parent.buttonWidth
             portrait: ui.portrait
+            opacity: 0.0
 
-            onClicked: Qt.quit()
-
-            icon: "images/closex.png"
+            text: ui.state == "TrackMode" ? "To Map\nmode" : "To Track\n mode"
+            buttonColor: "#80000000"
+            onClicked: {
+                if(ui.state == "MapMode") {
+                    ui.state = "TrackMode"
+                }
+                else {
+                    ui.state = "MapMode"
+                }
+            }
         }
+
+        Button {
+            id: settingsButton
+
+            anchors {
+                left: mapModeButton.right
+                leftMargin: (parent.width - 4 * buttonColumn.buttonWidth) / 3
+            }
+
+            width: buttonColumn.buttonWidth
+            portrait: ui.portrait
+            opacity: 0.0
+
+            text: "Settings"
+            buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
+            onClicked: {
+                settingsPane.shown = !settingsPane.shown
+                if(settingsPane.shown) {
+                    infoView.shown = false
+                }
+            }
+        }
+
 
         Button {
             id: infoScreenButton
 
             anchors {
-                top: closeButton.bottom
-                topMargin: (parent.height - 4 * buttonColumn.buttonHeight) / 3
+                left: settingsButton.right
+                leftMargin: (parent.width - 4 * buttonColumn.buttonWidth) / 3
             }
 
-            height: parent.buttonHeight
+            width: parent.buttonWidth
             portrait: ui.portrait
+            opacity: 0.0
 
             text: "Info"
             buttonColor: infoView.shown ? "#8001A300" : "#80000000"
@@ -232,52 +270,24 @@ Rectangle {
         }
 
         Button {
-            id: settingsButton
+            id: closeButton
 
-            anchors {
-                top: infoScreenButton.bottom
-                topMargin: (parent.height - 4 * buttonColumn.buttonHeight) / 3
-            }
+            anchors.right: parent.right
 
-            height: parent.buttonHeight
+            width: parent.buttonWidth
             portrait: ui.portrait
 
-            text: "Settings"
-            buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
-            onClicked: {
-                settingsPane.shown = !settingsPane.shown
-                if(settingsPane.shown) {
-                    infoView.shown = false
-                }
-            }
-        }
+            onClicked: Qt.quit()
 
-        Button {
-            id: mapModeButton
-
-            anchors.bottom: parent.bottom
-
-            height: parent.buttonHeight
-            portrait: ui.portrait
-
-            text: ui.state == "TrackMode" ? "To Map\nmode" : "To Track\n mode"
-            buttonColor: "#80000000" //ui.state == "MapMode" ? "#8001A300" : "#80000000"
-            onClicked: {
-                if(ui.state == "MapMode") {
-                    ui.state = "TrackMode"
-                }
-                else {
-                    ui.state = "MapMode"
-                }
-            }
+            icon: "images/closex.png"
         }
     }
 
     states: [
         State {
             name: "MapMode"
-            PropertyChanges { target: map; opacity: 1.0; rotation: 0 }
-            PropertyChanges { target: compass; width: 260; height: 0.453125 * width; movable: true }
+            PropertyChanges { target: map; opacity: 1.0 }
+            PropertyChanges { target: compass; opacity: 1.0; width: 0.453125 * height; height: 260; movable: true }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: mapModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
@@ -286,13 +296,14 @@ Rectangle {
         State {
             name: "TrackMode"
             PropertyChanges { target: map; opacity: 0 }
-            PropertyChanges { target: compass; rotation: 0; x: 0; y: 33; width: 610; height: 295; movable: false }
+            PropertyChanges { target: compass; opacity: 1.0; rotation: 0; x: 33; y: 0; width: 295; height: 610; movable: false }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: mapModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
             StateChangeScript {
                 script: {
+                    ui.portrait = true
                     settingsPane.shown = false
                     infoView.shown = false
                 }

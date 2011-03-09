@@ -2,7 +2,7 @@
 
 QT       += core gui declarative opengl
 CONFIG   += mobility
-MOBILITY += sensors systeminfo location
+MOBILITY += sensors systeminfo location feedback multimedia
 
 TARGET = compass
 TEMPLATE = app
@@ -21,6 +21,7 @@ SOURCES += main.cpp \
            declarativeview.cpp
 
 OTHER_FILES += qml/Ui.qml \
+               qml/Compass.qml \
                qml/CalibrationView.qml \
                qml/SettingsPane.qml \
                qml/Button.qml \
@@ -41,6 +42,13 @@ symbian {
 
     TARGET.EPOCHEAPSIZE = 0x100000 0x2000000
     TARGET.EPOCSTACKSIZE = 0x14000
+
+    BLD_INF_RULES.prj_exports += "beep.wav ../winscw/c/Data/compass/beep.wav"
+
+    sound.sources = beep.wav
+    sound.path = c:/System/compass
+
+    DEPLOYMENT += sound
 }
 
 unix:!symbian {

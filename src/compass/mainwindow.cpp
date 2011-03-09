@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     compass->start();
 
     geoPositionInfoSource.reset(QGeoPositionInfoSource::createDefaultSource(this));
-    geoPositionInfoSource->setUpdateInterval(2000);
+    geoPositionInfoSource->setUpdateInterval(5000);
 
     qmlRegisterType<Arc>("CustomElements", 1, 0, "Arc");
     setCentralWidget(view.data());
@@ -66,8 +66,10 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(positionUpdated(const QGeoPositionInfo&)));
     connect(geoPositionInfoSource.data(), SIGNAL(updateTimeout()),
             this, SLOT(updateTimeout()));
+
     connect(this, SIGNAL(position(const QVariant&, const QVariant&, const QVariant&, const QVariant&)),
             rootObject, SLOT(position(const QVariant&, const QVariant&, const QVariant&, const QVariant&)));
+
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
 
@@ -89,8 +91,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::positionUpdated(const QGeoPositionInfo &update)
 {
-
-
     qreal accuracy = update.attribute(QGeoPositionInfo::HorizontalAccuracy);
     qDebug() << "Got GPS position, accuracy: " << accuracy;
 

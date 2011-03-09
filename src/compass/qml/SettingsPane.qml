@@ -10,8 +10,8 @@ Image {
     property bool screenSaverInhibited: false
 
     function saveRouteCoordinate(time, latitude, longitude, accuracyInMeters) {
-        console.log("Saving route coordinate")
-        DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
+        //console.log("Saving route coordinate")
+        //DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
     }
 
     onAutoNorthInMapChanged: console.log("autoNorhInMap: " + autoNorthInMap)
@@ -23,7 +23,7 @@ Image {
     width: 400; height: 300
 
     Component.onCompleted: {
-        DB.resetDB()
+        //DB.resetDB() // drops tables
         view.model = DB.readSettings()
     }
 
@@ -31,7 +31,7 @@ Image {
         id: delegate
 
         Item {
-            width: view.width; height: view.height / 4
+            width: view.width; height: view.height / 6
 
             Text {
                 id: nameText

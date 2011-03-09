@@ -1,4 +1,6 @@
 import QtQuick 1.0
+import QtMobility.feedback 1.1
+import QtMultimediaKit 1.1
 import CustomElements 1.0
 
 Rectangle {
@@ -13,8 +15,36 @@ Rectangle {
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
+            audioEffect.play()
             calibrationCompletedAnimation.start()
         }
+        vibraEffect.running = true
+    }
+
+    Audio {
+        id: audioEffect
+        source: "file:///c:/System/compass/beep.wav"
+        volume: 0.5
+    }
+
+    HapticsEffect {
+        id: vibraEffect
+
+        attackIntensity: 0.1
+        attackTime: 50
+        intensity: Math.min(0.8, view.calibrationLevel + 0.2)
+        duration: 100
+        fadeTime: 50
+        fadeIntensity: 0.1
+        running: false
+    }
+
+    Timer {
+        interval: 700 - view.calibrationLevel * 600
+        running: view.calibrationLevel < 1.0
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: vibraEffect.running = true
     }
 
     Image {
@@ -33,15 +63,14 @@ Rectangle {
         id: scale
 
         anchors {
-            top: parent.top; topMargin: 15
             bottom: parent.bottom; bottomMargin: 15
+            left: parent.left; leftMargin: 15
             right: parent.right; rightMargin: 15
         }
 
-        width: height
+        height: width
         source: "images/scale100.png"
         smooth: true
-        rotation: 0
     }
 
     Arc {
@@ -54,7 +83,8 @@ Rectangle {
         startAngle: 90 * 16
         spanAngle: -view.calibrationLevel * 360 * 16
 
-        Behavior on spanAngle { PropertyAnimation { duration: 1000 } }
+
+        Behavior on spanAngle { PropertyAnimation { duration: 300 } }
     }
 
     Image {
@@ -65,7 +95,7 @@ Rectangle {
         source: "images/compassneedle.png"
         rotation: calibrationLevel * 360
 
-        Behavior on rotation { PropertyAnimation { duration: 1000 } }
+        Behavior on rotation { PropertyAnimation { duration: 300 } }
 
         smooth: true
     }
@@ -73,9 +103,9 @@ Rectangle {
     Item {
         anchors {
             left: parent.left
-            right: scale.left
+            right: parent.right
             top: parent.top
-            bottom: parent.bottom
+            bottom: scale.top
             margins: 20
         }
 
@@ -110,9 +140,11 @@ Rectangle {
         id: calibrationCompletedDialog
 
         anchors {
-            fill: parent
-            margins: 100
+            centerIn: parent
         }
+
+        width: parent.width * 0.8
+        height: parent.height * 0.2
 
         color: "black"
         border.color: "#303030"
@@ -123,8 +155,8 @@ Rectangle {
         Text {
             anchors.centerIn: parent
             color: "white"
-            text: "Calibration complete"
-            font.pixelSize: parent.width * 0.1
+            text: "Calibration\ncomplete"
+            font.pixelSize: parent.height * 0.3
         }
     }
 
@@ -136,7 +168,7 @@ Rectangle {
         PropertyAnimation {
             target: calibrationCompletedDialog
             property: "opacity"
-            to: 0.9
+            to: 0.8
             duration: 400
         }
 

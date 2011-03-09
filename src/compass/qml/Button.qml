@@ -15,7 +15,7 @@ Item {
     Rectangle {
         anchors {
             fill: parent
-            rightMargin: -10
+            bottomMargin: -10
         }
 
         radius: 8
@@ -35,7 +35,7 @@ Item {
 
         anchors.centerIn: parent
 
-        rotation: button.portrait ? -90 : 0
+        rotation: button.portrait ? 0 : 90
         Behavior on rotation {
             RotationAnimation {
                 duration: 100
@@ -54,7 +54,7 @@ Item {
         style: Text.Raised
         styleColor: "black"
         color: "white"
-        rotation: button.portrait ? -90 : 0
+        rotation: button.portrait ? 0 : 90
         Behavior on rotation {
             RotationAnimation {
                 duration: 100

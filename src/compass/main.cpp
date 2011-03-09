@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     CAknAppUi* appUi = dynamic_cast<CAknAppUi*> (CEikonEnv::Static()->AppUi());
     TRAP_IGNORE(
         if (appUi)
-            appUi->SetOrientationL(CAknAppUi::EAppUiOrientationLandscape);
+            appUi->SetOrientationL(CAknAppUi::EAppUiOrientationPortrait);
     )
 #endif
 

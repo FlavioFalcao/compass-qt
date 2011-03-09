@@ -12,20 +12,14 @@ Item {
     property alias panEnable: panMouseArea.enabled
 
     function addRoute(latitude, longitude) {
-        /*
-        console.log("Adding route to map")
-        var coordinate = Qt.createQmlObject('import QtQuick 1.0; import QtMobility.location 1.1; Coordinate {}', route);
-        coordinate.latitude = latitude
-        coordinate.longitude = longitude
-        */
+        // At the moment it is not possible to draw route on top of the map
     }
 
     Map {
         id: map
 
-        anchors.centerIn: parent
-        width: parent.width; height: parent.height
-        size.width: width; size.height: height
+        anchors.fill: parent
+        size.width: height; size.height: width
 
         plugin : Plugin { name : "nokia" }
         zoomLevel: 14
@@ -44,14 +38,6 @@ Item {
             Behavior on center.longitude { PropertyAnimation { duration: 300 } }
             Behavior on radius { PropertyAnimation { duration: 300 } }
         }
-
-        MapPolyline {
-            id: route
-
-            border.color: "blue"
-
-        }
-
     }
 
     MouseArea {

@@ -8,8 +8,8 @@ Image {
     property alias bearing: scale.rotation
     property alias compassRotable: compassRotateArea.enabled
 
-    y: 34
-    width: 640; height: 292
+    x: 34
+    width: 290; height: 600
     source: "images/compassplate.png"
     fillMode: Image.PreserveAspectFit
     smooth: true
@@ -51,8 +51,8 @@ Image {
         enabled: false
         anchors {
             fill: parent
-            leftMargin: compass.width * 0.15
-            rightMargin: compass.width * 0.3
+            topMargin: compass.height * 0.15
+            bottomMargin: compass.height * 0.3
         }
 
         drag.axis: Drag.XandYAxis
@@ -78,12 +78,12 @@ Image {
         id: scale
 
         anchors {
-            right: parent.right; rightMargin: parent.width * 0.18
-            top: parent.top; topMargin: parent.height * 0.06
-            bottom: parent.bottom; bottomMargin: parent.height * 0.06
+            bottom: parent.bottom; bottomMargin: parent.height * 0.18
+            right: parent.right; rightMargin: parent.width * 0.06
+            left: parent.left; leftMargin: parent.width * 0.06
         }
 
-        width: height
+        height: width
 
         source: "images/Scale.png"
         smooth: true

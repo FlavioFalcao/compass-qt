@@ -12,9 +12,10 @@ Item {
         id: background
 
         anchors.centerIn: parent
-        width: container.portrait ? container.height : container.width
-        height: container.portrait ? container.width : container.height
-        rotation: container.portrait ? -90 : 0
+        width: container.portrait ? container.width : container.height
+        height: container.portrait ? container.height : container.width
+
+        rotation: container.portrait ? 0 : 90
         opacity: container.shown ? 1.0 : 0.0
 
         Behavior on width { PropertyAnimation { duration: 100 } }
