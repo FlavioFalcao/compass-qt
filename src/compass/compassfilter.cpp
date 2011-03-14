@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
+
 #include <QDebug>
 #include "compassfilter.h"
 

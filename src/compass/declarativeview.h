@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
+
 #ifndef DECLARATIVEVIEW_H
 #define DECLARATIVEVIEW_H
 

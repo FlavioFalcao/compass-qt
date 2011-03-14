@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
 
 var db = openDatabaseSync("CompassDb", "1.0", "Compass database", 100000);
 var model = null

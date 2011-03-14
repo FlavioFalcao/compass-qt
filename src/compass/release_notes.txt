@@ -1,0 +1,79 @@
+Compass v0.1
+============
+
+Compass is an application that teaches the use of traditional compass and
+allows the user to have a bearing to the desired place using the Ovi maps.
+
+
+FILES
+-------------------------------------------------------------------------------
+
+main.cpp
+
+- Locks the orientation to portrait, creates the MainWindow object and sets the
+  MainWindow object to full screen.
+  
+
+KNOWN ISSUES
+-------------------------------------------------------------------------------
+
+
+  
+INSTALLATION INSTRUCTIONS
+-------------------------------------------------------------------------------
+
+Mobile device (Symbian^3)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are two ways to install the application on the device.
+
+0. The Qt libraries (4.7.2 or higher) must be installed. See the section 
+   COMPATIBILITY for more information about the installation.
+
+1. a) Drag the compass.sis file to the Nokia Ovi Suite when the device is 
+      connected with the USB cable.
+   
+   OR
+   
+   b) Send the application directly to the Messaging Inbox (for example,
+      through Bluetooth).
+
+2. After the installation is complete, return to the Application menu and
+   select the Applications folder.
+   
+3. Locate the Compass icon and select it to launch the application.
+
+
+RUNNING THE APPLICATION
+-------------------------------------------------------------------------------
+
+
+
+
+
+COMPATIBILITY
+-------------------------------------------------------------------------------
+
+- Symbian^3 with Qt version 4.7.2 or higher.
+
+  1. Download Qt for Symbian (4.7.2 or higher) from qt.nokia.com.
+  
+  2. Drag qt_installer.sis on top of the device in Nokia Ovi Suite while the 
+     device is connected. The SIS package is found in the installation folder 
+     of Qt for Symbian (4.7.2 or higher).
+     
+     
+Tested on:
+
+- Nokia N8-00
+- Nokia E7-00
+- Nokia C6-01
+
+
+Developed with:
+
+-QtSDK 1.1beta
+
+
+VERSION HISTORY
+-------------------------------------------------------------------------------

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
+
 #ifndef LINE_H
 #define LINE_H
 

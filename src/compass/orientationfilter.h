@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
+
 #ifndef ORIENTATIONFILTER_H
 #define ORIENTATIONFILTER_H
 

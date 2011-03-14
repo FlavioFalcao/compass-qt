@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
+
 import QtQuick 1.0
 import QtMobility.feedback 1.1
 import QtMultimediaKit 1.1

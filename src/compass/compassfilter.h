@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 Nokia Corporation.
+ */
+
 #ifndef COMPASSFILTER_H
 #define COMPASSFILTER_H
 
