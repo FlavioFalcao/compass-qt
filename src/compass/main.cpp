@@ -4,6 +4,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QScopedPointer>
 #include "mainwindow.h"
 
 // Lock orientation in Symbian
@@ -29,14 +30,14 @@ int main(int argc, char *argv[])
     )
 #endif
 
-    MainWindow mainWindow;
+    QScopedPointer<MainWindow> mainWindow(new MainWindow);
 
 #if defined(Q_WS_MAEMO_5) || defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
-    mainWindow.setGeometry(QApplication::desktop()->screenGeometry());
-    mainWindow.showFullScreen();
+    mainWindow->setGeometry(QApplication::desktop()->screenGeometry());
+    mainWindow->showFullScreen();
 #else
-    mainWindow.setGeometry((QRect(100, 100, 640, 360)));
-    mainWindow.show();
+    mainWindow->setGeometry((QRect(100, 100, 640, 360)));
+    mainWindow->show();
 #endif
 
     return app.exec();

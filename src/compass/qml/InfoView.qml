@@ -38,9 +38,9 @@ Item {
         source: "images/infoback.png"
 
         border.top: 90
-        border.bottom: 70
+        border.bottom: 35
         border.left: 35
-        border.right: 100
+        border.right: 35
 
         Text {
             x: 35; y: 45
@@ -56,7 +56,7 @@ Item {
             anchors {
                 fill: parent
                 leftMargin: background.border.left
-                rightMargin: 30
+                rightMargin: background.border.right
                 topMargin: background.border.top
                 bottomMargin: background.border.bottom
             }
@@ -98,7 +98,7 @@ Item {
             }
         }
 
-        Item {
+        Image {
 
             anchors {
                 right: parent.right; rightMargin: 27
@@ -106,6 +106,7 @@ Item {
             }
 
             width: 70; height: 40
+            source: "images/infolabelholder.png"
 
             Text {
                 anchors.centerIn: parent
