@@ -10,7 +10,8 @@ Image {
     property bool screenSaverInhibited: false
 
     function saveRouteCoordinate(time, latitude, longitude, accuracyInMeters) {
-        //console.log("Saving route coordinate")
+        // Commented out for now, when we can draw the route on top of the map
+        // this code will be used
         //DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
     }
 
@@ -23,7 +24,8 @@ Image {
     width: 400; height: 300
 
     Component.onCompleted: {
-        //DB.resetDB() // drops tables
+        // Uncomment to drop and recreate tables
+        //DB.resetDB()
         view.model = DB.readSettings()
     }
 

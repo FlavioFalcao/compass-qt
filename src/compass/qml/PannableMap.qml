@@ -13,6 +13,7 @@ Item {
 
     function addRoute(latitude, longitude) {
         // At the moment it is not possible to draw route on top of the map
+        // dynamically
     }
 
     Map {

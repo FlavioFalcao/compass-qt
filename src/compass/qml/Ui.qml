@@ -126,7 +126,7 @@ Rectangle {
 
         anchors.fill: parent
         opacity: 0
-        onCalibrated: ui.state = "TrackMode"
+        onCalibrated: ui.state = "MapMode"
     }
 
     Compass {
