@@ -43,8 +43,6 @@ function resetDB()
                        tx.executeSql('DROP TABLE IF EXISTS setting');
                        tx.executeSql('DROP TABLE IF EXISTS route');
                    });
-
-    createDB();
 }
 
 /*
@@ -66,6 +64,8 @@ function insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
 
 function readSettings()
 {
+    createDB();
+
     var result;
     db.transaction(function(tx) {
                        result = tx.executeSql('SELECT * FROM setting ORDER BY name');
