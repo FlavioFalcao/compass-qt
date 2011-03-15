@@ -32,22 +32,22 @@ function createDB()
         db.transaction(function(tx) {
                            var result;
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 1');
-                           if(!result) {
+                           if(result.rows.length == 0) {
                                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [1, 'AutoNorthInMap', 0]);
                            }
 
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 2');
-                           if(!result) {
+                           if(result.rows.length == 0) {
                                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [2, 'BearingTurnInTrackMode', 0]);
                            }
 
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 3');
-                           if(!result) {
+                           if(result.rows.length == 0) {
                                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [3, 'SatelliteMap', 0]);
                            }
 
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 4');
-                           if(!result) {
+                           if(result.rows.length == 0) {
                                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'ScreenSaverInhibited', 0]);
                            }
                        });
@@ -61,12 +61,12 @@ function createDB()
 }
 
 
-function resetDB()
+function dropTables()
 {
     try {
         db.transaction(function(tx) {
                            tx.executeSql('DROP TABLE IF EXISTS setting');
-                           tx.executeSql('DROP TABLE IF EXISTS route');
+                           //tx.executeSql('DROP TABLE IF EXISTS route');
                        });
     }
     catch(err) {

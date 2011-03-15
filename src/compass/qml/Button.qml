@@ -11,10 +11,30 @@ Item {
     property alias text: text.text
     property color buttonColor: "#80000000"
     property alias icon: icon.source
+    property alias blink: blinkTimer.running
+
+
 
     signal clicked()
 
     width: 60; height: 60
+
+    Timer {
+        id: blinkTimer
+
+        interval: 1000
+        repeat: true
+        running: button.blink
+        onRunningChanged: {
+            if(running == false) {
+                button.visible = true
+            }
+        }
+
+        onTriggered: {
+            button.visible = !button.visible
+        }
+    }
 
     Rectangle {
         anchors {
@@ -59,6 +79,7 @@ Item {
         styleColor: "black"
         color: "white"
         rotation: button.portrait ? 0 : 90
+
         Behavior on rotation {
             RotationAnimation {
                 duration: 100

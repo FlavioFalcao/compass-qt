@@ -7,6 +7,8 @@
         <file>qml/InfoView.qml</file>
         <file>qml/Button.qml</file>
         <file>qml/PannableMap.qml</file>
+        <file>qml/BorderDialog.qml</file>
+        <file>qml/settings.js</file>
         <file>qml/images/compassneedle.png</file>
         <file>qml/images/Scale.png</file>
         <file>qml/images/exit.png</file>
@@ -16,9 +18,6 @@
         <file>qml/images/scale100.png</file>
         <file>qml/images/calibration8.png</file>
         <file>qml/images/infoback.png</file>
-        <file>qml/settings.js</file>
-        <file>qml/images/here.png</file>
         <file>qml/images/infolabelholder.png</file>
-        <file>qml/BorderDialog.qml</file>
     </qresource>
 </RCC>

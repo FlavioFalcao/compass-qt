@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, SIGNAL(position(const QVariant&, const QVariant&, const QVariant&, const QVariant&)),
             rootObject, SLOT(position(const QVariant&, const QVariant&, const QVariant&, const QVariant&)));
+    connect(this, SIGNAL(positionTimeout()), rootObject, SLOT(positionTimeout()));
 
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
@@ -108,6 +109,5 @@ void MainWindow::positionUpdated(const QGeoPositionInfo &update)
 
 void MainWindow::updateTimeout()
 {
-    qDebug() << "GPS timeout";
-    // We could show GPS not available icon now..
+    emit positionTimeout();
 }

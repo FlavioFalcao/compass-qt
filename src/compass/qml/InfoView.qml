@@ -42,7 +42,7 @@ BorderDialog {
                   "purpose of the example is to demonstrate use of Maps and " +
                   "navigation API. See more information about the project at " +
                   "<a href=\"https://projects.forum.nokia.com/compass\">"+
-                  "https://projects.forum.nokia.com/compass</a></p>" +
+                  "https://projects.forum.nokia.com/compass</a>.</p>" +
                   "<p>The application consists two modes: Compass mode and " +
                   "Map mode.</p>" +
                   "<p>In the Map mode you are able to view the map  with " +
@@ -69,15 +69,16 @@ BorderDialog {
         }
     }
 
-    Image {
+    Rectangle {
 
         anchors {
-            right: parent.right; rightMargin: 27
-            bottom: parent.bottom; bottomMargin: 27
+            right: parent.right; rightMargin: 18
+            bottom: parent.bottom; bottomMargin: 18
         }
 
-        width: 70; height: 40
-        source: "images/infolabelholder.png"
+        width: 79; height: 49
+        radius: 10
+        color: "#434343"
 
         Text {
             anchors.centerIn: parent

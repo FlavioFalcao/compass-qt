@@ -20,6 +20,12 @@ Item {
         // dynamically
     }
 
+    function panToCoordinate(coordinate) {
+        panAnimation.latitude = coordinate.latitude
+        panAnimation.longitude = coordinate.longitude
+        panAnimation.restart()
+    }
+
     Map {
         id: map
 
@@ -76,6 +82,29 @@ Item {
                 lastX = mouse.x
                 lastY = mouse.y
             }
+        }
+    }
+
+    ParallelAnimation {
+        id: panAnimation
+
+        property real latitude
+        property real longitude
+
+        PropertyAnimation {
+            target: map
+            property: "center.latitude"
+            to: panAnimation.latitude
+            easing.type: Easing.InOutCubic
+            duration: 1000
+        }
+
+        PropertyAnimation {
+            target: map
+            property: "center.longitude"
+            to: panAnimation.longitude
+            easing.type: Easing.InOutCubic
+            duration: 1000
         }
     }
 }

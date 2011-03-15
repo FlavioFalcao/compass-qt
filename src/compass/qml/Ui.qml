@@ -63,6 +63,8 @@ Rectangle {
     }
 
     function position(time, latitude, longitude, accuracyInMeters) {
+        gpsIndicator.blink = false
+
         console.log("Setting coordinates: " + latitude + ", "
                     + longitude, " time: " + time
                     + " accuracy: " + accuracyInMeters)
@@ -77,26 +79,18 @@ Rectangle {
 
         if(time == 0) {
             // This is last known position and the application is just starting
+            // set map to show that position
             map.mapCenter.latitude = latitude
             map.mapCenter.longitude = longitude
+        }
 
-            map.hereCenter.latitude = latitude
-            map.hereCenter.longitude = longitude
-            map.hereAccuracy = accuracyInMeters
-        }
-        else if(ui.state == "TrackMode") {
-            map.mapCenter.latitude = latitude
-            map.mapCenter.longitude = longitude
+        map.hereCenter.latitude = latitude
+        map.hereCenter.longitude = longitude
+        map.hereAccuracy = accuracyInMeters
+    }
 
-            map.hereCenter.latitude = latitude
-            map.hereCenter.longitude = longitude
-            map.hereAccuracy = accuracyInMeters
-        }
-        else {
-            map.hereCenter.latitude = latitude
-            map.hereCenter.longitude = longitude
-            map.hereAccuracy = accuracyInMeters
-        }
+    function positionTimeout() {
+        gpsIndicator.blink = true
     }
 
     anchors.fill: parent
@@ -164,6 +158,112 @@ Rectangle {
         }
     }
 
+    Button {
+        id: gpsIndicator
+
+        anchors {
+            left: parent.left; leftMargin: 10
+            top: parent.top; topMargin: -10
+        }
+
+        width:  buttonRow.buttonWidth
+
+        portrait: ui.portrait
+        text: "GPS"
+
+        onClicked: map.panToCoordinate(map.hereCenter)
+    }
+
+    Item {
+        id: buttonRow
+
+        property real buttonWidth: width / 6
+
+        anchors {
+            bottom: parent.bottom
+            left: parent.left; leftMargin: 10
+            right: parent.right; rightMargin: 10
+        }
+
+        height: mapModeButton.height
+
+        Button {
+            id: mapModeButton
+
+            anchors.left: parent.left
+
+            width: parent.buttonWidth
+            portrait: ui.portrait
+
+            text: ui.state == "TrackMode" ? "To Map\nmode" : "To Track\n mode"
+            buttonColor: "#80000000"
+            onClicked: {
+                if(ui.state == "MapMode") {
+                    ui.state = "TrackMode"
+                }
+                else {
+                    ui.state = "MapMode"
+                }
+            }
+        }
+
+        Button {
+            id: settingsButton
+
+            anchors {
+                left: mapModeButton.right
+                leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
+            }
+
+            width: buttonRow.buttonWidth
+            portrait: ui.portrait
+
+            text: "Settings"
+            buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
+            onClicked: {
+                settingsPane.shown = !settingsPane.shown
+                if(settingsPane.shown) {
+                    infoView.shown = false
+                }
+            }
+        }
+
+
+        Button {
+            id: infoScreenButton
+
+            anchors {
+                left: settingsButton.right
+                leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
+            }
+
+            width: parent.buttonWidth
+            portrait: ui.portrait
+
+            text: "Info"
+            buttonColor: infoView.shown ? "#8001A300" : "#80000000"
+            onClicked: {
+                infoView.shown = !infoView.shown
+                if(infoView.shown) {
+                    settingsPane.shown = false
+                }
+            }
+        }
+
+        Button {
+            id: closeButton
+
+            anchors.right: parent.right
+
+            width: parent.buttonWidth
+            portrait: ui.portrait
+
+            onClicked: Qt.quit()
+
+            icon: "images/closex.png"
+        }
+    }
+
     SettingsPane {
         id: settingsPane
 
@@ -195,98 +295,7 @@ Rectangle {
         }
     }
 
-    Item {
-        id: buttonRow
 
-        property real buttonWidth: width / 6
-
-        anchors {
-            bottom: parent.bottom
-            left: parent.left; leftMargin: 10
-            right: parent.right; rightMargin: 10
-        }
-
-        height: mapModeButton.height
-
-        Button {
-            id: mapModeButton
-
-            anchors.left: parent.left
-
-            width: parent.buttonWidth
-            portrait: ui.portrait
-            opacity: 0.0
-
-            text: ui.state == "TrackMode" ? "To Map\nmode" : "To Track\n mode"
-            buttonColor: "#80000000"
-            onClicked: {
-                if(ui.state == "MapMode") {
-                    ui.state = "TrackMode"
-                }
-                else {
-                    ui.state = "MapMode"
-                }
-            }
-        }
-
-        Button {
-            id: settingsButton
-
-            anchors {
-                left: mapModeButton.right
-                leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
-            }
-
-            width: buttonRow.buttonWidth
-            portrait: ui.portrait
-            opacity: 0.0
-
-            text: "Settings"
-            buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
-            onClicked: {
-                settingsPane.shown = !settingsPane.shown
-                if(settingsPane.shown) {
-                    infoView.shown = false
-                }
-            }
-        }
-
-
-        Button {
-            id: infoScreenButton
-
-            anchors {
-                left: settingsButton.right
-                leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
-            }
-
-            width: parent.buttonWidth
-            portrait: ui.portrait
-            opacity: 0.0
-
-            text: "Info"
-            buttonColor: infoView.shown ? "#8001A300" : "#80000000"
-            onClicked: {
-                infoView.shown = !infoView.shown
-                if(infoView.shown) {
-                    settingsPane.shown = false
-                }
-            }
-        }
-
-        Button {
-            id: closeButton
-
-            anchors.right: parent.right
-
-            width: parent.buttonWidth
-            portrait: ui.portrait
-
-            onClicked: Qt.quit()
-
-            icon: "images/closex.png"
-        }
-    }
 
     states: [
         State {
@@ -297,6 +306,7 @@ Rectangle {
             PropertyChanges { target: mapModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
             PropertyChanges { target: infoScreenButton; opacity: 1 }
+            PropertyChanges { target: gpsIndicator; opacity: 1 }
         },
         State {
             name: "TrackMode"
@@ -306,6 +316,7 @@ Rectangle {
             PropertyChanges { target: mapModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
+            PropertyChanges { target: gpsIndicator; opacity: 0 }
             StateChangeScript {
                 script: {
                     settingsPane.shown = false
@@ -320,6 +331,7 @@ Rectangle {
             PropertyChanges { target: mapModeButton; opacity: 0 }
             PropertyChanges { target: settingsButton; opacity: 0 }
             PropertyChanges { target: infoScreenButton; opacity: 0 }
+            PropertyChanges { target: gpsIndicator; opacity: 0 }
         }
     ]
 

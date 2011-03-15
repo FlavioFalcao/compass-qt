@@ -32,6 +32,7 @@ public slots:
 
 signals:
     void position(const QVariant &time, const QVariant &latitude, const QVariant &longitude, const QVariant &accuracyInMeters);
+    void positionTimeout();
 
 protected:
     QScopedPointer<DeclarativeView> view;

@@ -25,8 +25,6 @@ BorderDialog {
     onScreenSaverInhibitedChanged: console.log("screenSaverInhibited: " + screenSaverInhibited)
 
     Component.onCompleted: {
-        // Uncomment to drop and recreate tables
-        //DB.resetDB()
         view.model = DB.readSettings()
     }
 
@@ -139,6 +137,59 @@ BorderDialog {
                         DB.updateProperties(item)
                     }
                 }
+            }
+        }
+    }
+
+    Rectangle {
+
+        anchors {
+            right: parent.right; rightMargin: 18
+            bottom: parent.bottom; bottomMargin: 18
+        }
+
+        width: 79; height: 49
+        radius: 10
+        color: "#434343"
+
+        Text {
+            anchors.centerIn: parent
+            text: "Close"
+            color: "#eea604"
+            font.bold: true
+            font.pixelSize: 15
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: pane.shown = false
+        }
+    }
+
+    Rectangle {
+
+        anchors {
+            left: parent.left; leftMargin: 18
+            bottom: parent.bottom; bottomMargin: 18
+        }
+
+        width: 79; height: 49
+        radius: 10
+        color: "#434343"
+
+        Text {
+            anchors.centerIn: parent
+            text: "Defaults"
+            color: "#eea604"
+            font.bold: true
+            font.pixelSize: 15
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                DB.dropTables()
+                view.model = DB.readSettings()
             }
         }
     }

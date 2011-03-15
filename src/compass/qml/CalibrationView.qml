@@ -19,7 +19,6 @@ Rectangle {
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
-            audioEffect.play()
             calibrationCompletedAnimation.start()
         }
         vibraEffect.running = true
@@ -78,17 +77,18 @@ Rectangle {
     }
 
     Arc {
-        anchors.fill: scale
-        anchors.margins: 80
+        anchors {
+            fill: scale
+            margins: 80
+        }
 
-        opacity: 0.6
-        color: "goldenrod"
-        penWidth: 40
-        startAngle: 90 * 16
-        spanAngle: -view.calibrationLevel * 360 * 16
+        opacity: 0.5
 
-
-        Behavior on spanAngle { PropertyAnimation { duration: 300 } }
+        startColor: "red"
+        endColor: "lawngreen"
+        penWidth: 45
+        startAngle: 0
+        spanAngle: needle.rotation
     }
 
     Image {
@@ -99,7 +99,7 @@ Rectangle {
         source: "images/compassneedle.png"
         rotation: calibrationLevel * 360
 
-        Behavior on rotation { PropertyAnimation { duration: 300 } }
+        Behavior on rotation { PropertyAnimation { duration: 750 } }
 
         smooth: true
     }
@@ -167,6 +167,8 @@ Rectangle {
         id: calibrationCompletedAnimation
 
         PauseAnimation { duration: 1000 }
+
+        ScriptAction { script: audioEffect.play() }
 
         PropertyAnimation {
             target: calibrationCompletedDialog
