@@ -81,8 +81,8 @@ Rectangle {
         anchors.fill: scale
         anchors.margins: 80
 
-        opacity: 0.3
-        color: "yellow"
+        opacity: 0.6
+        color: "goldenrod"
         penWidth: 40
         startAngle: 90 * 16
         spanAngle: -view.calibrationLevel * 360 * 16
@@ -121,6 +121,7 @@ Rectangle {
                 right: parent.right
             }
             smooth: true
+            fillMode: Image.PreserveAspectFit
 
             source: "images/calibration8.png"
         }
@@ -143,9 +144,7 @@ Rectangle {
     Rectangle {
         id: calibrationCompletedDialog
 
-        anchors {
-            centerIn: parent
-        }
+        anchors.centerIn: parent
 
         width: parent.width * 0.8
         height: parent.height * 0.2
@@ -188,6 +187,7 @@ Rectangle {
         ScriptAction {
             script: {
                 view.calibrated()
+                calibrationCompletedDialog.opacity = 0
             }
         }
     }

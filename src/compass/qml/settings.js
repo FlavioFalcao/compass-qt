@@ -8,45 +8,72 @@ var model = null
 
 function createDB()
 {
-    db.transaction(function(tx) {
-                       var createSql;
-                       createSql  = 'CREATE TABLE IF NOT EXISTS setting(';
-                       createSql += 'id NUMERIC PRIMARY KEY,';
-                       createSql += 'name TEXT UNIQUE,';
-                       createSql += 'value NUMERIC NOT NULL)';
-                       tx.executeSql(createSql);
-
-                       /*
-                       createSql  = 'CREATE TABLE IF NOT EXISTS route(';
-                       createSql += 'time NUMERIC PRIMARY KEY,';
-                       createSql += 'latitude REAL,';
-                       createSql += 'longitude REAL,';
-                       createSql += 'accuracyInMeters REAL)'
-                       tx.executeSql(createSql);
-                       */
-                   });
-
     try {
+
         db.transaction(function(tx) {
-                           tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [1, 'AutoNorthInMap', 0]);
-                           tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [2, 'BearingTurnInTrackMode', 0]);
-                           tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [3, 'SatelliteMap', 0]);
-                           tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'ScreenSaverInhibited', 0]);
+                           var createSql;
+                           createSql  = 'CREATE TABLE IF NOT EXISTS setting(';
+                           createSql += 'id NUMERIC PRIMARY KEY,';
+                           createSql += 'name TEXT UNIQUE,';
+                           createSql += 'value NUMERIC NOT NULL)';
+                           tx.executeSql(createSql);
+
+                           /*
+                           createSql  = 'CREATE TABLE IF NOT EXISTS route(';
+                           createSql += 'time NUMERIC PRIMARY KEY,';
+                           createSql += 'latitude REAL,';
+                           createSql += 'longitude REAL,';
+                           createSql += 'accuracyInMeters REAL)'
+                           tx.executeSql(createSql);
+                           */
+                       });
+
+
+        db.transaction(function(tx) {
+                           var result;
+                           result = tx.executeSql('SELECT * FROM setting WHERE id = 1');
+                           if(!result) {
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [1, 'AutoNorthInMap', 0]);
+                           }
+
+                           result = tx.executeSql('SELECT * FROM setting WHERE id = 2');
+                           if(!result) {
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [2, 'BearingTurnInTrackMode', 0]);
+                           }
+
+                           result = tx.executeSql('SELECT * FROM setting WHERE id = 3');
+                           if(!result) {
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [3, 'SatelliteMap', 0]);
+                           }
+
+                           result = tx.executeSql('SELECT * FROM setting WHERE id = 4');
+                           if(!result) {
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'ScreenSaverInhibited', 0]);
+                           }
                        });
     }
     catch(err) {
-        // The rows already existed in settings table
+        console.log("DB error in createDB: " + err)
+        return false;
     }
+
+    return true;
 }
 
 
 function resetDB()
 {
-    db.transaction(function(tx) {
-                       tx.executeSql('DROP TABLE IF EXISTS setting');
-                       tx.executeSql('DROP TABLE IF EXISTS route');
-                   });
+    try {
+        db.transaction(function(tx) {
+                           tx.executeSql('DROP TABLE IF EXISTS setting');
+                           tx.executeSql('DROP TABLE IF EXISTS route');
+                       });
+    }
+    catch(err) {
+        console.log("DB error in resetDB: " + err)
+    }
 }
+
 
 /*
 function removeRoute()
@@ -65,26 +92,34 @@ function insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
 }
 */
 
+
 function readSettings()
 {
     createDB();
 
     var result;
-    db.transaction(function(tx) {
-                       result = tx.executeSql('SELECT * FROM setting ORDER BY name');
-                   });
 
-    if(model != null) {
-        model.destroy()
-        model = null
+    try {
+        db.transaction(function(tx) {
+                           result = tx.executeSql('SELECT * FROM setting ORDER BY name');
+                       });
+
+        if(model != null) {
+            model.destroy()
+            model = null
+        }
+
+        model = Qt.createQmlObject('import QtQuick 1.0; ListModel {}', pane);
+
+        for(var i = 0; i < result.rows.length; i++) {
+            var item = result.rows.item(i);
+            updateProperties(item);
+            model.append(item);
+        }
     }
-
-    model = Qt.createQmlObject('import QtQuick 1.0; ListModel {}', pane);
-
-    for(var i = 0; i < result.rows.length; i++) {
-        var item = result.rows.item(i);
-        updateProperties(item);
-        model.append(item);
+    catch(err) {
+        console.log("DB error in readSettings: " + err)
+        return 0
     }
 
     return model;
@@ -109,7 +144,12 @@ function updateProperties(item) {
 
 function saveSetting(name, value)
 {
-    db.transaction(function(tx) {
-                       tx.executeSql('UPDATE setting SET value = ? WHERE name = ?', [value, name]);
-                   });
+    try {
+        db.transaction(function(tx) {
+                           tx.executeSql('UPDATE setting SET value = ? WHERE name = ?', [value, name]);
+                       });
+    }
+    catch(err) {
+        console.log("DB error in saveSetting: " + err)
+    }
 }

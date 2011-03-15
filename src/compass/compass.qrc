@@ -12,7 +12,6 @@
         <file>qml/images/exit.png</file>
         <file>qml/images/compassplate.png</file>
         <file>qml/images/scaleshadow.png</file>
-        <file>qml/images/desk.png</file>
         <file>qml/images/closex.png</file>
         <file>qml/images/scale100.png</file>
         <file>qml/images/calibration8.png</file>
@@ -20,5 +19,6 @@
         <file>qml/settings.js</file>
         <file>qml/images/here.png</file>
         <file>qml/images/infolabelholder.png</file>
+        <file>qml/BorderDialog.qml</file>
     </qresource>
 </RCC>

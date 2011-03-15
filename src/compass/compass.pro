@@ -27,7 +27,8 @@ OTHER_FILES += qml/Ui.qml \
                qml/Button.qml \
                qml/PannableMap.qml \
                qml/InfoView.qml \
-               qml/settings.js
+               qml/settings.js \
+               qml/BorderDialog.qml
 
 RESOURCES = compass.qrc
 

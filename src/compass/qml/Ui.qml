@@ -40,7 +40,6 @@ Rectangle {
         }
 
         map.scale = Math.pow(2, scale - map.zoomLevel)
-        map.scale = map.scale
     }
 
     function scaleChangedEnd(scale) {
@@ -130,7 +129,13 @@ Rectangle {
 
         anchors.fill: parent
         opacity: 0
-        onCalibrated: ui.state = "MapMode"
+        onCalibrated: {
+            ui.state = "MapMode"
+            // Most likely the user is holding the phone on portrait
+            // while calibrating, lets make the UI initially to portrait
+            // even it might be physically on landscape position
+            ui.portrait = true
+        }
     }
 
     Compass {
@@ -162,7 +167,7 @@ Rectangle {
     SettingsPane {
         id: settingsPane
 
-        property bool shown: false
+        portrait: ui.portrait
 
         onScreenSaverInhibitedChanged: {
             console.log("Signalling inhibitScreensaver: " + screenSaverInhibited)
@@ -171,14 +176,10 @@ Rectangle {
 
         anchors {
             top: parent.top
-            bottom: parent.bottom
+            bottom: buttonRow.top
             left: parent.left
-            leftMargin: shown ? -10 : -width - border.width / 2
+            right: parent.right
         }
-
-        width: parent.width * 0.5
-
-        Behavior on anchors.leftMargin { PropertyAnimation { easing.type: Easing.InOutQuad } }
     }
 
     InfoView {
@@ -187,15 +188,15 @@ Rectangle {
         portrait: ui.portrait
 
         anchors {
-            top: parent.top; topMargin: 2
-            bottom: buttonColumn.top; bottomMargin: 2
-            left: parent.left; leftMargin: 2
-            right: parent.right; rightMargin: 2
+            top: parent.top
+            bottom: buttonRow.top
+            left: parent.left
+            right: parent.right
         }
     }
 
     Item {
-        id: buttonColumn
+        id: buttonRow
 
         property real buttonWidth: width / 6
 
@@ -233,10 +234,10 @@ Rectangle {
 
             anchors {
                 left: mapModeButton.right
-                leftMargin: (parent.width - 4 * buttonColumn.buttonWidth) / 3
+                leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
             }
 
-            width: buttonColumn.buttonWidth
+            width: buttonRow.buttonWidth
             portrait: ui.portrait
             opacity: 0.0
 
@@ -256,7 +257,7 @@ Rectangle {
 
             anchors {
                 left: settingsButton.right
-                leftMargin: (parent.width - 4 * buttonColumn.buttonWidth) / 3
+                leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
             }
 
             width: parent.buttonWidth
@@ -307,7 +308,6 @@ Rectangle {
             PropertyChanges { target: infoScreenButton; opacity: 0 }
             StateChangeScript {
                 script: {
-                    ui.portrait = true
                     settingsPane.shown = false
                     infoView.shown = false
                 }
