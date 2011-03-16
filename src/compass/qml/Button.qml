@@ -11,9 +11,7 @@ Item {
     property alias text: text.text
     property color buttonColor: "#AA000000"
     property alias icon: icon.source
-    property alias animate: icon.playing
-
-
+    property alias animationPlaying: icon.playing
 
     signal clicked()
 

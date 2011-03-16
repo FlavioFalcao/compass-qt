@@ -21,6 +21,7 @@
         <file>qml/images/icon_settings.png</file>
         <file>qml/images/icon_info.png</file>
         <file>qml/images/icon_closex.png</file>
+        <file>qml/images/icon_gps.gif</file>
         <file>qml/images/icon_gps_anim.gif</file>
     </qresource>
 </RCC>

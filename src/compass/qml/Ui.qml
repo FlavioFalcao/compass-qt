@@ -11,6 +11,8 @@ Rectangle {
     property bool portrait: true
     property bool pinching: false
 
+    property bool screenSaverInhibited: settingsPane.screenSaverInhibited
+
     signal inhibitScreensaver(variant inhibit);
 
     function orientationChanged(orientation) {
@@ -63,11 +65,11 @@ Rectangle {
     }
 
     function position(time, latitude, longitude, accuracyInMeters) {
-        gpsIndicator.animate = false
-
         console.log("Setting coordinates: " + latitude + ", "
                     + longitude, " time: " + time
                     + " accuracy: " + accuracyInMeters)
+
+        gpsIndicator.animate(false)
 
         if(time != 0 && accuracyInMeters < 100) {
             // The GPS position is accurate enough and the position
@@ -90,7 +92,8 @@ Rectangle {
     }
 
     function positionTimeout() {
-        gpsIndicator.animate = true
+        console.log("GPS timeout")
+        gpsIndicator.animate(true)
     }
 
     anchors.fill: parent
@@ -161,12 +164,24 @@ Rectangle {
     Button {
         id: gpsIndicator
 
+        function animate(animating) {
+            if(animating) {
+                icon = "images/icon_gps_anim.gif"
+                animationPlaying = true
+            }
+            else {
+                icon = "images/icon_gps.gif"
+                animationPlaying = false
+            }
+        }
+
         anchors {
             left: parent.left; leftMargin: 10
             top: parent.top; topMargin: -10
         }
 
         width:  buttonRow.buttonWidth
+        animationPlaying: true
 
         portrait: ui.portrait
         icon: "images/icon_gps_anim.gif"
@@ -195,7 +210,8 @@ Rectangle {
             width: parent.buttonWidth
             portrait: ui.portrait
 
-            icon: ui.state == "TrackMode" ? "images/icon_mapmode.png" : "images/icon_compassmode.png"
+            icon: ui.state == "TrackMode" ? "images/icon_mapmode.png"
+                                          : "images/icon_compassmode.png"
             buttonColor: "#80000000"
             onClicked: {
                 if(ui.state == "MapMode") {

@@ -78,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
 
+    compassFilter.data()->screenSaverInhibit(rootObject->property("screenSaverInhibited"));
+
     QGeoPositionInfo geoPositionInfo = geoPositionInfoSource->lastKnownPosition();
     if(geoPositionInfo.isValid()) {
         QGeoCoordinate coordinate = geoPositionInfo.coordinate();
