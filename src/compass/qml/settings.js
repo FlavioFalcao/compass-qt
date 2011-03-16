@@ -33,22 +33,22 @@ function createDB()
                            var result;
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 1');
                            if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [1, 'AutoNorthInMap', 0]);
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [1, 'Auto north in map', 0]);
                            }
 
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 2');
                            if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [2, 'BearingTurnInTrackMode', 0]);
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [2, 'Bearing turnable in Compass mode', 0]);
                            }
 
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 3');
                            if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [3, 'SatelliteMap', 0]);
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [3, 'Satellite map', 0]);
                            }
 
                            result = tx.executeSql('SELECT * FROM setting WHERE id = 4');
                            if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'ScreenSaverInhibited', 0]);
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'Prevent screensaver', 0]);
                            }
                        });
     }
@@ -127,16 +127,16 @@ function readSettings()
 
 
 function updateProperties(item) {
-    if(item.name == 'AutoNorthInMap') {
+    if(item.id == 1) {
         pane.autoNorthInMap = item.value
     }
-    else if(item.name == 'BearingTurnInTrackMode') {
+    else if(item.id == 2) {
         pane.bearingTurnInTrackMode = item.value
     }
-    else if(item.name == 'SatelliteMap') {
+    else if(item.id == 3) {
         pane.satelliteMap = item.value
     }
-    else if(item.name == 'ScreenSaverInhibited') {
+    else if(item.id == 4) {
         pane.screenSaverInhibited = item.value
     }
 }
