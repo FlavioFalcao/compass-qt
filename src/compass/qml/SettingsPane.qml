@@ -36,9 +36,7 @@ BorderDialog {
         font.pixelSize: 20
     }
 
-
-    PathView {
-        id: view
+    Item {
 
         anchors {
             fill: parent
@@ -49,92 +47,118 @@ BorderDialog {
         }
 
         clip: true
-        offset: 20
-        delegate: delegate
-        path: Path {
-            startX: view.width / 2; startY:  -50
-            PathLine { x: view.width / 2; y: view.height + 50}
-        }
 
-        Component {
-            id: delegate
+        PathView {
+            id: view
 
-            Item {
-                width: view.width; height: view.height / 6
+            property real itemHeight: height / ( pathItemCount - 1)
+            property real itemWidth: view.width
 
-                Text {
-                    id: nameText
+            anchors {
+                fill: parent
+                bottomMargin: 30
+            }
 
-                    x: 20
-                    width: parent.width - x - 10
-                    text: name
-                    color: "white"
-                    wrapMode: Text.WordWrap
-                    font.bold: true
-                    font.pixelSize: 14
-                }
+            delegate: delegate
+            pathItemCount: pane.portrait ? 4 : 2
+
+            path: Path {
+                startX: view.itemWidth / 2; startY: -view.itemHeight / 2
+                PathLine { x: view.itemWidth / 2; y: view.height + view.itemHeight / 2 }
+            }
+
+            Component {
+                id: delegate
+
 
                 Rectangle {
-                    id: valueText
+                    width: view.itemWidth - 20
+                    height: view.itemHeight - 20
+                    x: 10
+                    y: 10
 
-                    property bool enabled: value
-
-                    anchors {
-                        top: nameText.bottom; topMargin: 2
-                        left: nameText.left; leftMargin: 0
-                        right: parent.right; rightMargin: 20
-                        bottom: parent.bottom; bottomMargin: 25
-                    }
-
+                    color: "transparent"
+                    border.color: "#80EEA604"
+                    border.width: 2
                     radius: 4
-                    color: "#999999"
 
                     Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: parent.width / 5
+                        id: nameText
 
+                        anchors {
+                            top: parent.top; topMargin: 10
+                            left: parent.left; leftMargin: 20
+                            right: parent.right; rightMargin: 20
+                        }
+
+                        text: name
                         color: "white"
-                        text: "On"
-
+                        wrapMode: Text.WordWrap
                         font.bold: true
-                    }
-
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: parent.width / 5 * 3
-
-                        color: "white"
-                        text: "Off"
-
-                        font.bold: true
+                        font.pixelSize: 16
                     }
 
                     Rectangle {
-                        x: valueText.enabled ? parent.width / 2 : 2
-                        y: 2
+                        property bool enabled: value
 
-                        Behavior on x { PropertyAnimation { duration: 100 } }
+                        anchors {
+                            top: nameText.bottom; topMargin: 6
+                            left: nameText.left
+                            right: nameText.right
+                            bottom: parent.bottom; bottomMargin: 20
+                        }
 
-                        width: parent.width / 2 - 4; height: parent.height - 4
                         radius: 4
-                        color: "#707070"
+                        color: "#999999"
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            x: parent.width / 5
+
+                            color: "white"
+                            text: "On"
+
+                            font.bold: true
+                        }
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            x: parent.width / 5 * 3
+
+                            color: "white"
+                            text: "Off"
+
+                            font.bold: true
+                        }
+
+                        Rectangle {
+                            x: parent.enabled ? parent.width / 2 : 2
+                            y: 2
+
+                            Behavior on x { PropertyAnimation { duration: 100 } }
+
+                            width: parent.width / 2 - 4; height: parent.height - 4
+                            radius: 4
+                            color: "#707070"
+                        }
                     }
-                }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        var item = view.model.get(index)
+                    MouseArea {
+                        anchors.fill: parent
 
-                        if(item.value == 0) {
-                            item.value = 1
+                        onClicked: {
+                            var item = view.model.get(index)
+
+                            if(item.value == 0) {
+                                item.value = 1
+                            }
+                            else {
+                                item.value = 0
+                            }
+
+                            DB.saveSetting(item.name, item.value)
+                            DB.updateProperties(item)
                         }
-                        else {
-                            item.value = 0
-                        }
-
-                        DB.saveSetting(item.name, item.value)
-                        DB.updateProperties(item)
                     }
                 }
             }

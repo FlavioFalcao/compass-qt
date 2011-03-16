@@ -66,7 +66,7 @@ Rectangle {
         id: scale
 
         anchors {
-            bottom: parent.bottom; bottomMargin: 15
+            bottom: parent.bottom; bottomMargin: 35
             left: parent.left; leftMargin: 15
             right: parent.right; rightMargin: 15
         }

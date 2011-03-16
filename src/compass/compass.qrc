@@ -9,15 +9,18 @@
         <file>qml/PannableMap.qml</file>
         <file>qml/BorderDialog.qml</file>
         <file>qml/settings.js</file>
-        <file>qml/images/compassneedle.png</file>
-        <file>qml/images/Scale.png</file>
-        <file>qml/images/exit.png</file>
         <file>qml/images/compassplate.png</file>
         <file>qml/images/scaleshadow.png</file>
-        <file>qml/images/closex.png</file>
+        <file>qml/images/Scale.png</file>
+        <file>qml/images/compassneedle.png</file>
         <file>qml/images/scale100.png</file>
         <file>qml/images/calibration8.png</file>
         <file>qml/images/infoback.png</file>
-        <file>qml/images/infolabelholder.png</file>
+        <file>qml/images/icon_compassmode.png</file>
+        <file>qml/images/icon_mapmode.png</file>
+        <file>qml/images/icon_settings.png</file>
+        <file>qml/images/icon_info.png</file>
+        <file>qml/images/icon_closex.png</file>
+        <file>qml/images/icon_gps_anim.gif</file>
     </qresource>
 </RCC>

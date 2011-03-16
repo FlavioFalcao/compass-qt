@@ -63,7 +63,7 @@ Rectangle {
     }
 
     function position(time, latitude, longitude, accuracyInMeters) {
-        gpsIndicator.blink = false
+        gpsIndicator.animate = false
 
         console.log("Setting coordinates: " + latitude + ", "
                     + longitude, " time: " + time
@@ -90,7 +90,7 @@ Rectangle {
     }
 
     function positionTimeout() {
-        gpsIndicator.blink = true
+        gpsIndicator.animate = true
     }
 
     anchors.fill: parent
@@ -169,7 +169,7 @@ Rectangle {
         width:  buttonRow.buttonWidth
 
         portrait: ui.portrait
-        text: "GPS"
+        icon: "images/icon_gps_anim.gif"
 
         onClicked: map.panToCoordinate(map.hereCenter)
     }
@@ -177,7 +177,7 @@ Rectangle {
     Item {
         id: buttonRow
 
-        property real buttonWidth: width / 6
+        property real buttonWidth: width / 5
 
         anchors {
             bottom: parent.bottom
@@ -195,7 +195,7 @@ Rectangle {
             width: parent.buttonWidth
             portrait: ui.portrait
 
-            text: ui.state == "TrackMode" ? "To Map\nmode" : "To Track\n mode"
+            icon: ui.state == "TrackMode" ? "images/icon_mapmode.png" : "images/icon_compassmode.png"
             buttonColor: "#80000000"
             onClicked: {
                 if(ui.state == "MapMode") {
@@ -218,7 +218,7 @@ Rectangle {
             width: buttonRow.buttonWidth
             portrait: ui.portrait
 
-            text: "Settings"
+            icon: "images/icon_settings.png"
             buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
             onClicked: {
                 settingsPane.shown = !settingsPane.shown
@@ -240,7 +240,7 @@ Rectangle {
             width: parent.buttonWidth
             portrait: ui.portrait
 
-            text: "Info"
+            icon: "images/icon_info.png"
             buttonColor: infoView.shown ? "#8001A300" : "#80000000"
             onClicked: {
                 infoView.shown = !infoView.shown
@@ -257,10 +257,9 @@ Rectangle {
 
             width: parent.buttonWidth
             portrait: ui.portrait
+            icon: "images/icon_closex.png"
 
             onClicked: Qt.quit()
-
-            icon: "images/closex.png"
         }
     }
 
@@ -270,15 +269,16 @@ Rectangle {
         portrait: ui.portrait
 
         onScreenSaverInhibitedChanged: {
-            console.log("Signalling inhibitScreensaver: " + screenSaverInhibited)
             ui.inhibitScreensaver(screenSaverInhibited)
         }
 
-        anchors {
-            top: parent.top
-            bottom: buttonRow.top
-            left: parent.left
-            right: parent.right
+        width: parent.width; height: parent.height - buttonRow.height
+        x: shown ? 0 : -width
+        Behavior on x {
+            PropertyAnimation {
+                easing.type: Easing.InOutCubic
+                duration: 250
+            }
         }
     }
 
@@ -287,15 +287,15 @@ Rectangle {
 
         portrait: ui.portrait
 
-        anchors {
-            top: parent.top
-            bottom: buttonRow.top
-            left: parent.left
-            right: parent.right
+        width: parent.width; height: parent.height - buttonRow.height
+        x: shown ? 0 : width
+        Behavior on x {
+            PropertyAnimation {
+                easing.type: Easing.InOutCubic
+                duration: 250
+            }
         }
     }
-
-
 
     states: [
         State {
