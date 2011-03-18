@@ -11,21 +11,17 @@ BorderDialog {
     property bool autoNorthInMap
     property bool bearingTurnInTrackMode
     property bool satelliteMap
-    property bool screenSaverInhibited: false
+    property bool screenSaverInhibited
+    property bool vibraEnabled
+
+    function readSettings() {
+        view.model = DB.readSettings()
+    }
 
     function saveRouteCoordinate(time, latitude, longitude, accuracyInMeters) {
         // Commented out for now, when we can draw the route on top of the map
         // this code will be used
         //DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
-    }
-
-    onAutoNorthInMapChanged: console.log("autoNorhInMap: " + autoNorthInMap)
-    onBearingTurnInTrackModeChanged: console.log("bearingTurnInTrackMode: " + bearingTurnInTrackMode)
-    onSatelliteMapChanged: console.log("satelliteMap: " + satelliteMap)
-    onScreenSaverInhibitedChanged: console.log("screenSaverInhibited: " + screenSaverInhibited)
-
-    Component.onCompleted: {
-        view.model = DB.readSettings()
     }
 
     Text {
@@ -156,7 +152,7 @@ BorderDialog {
                                 item.value = 0
                             }
 
-                            DB.saveSetting(item.name, item.value)
+                            DB.saveSetting(item)
                             DB.updateProperties(item)
                         }
                     }

@@ -7,7 +7,7 @@ MOBILITY += sensors systeminfo location feedback multimedia
 TARGET = compass
 TEMPLATE = app
 
-VERSION = 0.1
+VERSION = 0.2
 
 HEADERS += compassfilter.h \
            arc.h \

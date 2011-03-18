@@ -50,6 +50,11 @@ function createDB()
                            if(result.rows.length == 0) {
                                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'Prevent screensaver', 0]);
                            }
+
+                           result = tx.executeSql('SELECT * FROM setting WHERE id = 5');
+                           if(result.rows.length == 0) {
+                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [5, 'Use vibra in calibration', 1]);
+                           }
                        });
     }
     catch(err) {
@@ -113,6 +118,7 @@ function readSettings()
 
         for(var i = 0; i < result.rows.length; i++) {
             var item = result.rows.item(i);
+            console.log("id: " + item.id + " name: " + item.name + " value: " + item.value)
             updateProperties(item);
             model.append(item);
         }
@@ -139,14 +145,17 @@ function updateProperties(item) {
     else if(item.id == 4) {
         pane.screenSaverInhibited = item.value
     }
+    else if(item.id == 5) {
+        pane.vibraEnabled = item.value
+    }
 }
 
 
-function saveSetting(name, value)
+function saveSetting(item)
 {
     try {
         db.transaction(function(tx) {
-                           tx.executeSql('UPDATE setting SET value = ? WHERE name = ?', [value, name]);
+                           tx.executeSql('UPDATE setting SET value = ? WHERE id = ?', [item.value, item.id]);
                        });
     }
     catch(err) {

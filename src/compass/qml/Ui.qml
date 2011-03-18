@@ -100,7 +100,10 @@ Rectangle {
     width: 640; height: 360
     color: "#f8f8f0"
 
-    Component.onCompleted: ui.state = "CalibrationMode"
+    Component.onCompleted: {
+        settingsPane.readSettings()
+        ui.state = "CalibrationMode"
+    }
 
     PannableMap {
         id: map
@@ -126,6 +129,7 @@ Rectangle {
 
         anchors.fill: parent
         opacity: 0
+        useVibraEffect: settingsPane.vibraEnabled
         onCalibrated: {
             ui.state = "MapMode"
             // Most likely the user is holding the phone on portrait

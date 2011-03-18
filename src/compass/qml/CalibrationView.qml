@@ -14,6 +14,7 @@ Rectangle {
 
     property bool portrait
     property real calibrationLevel: 0
+    property bool useVibraEffect
 
     width: 640; height: 360
 
@@ -21,7 +22,9 @@ Rectangle {
         if(calibrationLevel >= 1.0) {
             calibrationCompletedAnimation.start()
         }
-        vibraEffect.running = true
+        if(useVibraEffect) {
+            vibraEffect.running = true
+        }
     }
 
     Audio {
@@ -47,7 +50,11 @@ Rectangle {
         running: view.calibrationLevel < 1.0
         repeat: true
         triggeredOnStart: true
-        onTriggered: vibraEffect.running = true
+        onTriggered: {
+            if(view.useVibraEffect) {
+                vibraEffect.running = true
+            }
+        }
     }
 
     Image {
