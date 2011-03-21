@@ -54,7 +54,7 @@ BorderDialog {
                   "The map can be panned by dragging the map with a " +
                   "finger. The zoom level can be changed by pinching the " +
                   "map with two fingers.The GPS indicator on the upper left " +
-                  "corner will blink when the phone is trying to retrieve " +
+                  "corner will iterate when the phone is trying to retrieve " +
                   "the GPS fix. The indicator is steady when the received " +
                   "from the satellites. Tapping the GPS indicator will pan " +
                   "the map to the current location.</p>" +
