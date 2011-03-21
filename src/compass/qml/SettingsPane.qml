@@ -44,34 +44,28 @@ BorderDialog {
 
         clip: true
 
-        PathView {
+        ListView {
             id: view
 
-            property real itemHeight: height / ( pathItemCount - 1)
+            property real itemHeight: pane.portrait ? view.height / 3 - view.spacing + 1
+                                                    : view.height - view.spacing + 1
             property real itemWidth: view.width
 
             anchors {
                 fill: parent
-                bottomMargin: 30
+                topMargin: 2
+                bottomMargin: 35
             }
 
             delegate: delegate
-            pathItemCount: pane.portrait ? 4 : 2
-
-            path: Path {
-                startX: view.itemWidth / 2; startY: -view.itemHeight / 2
-                PathLine { x: view.itemWidth / 2; y: view.height + view.itemHeight / 2 }
-            }
+            snapMode: ListView.SnapToItem
+            spacing: 6
 
             Component {
                 id: delegate
 
-
                 Rectangle {
-                    width: view.itemWidth - 20
-                    height: view.itemHeight - 20
-                    x: 10
-                    y: 10
+                    width: view.itemWidth; height: view.itemHeight
 
                     color: "transparent"
                     border.color: "#80EEA604"
