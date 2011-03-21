@@ -10,7 +10,7 @@ BorderDialog {
     Text {
         x: 35; y: 45
         color: "#eea604"
-        text: "Compass v0.1.0"
+        text: "Compass v0.2.0"
         font.bold: true
         font.pixelSize: 20
     }
@@ -53,7 +53,11 @@ BorderDialog {
                   "you more precise location of you current whereabout. " +
                   "The map can be panned by dragging the map with a " +
                   "finger. The zoom level can be changed by pinching the " +
-                  "map with two fingers.</p>" +
+                  "map with two fingers.The GPS indicator on the upper left " +
+                  "corner will blink when the phone is trying to retrieve " +
+                  "the GPS fix. The indicator is steady when the received " +
+                  "from the satellites. Tapping the GPS indicator will pan " +
+                  "the map to the current location.</p>" +
                   "<p>To navigate to some position in a map do the " +
                   "following, first switch to the Map mode, place the " +
                   "edge of the compass on the map so that it connects " +
