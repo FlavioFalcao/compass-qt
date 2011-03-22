@@ -51,7 +51,7 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            if(view.useVibraEffect) {
+            if (view.useVibraEffect) {
                 vibraEffect.running = true
             }
         }
@@ -141,7 +141,8 @@ Rectangle {
                 right: parent.right
             }
 
-            text: "Rotate the phone with figure of eight to calibrate the magnetometer sensor."
+            text: "Rotate the phone with figure of eight to calibrate " +
+                  "the magnetometer sensor."
             color: "black"
             wrapMode: Text.WordWrap
             font.pixelSize: 25

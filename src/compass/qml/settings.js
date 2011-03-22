@@ -9,53 +9,57 @@ var model = null
 function createDB()
 {
     try {
+        db.transaction(function(tx) {
+            var createSql;
+            createSql  = 'CREATE TABLE IF NOT EXISTS setting(';
+            createSql += 'id NUMERIC PRIMARY KEY,';
+            createSql += 'name TEXT UNIQUE,';
+            createSql += 'value NUMERIC NOT NULL)';
+            tx.executeSql(createSql);
+
+            /*
+            createSql  = 'CREATE TABLE IF NOT EXISTS route(';
+            createSql += 'time NUMERIC PRIMARY KEY,';
+            createSql += 'latitude REAL,';
+            createSql += 'longitude REAL,';
+            createSql += 'accuracyInMeters REAL)'
+            tx.executeSql(createSql);
+            */
+        });
+
 
         db.transaction(function(tx) {
-                           var createSql;
-                           createSql  = 'CREATE TABLE IF NOT EXISTS setting(';
-                           createSql += 'id NUMERIC PRIMARY KEY,';
-                           createSql += 'name TEXT UNIQUE,';
-                           createSql += 'value NUMERIC NOT NULL)';
-                           tx.executeSql(createSql);
+            var result;
+            result = tx.executeSql('SELECT * FROM setting WHERE id = 1');
+            if (result.rows.length == 0) {
+                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
+                              [1, 'Auto north in map', 0]);
+            }
 
-                           /*
-                           createSql  = 'CREATE TABLE IF NOT EXISTS route(';
-                           createSql += 'time NUMERIC PRIMARY KEY,';
-                           createSql += 'latitude REAL,';
-                           createSql += 'longitude REAL,';
-                           createSql += 'accuracyInMeters REAL)'
-                           tx.executeSql(createSql);
-                           */
-                       });
+            result = tx.executeSql('SELECT * FROM setting WHERE id = 2');
+            if (result.rows.length == 0) {
+                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
+                              [2, 'Bearing turnable in Compass mode', 0]);
+            }
 
+            result = tx.executeSql('SELECT * FROM setting WHERE id = 3');
+            if (result.rows.length == 0) {
+                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
+                              [3, 'Satellite map', 0]);
+            }
 
-        db.transaction(function(tx) {
-                           var result;
-                           result = tx.executeSql('SELECT * FROM setting WHERE id = 1');
-                           if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [1, 'Auto north in map', 0]);
-                           }
+            result = tx.executeSql('SELECT * FROM setting WHERE id = 4');
+            if (result.rows.length == 0) {
+                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
+                              [4, 'Prevent screensaver', 0]);
+            }
 
-                           result = tx.executeSql('SELECT * FROM setting WHERE id = 2');
-                           if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [2, 'Bearing turnable in Compass mode', 0]);
-                           }
-
-                           result = tx.executeSql('SELECT * FROM setting WHERE id = 3');
-                           if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [3, 'Satellite map', 0]);
-                           }
-
-                           result = tx.executeSql('SELECT * FROM setting WHERE id = 4');
-                           if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [4, 'Prevent screensaver', 0]);
-                           }
-
-                           result = tx.executeSql('SELECT * FROM setting WHERE id = 5');
-                           if(result.rows.length == 0) {
-                               tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)', [5, 'Use vibra in calibration', 1]);
-                           }
-                       });
+            result = tx.executeSql('SELECT * FROM setting WHERE id = 5');
+            if (result.rows.length == 0) {
+                tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
+                              [5, 'Use vibra in calibration', 1]);
+            }
+        });
     }
     catch(err) {
         console.log("DB error in createDB: " + err)
@@ -70,9 +74,9 @@ function dropTables()
 {
     try {
         db.transaction(function(tx) {
-                           tx.executeSql('DROP TABLE IF EXISTS setting');
-                           //tx.executeSql('DROP TABLE IF EXISTS route');
-                       });
+            tx.executeSql('DROP TABLE IF EXISTS setting');
+            //tx.executeSql('DROP TABLE IF EXISTS route');
+        });
     }
     catch(err) {
         console.log("DB error in resetDB: " + err)
@@ -84,16 +88,17 @@ function dropTables()
 function removeRoute()
 {
     db.transaction(function(tx) {
-                       tx.executeSql('DELETE route');
-                   });
+        tx.executeSql('DELETE route');
+    });
 }
 
 
 function insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
 {
     db.transaction(function(tx) {
-                       tx.executeSql('INSERT INTO route VALUES(?, ?, ?, ?)', [time, latitude, longitude, accuracyInMeters]);
-                   });
+        tx.executeSql('INSERT INTO route VALUES(?, ?, ?, ?)',
+                      [time, latitude, longitude, accuracyInMeters]);
+    });
 }
 */
 
@@ -106,20 +111,21 @@ function readSettings()
 
     try {
         db.transaction(function(tx) {
-                           result = tx.executeSql('SELECT * FROM setting ORDER BY name');
-                       });
+            result = tx.executeSql('SELECT * FROM setting ORDER BY name');
+        });
 
-        if(model != null) {
+        if (model != null) {
             model.destroy()
             model = null
         }
 
         model = Qt.createQmlObject('import QtQuick 1.0; ListModel {}', pane);
 
-        for(var i = 0; i < result.rows.length; i++) {
+        for (var i = 0; i < result.rows.length; i++) {
             var item = result.rows.item(i);
-            console.log("id: " + item.id + " name: " + item.name + " value: " + item.value)
-            updateProperties(item);
+            console.log("id: " + item.id + " name: " + item.name +
+                        " value: " + item.value)
+            updateProperty(item);
             model.append(item);
         }
     }
@@ -132,20 +138,20 @@ function readSettings()
 }
 
 
-function updateProperties(item) {
-    if(item.id == 1) {
+function updateProperty(item) {
+    if (item.id == 1) {
         pane.autoNorthInMap = item.value
     }
-    else if(item.id == 2) {
+    else if (item.id == 2) {
         pane.bearingTurnInTrackMode = item.value
     }
-    else if(item.id == 3) {
+    else if (item.id == 3) {
         pane.satelliteMap = item.value
     }
-    else if(item.id == 4) {
+    else if (item.id == 4) {
         pane.screenSaverInhibited = item.value
     }
-    else if(item.id == 5) {
+    else if (item.id == 5) {
         pane.vibraEnabled = item.value
     }
 }
@@ -155,8 +161,11 @@ function saveSetting(item)
 {
     try {
         db.transaction(function(tx) {
-                           tx.executeSql('UPDATE setting SET value = ? WHERE id = ?', [item.value, item.id]);
-                       });
+            tx.executeSql('UPDATE setting SET value = ? WHERE id = ?',
+                          [item.value, item.id]);
+        });
+
+        updateProperty(item);
     }
     catch(err) {
         console.log("DB error in saveSetting: " + err)

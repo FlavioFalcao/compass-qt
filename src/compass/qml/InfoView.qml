@@ -36,12 +36,13 @@ BorderDialog {
             width: flickable.width
             font.pixelSize: 14
             color: "white"
-            text: "<p>Compass is a Forum Nokia example that teaches the use of " +
-                  "traditional compass and allows the user to have a " +
-                  "bearing to the desired place using the Ovi maps. The main " +
-                  "purpose of the example is to demonstrate use of Maps and " +
-                  "navigation API. See more information about the project at " +
-                  "<a href=\"https://projects.forum.nokia.com/compass\">"+
+            text: "<p>Compass is a Forum Nokia example that teaches the use " +
+                  "of traditional compass and allows the user to have a " +
+                  "bearing to the desired place using the Ovi maps. The " +
+                  "main purpose of the example is to demonstrate use of " +
+                  "Maps and navigation API. See more information about the " +
+                  "project at " +
+                  "<a href=\"https://projects.forum.nokia.com/compass\">" +
                   "https://projects.forum.nokia.com/compass</a>.</p>" +
                   "<p>The application consists two modes: Compass mode and " +
                   "Map mode.</p>" +

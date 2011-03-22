@@ -23,7 +23,8 @@ public:
     bool filter(QCompassReading *reading);
 
 signals:
-    void azimuthChanged(const QVariant &azimuth, const QVariant &calibrationLevel);
+    void azimuthChanged(const QVariant &azimuth,
+                        const QVariant &calibrationLevel);
 
 public slots:
     void screenSaverInhibit(const QVariant &inhibit);

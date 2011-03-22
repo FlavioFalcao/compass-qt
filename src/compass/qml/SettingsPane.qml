@@ -21,6 +21,7 @@ BorderDialog {
     function saveRouteCoordinate(time, latitude, longitude, accuracyInMeters) {
         // Commented out for now, when we can draw the route on top of the map
         // this code will be used
+
         //DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
     }
 
@@ -47,8 +48,10 @@ BorderDialog {
         ListView {
             id: view
 
-            property real itemHeight: pane.portrait ? view.height / 3 - view.spacing + 1
-                                                    : view.height - view.spacing + 1
+            property real itemHeight: pane.portrait ? view.height / 3
+                                                      - view.spacing + 1
+                                                    : view.height
+                                                      - view.spacing + 1
             property real itemWidth: view.width
 
             anchors {
@@ -125,9 +128,12 @@ BorderDialog {
                             x: parent.enabled ? parent.width / 2 : 2
                             y: 2
 
-                            Behavior on x { PropertyAnimation { duration: 100 } }
+                            Behavior on x {
+                                PropertyAnimation { duration: 100 }
+                            }
 
-                            width: parent.width / 2 - 4; height: parent.height - 4
+                            width: parent.width / 2 - 4
+                            height: parent.height - 4
                             radius: 4
                             color: "#707070"
                         }
@@ -139,7 +145,7 @@ BorderDialog {
                         onClicked: {
                             var item = view.model.get(index)
 
-                            if(item.value == 0) {
+                            if (item.value == 0) {
                                 item.value = 1
                             }
                             else {
@@ -147,7 +153,6 @@ BorderDialog {
                             }
 
                             DB.saveSetting(item)
-                            DB.updateProperties(item)
                         }
                     }
                 }

@@ -30,8 +30,14 @@ Item {
         Gradient {
             id: normalGradient
 
-            GradientStop { position: 0.0; color: Qt.lighter(button.buttonColor, 1.8) }
-            GradientStop { position: 0.8; color: button.buttonColor }
+            GradientStop {
+                position: 0.0
+                color: Qt.lighter(button.buttonColor, 1.8)
+            }
+            GradientStop {
+                position: 0.8
+                color: button.buttonColor
+            }
         }
     }
 

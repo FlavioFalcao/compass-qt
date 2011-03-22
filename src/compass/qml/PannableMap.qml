@@ -45,9 +45,15 @@ Item {
             border.color: Qt.darker(color)
             border.width: 3
 
-            Behavior on center.latitude { PropertyAnimation { duration: 300 } }
-            Behavior on center.longitude { PropertyAnimation { duration: 300 } }
-            Behavior on radius { PropertyAnimation { duration: 300 } }
+            Behavior on center.latitude {
+                PropertyAnimation { duration: 300 }
+            }
+            Behavior on center.longitude {
+                PropertyAnimation { duration: 300 }
+            }
+            Behavior on radius {
+                PropertyAnimation { duration: 300 }
+            }
         }
     }
 

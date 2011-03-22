@@ -12,11 +12,16 @@
 class Arc : public QDeclarativeItem
 {
     Q_OBJECT
-    Q_PROPERTY(int startAngle READ startAngle WRITE setStartAngle NOTIFY startAngleChanged);
-    Q_PROPERTY(int spanAngle READ spanAngle WRITE setSpanAngle NOTIFY spanAngleChanged);
-    Q_PROPERTY(QColor startColor READ startColor WRITE setStartColor NOTIFY startColorChanged);
-    Q_PROPERTY(QColor endColor READ endColor WRITE setEndColor NOTIFY endColorChanged);
-    Q_PROPERTY(int penWidth READ penWidth WRITE setPenWidth NOTIFY penWidthChanged);
+    Q_PROPERTY(int startAngle READ startAngle WRITE setStartAngle
+               NOTIFY startAngleChanged);
+    Q_PROPERTY(int spanAngle READ spanAngle WRITE setSpanAngle
+               NOTIFY spanAngleChanged);
+    Q_PROPERTY(QColor startColor READ startColor WRITE setStartColor
+               NOTIFY startColorChanged);
+    Q_PROPERTY(QColor endColor READ endColor WRITE setEndColor
+               NOTIFY endColorChanged);
+    Q_PROPERTY(int penWidth READ penWidth WRITE setPenWidth
+               NOTIFY penWidthChanged);
 
 public:
     Arc(QDeclarativeItem *parent = 0) :
@@ -31,9 +36,11 @@ public:
         setFlag(QGraphicsItem::ItemHasNoContents, false);
     }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget)
     {
-        QConicalGradient gradient(width() / 2, height() / 2, m_startAngle + 90);
+        QConicalGradient gradient(width() / 2, height() / 2,
+                                  m_startAngle + 90);
         gradient.setColorAt(0, m_endColor);
         gradient.setColorAt(1, m_startColor);
 
@@ -42,7 +49,8 @@ public:
         QPen pen(brush, m_penWidth, Qt::SolidLine, Qt::FlatCap);
         painter->setPen(pen);
 
-        painter->drawArc(0, 0, width(), height(), (m_startAngle + 90) * 16, m_spanAngle * -16);
+        painter->drawArc(0, 0, width(), height(), (m_startAngle + 90) * 16,
+                         m_spanAngle * -16);
     }
 
 
@@ -64,7 +72,7 @@ public:
     // Set methods
     void setStartAngle(int startAngle)
     {
-        if(m_startAngle == startAngle) return;
+        if (m_startAngle == startAngle) return;
         m_startAngle = startAngle;
         emit startAngleChanged();
         update();
@@ -72,7 +80,7 @@ public:
 
     void setSpanAngle(int spanAngle)
     {
-        if(m_spanAngle == spanAngle) return;
+        if (m_spanAngle == spanAngle) return;
         m_spanAngle = spanAngle;
         emit spanAngleChanged();
         update();
@@ -80,7 +88,7 @@ public:
 
     void setStartColor(const QColor &color)
     {
-        if(m_startColor == color) return;
+        if (m_startColor == color) return;
         m_startColor = color;
         emit startColorChanged();
         update();
@@ -88,7 +96,7 @@ public:
 
     void setEndColor(const QColor &color)
     {
-        if(m_endColor == color) return;
+        if (m_endColor == color) return;
         m_endColor = color;
         emit endColorChanged();
         update();
@@ -96,7 +104,7 @@ public:
 
     void setPenWidth(int newWidth)
     {
-        if(m_penWidth == newWidth) return;
+        if (m_penWidth == newWidth) return;
         m_penWidth = newWidth;
         emit penWidthChanged();
         update();

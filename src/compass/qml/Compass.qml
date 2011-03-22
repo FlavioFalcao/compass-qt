@@ -41,9 +41,14 @@ Image {
             var bx = previousX - centerx
             var by = centery - previousY
 
-            var angledelta = (Math.atan2(by, bx) - Math.atan2(ay, ax)) * 57.2957795
-            if(angledelta > 180)       { angledelta -= 360 }
-            else if(angledelta < -180) { angledelta += 360 }
+            var angledelta = (Math.atan2(by, bx) - Math.atan2(ay, ax))
+                             * 57.2957795
+            if (angledelta > 180) {
+                angledelta -= 360
+            }
+            else if (angledelta < -180) {
+                angledelta += 360
+            }
 
             compass.rotation = (compass.rotation + angledelta) % 360
         }
@@ -121,9 +126,14 @@ Image {
                 var bx = previousX - centerx
                 var by = centery - previousY
 
-                var angledelta = (Math.atan2(by, bx) - Math.atan2(ay, ax)) * 57.2957795
-                if(angledelta > 180)       { angledelta -= 360 }
-                else if(angledelta < -180) { angledelta += 360 }
+                var angledelta = (Math.atan2(by, bx) - Math.atan2(ay, ax))
+                                 * 57.2957795
+                if (angledelta > 180) {
+                    angledelta -= 360
+                }
+                else if (angledelta < -180) {
+                    angledelta += 360
+                }
 
                 scale.rotation = (scale.rotation + angledelta) % 360
             }

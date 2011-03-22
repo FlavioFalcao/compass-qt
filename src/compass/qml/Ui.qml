@@ -16,10 +16,10 @@ Rectangle {
     signal inhibitScreensaver(variant inhibit);
 
     function orientationChanged(orientation) {
-        if(orientation == 1) {
+        if (orientation == 1) {
             ui.portrait = true
         }
-        else if(orientation == 4) {
+        else if (orientation == 4) {
             ui.portrait = false
         }
     }
@@ -27,7 +27,7 @@ Rectangle {
     function handleAzimuth(azimuth, calLevel) {
         calibrationView.calibrationLevel = calLevel
 
-        if(calLevel < 1.0) {
+        if (calLevel < 1.0) {
             ui.state = "CalibrationMode"
         }
 
@@ -37,7 +37,7 @@ Rectangle {
     function scaleChanged(scale) {
         pinching = true
 
-        if(ui.state != "MapMode") {
+        if (ui.state != "MapMode") {
             return
         }
 
@@ -48,16 +48,16 @@ Rectangle {
         pinching = false
         map.scale = 1
 
-        if(ui.state != "MapMode") {
+        if (ui.state != "MapMode") {
             return
         }
 
         var zoom = Math.round(scale)
 
-        if(zoom > map.maximumZoomLevel) {
+        if (zoom > map.maximumZoomLevel) {
             zoom = map.maximumZoomLevel
         }
-        else if(scale < map.minimumZoomLevel) {
+        else if (scale < map.minimumZoomLevel) {
             zoom = map.minimumZoomLevel
         }
 
@@ -75,8 +75,12 @@ Rectangle {
             // The GPS position is accurate enough and the position
             // is not the last known position, we can save this
             // to our route.
-            settingsPane.saveRouteCoordinate(time, latitude, longitude, accuracyInMeters)
+
+            /*
+            settingsPane.saveRouteCoordinate(time, latitude, longitude,
+                                             accuracyInMeters)
             map.addRoute(latitude, longitude)
+            */
         }
 
         if(time == 0) {
@@ -92,7 +96,6 @@ Rectangle {
     }
 
     function positionTimeout() {
-        console.log("GPS timeout")
         gpsIndicator.animate(true)
     }
 
@@ -112,11 +115,11 @@ Rectangle {
         satelliteMap: settingsPane.satelliteMap
 
         panEnable: {
-            if(ui.state != "MapMode") {
+            if (ui.state != "MapMode") {
                 return false
             }
 
-            if(ui.pinching) {
+            if (ui.pinching) {
                 return false
             }
 
@@ -147,7 +150,7 @@ Rectangle {
         opacity: 0
 
         onRotationChanged: {
-            if(settingsPane.autoNorthInMap && ui.state == "MapMode") {
+            if (settingsPane.autoNorthInMap && ui.state == "MapMode") {
                 compass.bearing = -compass.rotation
             }
         }
@@ -155,10 +158,11 @@ Rectangle {
         compassRotable: ui.state == "MapMode" ? true : false
 
         bearingRotable: {
-            if(ui.state == "MapMode" && !settingsPane.autoNorthInMap) {
+            if (ui.state == "MapMode" && !settingsPane.autoNorthInMap) {
                 return true
             }
-            if(ui.state == "TrackMode" && settingsPane.bearingTurnInTrackMode) {
+            if (ui.state == "TrackMode"
+                    && settingsPane.bearingTurnInTrackMode) {
                 return true
             }
             return false
@@ -169,7 +173,7 @@ Rectangle {
         id: gpsIndicator
 
         function animate(animating) {
-            if(animating) {
+            if (animating) {
                 icon = "images/icon_gps_anim.gif"
                 animationPlaying = true
             }
@@ -218,7 +222,7 @@ Rectangle {
                                           : "images/icon_compassmode.png"
             buttonColor: "#80000000"
             onClicked: {
-                if(ui.state == "MapMode") {
+                if (ui.state == "MapMode") {
                     ui.state = "TrackMode"
                 }
                 else {
@@ -242,7 +246,7 @@ Rectangle {
             buttonColor: settingsPane.shown ? "#8001A300" : "#80000000"
             onClicked: {
                 settingsPane.shown = !settingsPane.shown
-                if(settingsPane.shown) {
+                if (settingsPane.shown) {
                     infoView.shown = false
                 }
             }
@@ -264,7 +268,7 @@ Rectangle {
             buttonColor: infoView.shown ? "#8001A300" : "#80000000"
             onClicked: {
                 infoView.shown = !infoView.shown
-                if(infoView.shown) {
+                if (infoView.shown) {
                     settingsPane.shown = false
                 }
             }
@@ -321,7 +325,11 @@ Rectangle {
         State {
             name: "MapMode"
             PropertyChanges { target: map; opacity: 1.0 }
-            PropertyChanges { target: compass; opacity: 1.0; width: 0.453125 * height; height: 260; movable: true }
+            PropertyChanges {
+                target: compass; opacity: 1.0
+                width: 0.453125 * height; height: 260
+                movable: true
+            }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: mapModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 1 }
@@ -331,7 +339,11 @@ Rectangle {
         State {
             name: "TrackMode"
             PropertyChanges { target: map; opacity: 0 }
-            PropertyChanges { target: compass; opacity: 1.0; rotation: 0; x: 33; y: 0; width: 295; height: 610; movable: false }
+            PropertyChanges {
+                target: compass; opacity: 1.0; rotation: 0
+                x: 33; y: 0; width: 295; height: 610
+                movable: false
+            }
             PropertyChanges { target: calibrationView; opacity: 0 }
             PropertyChanges { target: mapModeButton; opacity: 1 }
             PropertyChanges { target: settingsButton; opacity: 0 }

@@ -31,7 +31,8 @@ public slots:
     void updateTimeout();
 
 signals:
-    void position(const QVariant &time, const QVariant &latitude, const QVariant &longitude, const QVariant &accuracyInMeters);
+    void position(const QVariant &time, const QVariant &latitude,
+                  const QVariant &longitude, const QVariant &accuracyInMeters);
     void positionTimeout();
 
 protected:
