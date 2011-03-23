@@ -7,6 +7,8 @@ import QtQuick 1.0
 Image {
     id: compass
 
+    signal userRotatedCompass()
+
     property alias movable: compassMoveArea.enabled
     property alias bearingRotable: bearingMouseArea.enabled
     property alias bearing: scale.rotation
@@ -51,6 +53,7 @@ Image {
             }
 
             compass.rotation = (compass.rotation + angledelta) % 360
+            compass.userRotatedCompass()
         }
     }
 

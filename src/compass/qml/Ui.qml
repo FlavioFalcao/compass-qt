@@ -113,18 +113,7 @@ Rectangle {
 
         anchors.fill: parent
         satelliteMap: settingsPane.satelliteMap
-
-        panEnable: {
-            if (ui.state != "MapMode") {
-                return false
-            }
-
-            if (ui.pinching) {
-                return false
-            }
-
-            return true
-        }
+        panEnable: ui.state != "MapMode" || ui.pinching ? false : true
     }
 
     CalibrationView {
@@ -149,14 +138,11 @@ Rectangle {
 
         opacity: 0
 
-        onRotationChanged: {
-            if (settingsPane.autoNorthInMap && ui.state == "MapMode") {
+        onUserRotatedCompass: {
+            if(settingsPane.autoNorthInMap)
                 compass.bearing = -compass.rotation
-            }
         }
-
         compassRotable: ui.state == "MapMode" ? true : false
-
         bearingRotable: {
             if (ui.state == "MapMode" && !settingsPane.autoNorthInMap) {
                 return true
@@ -297,8 +283,9 @@ Rectangle {
             ui.inhibitScreensaver(screenSaverInhibited)
         }
 
-        width: parent.width; height: parent.height - buttonRow.height
         x: shown ? 0 : -width
+        width: parent.width; height: parent.height - buttonRow.height
+
         Behavior on x {
             PropertyAnimation {
                 easing.type: Easing.InOutCubic
@@ -312,8 +299,9 @@ Rectangle {
 
         portrait: ui.portrait
 
-        width: parent.width; height: parent.height - buttonRow.height
         x: shown ? 0 : width
+        width: parent.width; height: parent.height - buttonRow.height
+
         Behavior on x {
             PropertyAnimation {
                 easing.type: Easing.InOutCubic
