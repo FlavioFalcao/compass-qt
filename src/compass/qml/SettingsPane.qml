@@ -107,7 +107,7 @@ BorderDialog {
 
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        x: parent.width / 5 * 3
+                        x: parent.width / 6 * 4
 
                         color: "white"
                         text: "Off"
@@ -116,15 +116,20 @@ BorderDialog {
                     }
 
                     Rectangle {
-                        x: parent.enabled ? parent.width / 2 : 2
-                        y: 2
+                        x: parent.enabled ? parent.width / 2 : 3
+                        y: 3
 
                         Behavior on x {
                             PropertyAnimation { duration: 100 }
                         }
 
-                        width: parent.width / 2 - 4
-                        height: parent.height - 4
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: "#909090" }
+                            GradientStop { position: 1.0; color: "#707070" }
+                        }
+
+                        width: parent.width / 2 - 6
+                        height: parent.height - 6
                         radius: 4
                         color: "#707070"
                     }

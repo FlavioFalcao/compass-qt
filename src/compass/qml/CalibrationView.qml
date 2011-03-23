@@ -23,13 +23,11 @@ Rectangle {
         if(calibrationLevel >= 1.0) {
             calibrationCompletedAnimation.start()
         }
-        if(useVibraEffect) {
-            vibraEffect.running = true
-        }
     }
 
     Audio {
         id: audioEffect
+
         source: "file:///c:/System/compass/beep.wav"
         volume: 0.5
     }
@@ -37,12 +35,12 @@ Rectangle {
     HapticsEffect {
         id: vibraEffect
 
-        attackIntensity: 0.1
-        attackTime: 50
-        intensity: Math.min(0.8, view.calibrationLevel + 0.2)
-        duration: 100
-        fadeTime: 50
-        fadeIntensity: 0.1
+        attackIntensity: 0.03
+        attackTime: 20
+        intensity: Math.min(0.3, view.calibrationLevel + 0.05)
+        duration: 30
+        fadeTime: 20
+        fadeIntensity: 0.03
         running: false
     }
 

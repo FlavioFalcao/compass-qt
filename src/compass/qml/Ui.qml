@@ -65,10 +65,7 @@ Rectangle {
     }
 
     function position(time, latitude, longitude, accuracyInMeters) {
-        console.log("Setting coordinates: " + latitude + ", "
-                    + longitude, " time: " + time
-                    + " accuracy: " + accuracyInMeters)
-
+        // Stop the animation of GPS indicator
         gpsIndicator.animate(false)
 
         if(time != 0 && accuracyInMeters < 100) {
@@ -96,6 +93,7 @@ Rectangle {
     }
 
     function positionTimeout() {
+        // No signal from GPS, start the animation of GPS indicator
         gpsIndicator.animate(true)
     }
 
