@@ -1,8 +1,13 @@
-Compass v0.1
+Compass v0.2
 ============
 
-Compass is an application that teaches the use of traditional compass and
-allows the user to have a bearing to the desired place using the Ovi maps.
+Compass is a Forum Nokia example that teaches the use of traditional compass
+and allows the user to have a bearing to the desired place using the Ovi maps.
+The main purpose of the example is to demonstrate use of Maps and navigation
+API.
+
+See more information about the project at
+https://projects.forum.nokia.com/compass.
 
 
 FILES
@@ -17,6 +22,9 @@ main.cpp
 KNOWN ISSUES
 -------------------------------------------------------------------------------
 
+- The walked path can not be drawn on top of the map by using MapPolyLine
+  element. Feature will be implemented when the QtMobility is mature enought
+  to support it.
 
   
 INSTALLATION INSTRUCTIONS
@@ -47,8 +55,24 @@ There are two ways to install the application on the device.
 RUNNING THE APPLICATION
 -------------------------------------------------------------------------------
 
+The application consists two modes: Compass mode and Map mode.
 
+In the Map mode you are able to view the map  with your current position
+retrieved by GPS and shown with a red circle. The radius of the red circle will
+change according to the GPS fix accuracy. The more accurate fix the more
+smaller circle is shown giving you more precise location of you current
+whereabout. The map can be panned by dragging the map with a finger. The zoom
+level can be changed by pinching the map with two fingers.The GPS indicator on
+the upper left corner will iterate when the phone is trying to retrieve the GPS
+fix. The indicator is steady when the signal is received from the satellites.
+Tapping the GPS indicator will pan the map to the current location.
 
+To navigate to some position in a map do the following: First switch to the Map
+mode, place the edge of the compass on the map so that it connects the current
+location with the desired destination and turn the scale of the compass to the
+map north. Now, enter to the Compass mode and turn with the phone as long as
+the compass needle is positioned on top of the outlined orientating arrow. The
+desired bearing is now at your front.
 
 
 COMPATIBILITY
@@ -67,6 +91,7 @@ Tested on:
 
 - Nokia N8-00
 - Nokia E7-00
+- Nokia C7-00
 - Nokia C6-01
 
 
@@ -77,3 +102,6 @@ Developed with:
 
 VERSION HISTORY
 -------------------------------------------------------------------------------
+0.2 Added better graphics. Possibility to disable haptic feedback on 
+    calibration. Bug fixes.
+0.1 First public version in Projects Forum Nokia.
