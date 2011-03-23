@@ -185,10 +185,11 @@ Rectangle {
 
         anchors {
             left: parent.left; leftMargin: 10
-            top: parent.top; topMargin: -10
+            top: parent.top
         }
 
         width:  buttonRow.buttonWidth
+        upsideDown: true
         animationPlaying: true
 
         portrait: ui.portrait

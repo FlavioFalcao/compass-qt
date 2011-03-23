@@ -12,6 +12,7 @@ Item {
     property color buttonColor: "#AA000000"
     property alias icon: icon.source
     property alias animationPlaying: icon.playing
+    property bool upsideDown: false
 
     signal clicked()
 
@@ -20,7 +21,8 @@ Item {
     Rectangle {
         anchors {
             fill: parent
-            bottomMargin: -10
+            bottomMargin: button.upsideDown ? 0 : -10
+            topMargin: button.upsideDown ? -10 : 0
         }
 
         radius: 8
@@ -46,7 +48,7 @@ Item {
 
         anchors {
             fill: parent
-            margins: 12
+            margins: 8
         }
 
         playing: false

@@ -33,127 +33,119 @@ BorderDialog {
         font.pixelSize: 20
     }
 
-    Item {
+    ListView {
+        id: view
+
+        property real itemHeight: pane.portrait ? view.height / 3
+                                                  - view.spacing + 1
+                                                : view.height
+                                                  - view.spacing + 1
+        property real itemWidth: view.width
 
         anchors {
             fill: parent
             leftMargin: pane.border.left
             rightMargin: pane.border.right
-            topMargin: pane.border.top
-            bottomMargin: pane.border.bottom
+            topMargin: pane.border.top + 2
+            bottomMargin: pane.border.bottom + 35
         }
-
         clip: true
 
-        ListView {
-            id: view
+        delegate: delegate
+        snapMode: ListView.SnapOneItem
+        spacing: 6
 
-            property real itemHeight: pane.portrait ? view.height / 3
-                                                      - view.spacing + 1
-                                                    : view.height
-                                                      - view.spacing + 1
-            property real itemWidth: view.width
+        Component {
+            id: delegate
 
-            anchors {
-                fill: parent
-                topMargin: 2
-                bottomMargin: 35
-            }
+            Rectangle {
+                width: view.itemWidth; height: view.itemHeight
 
-            delegate: delegate
-            snapMode: ListView.SnapToItem
-            spacing: 6
+                color: "transparent"
+                border.color: "#80EEA604"
+                border.width: 2
+                radius: 4
 
-            Component {
-                id: delegate
+                Text {
+                    id: nameText
+
+                    anchors {
+                        top: parent.top; topMargin: 10
+                        left: parent.left; leftMargin: 20
+                        right: parent.right; rightMargin: 20
+                    }
+
+                    text: name
+                    color: "white"
+                    wrapMode: Text.WordWrap
+                    font.bold: true
+                    font.pixelSize: 16
+                }
 
                 Rectangle {
-                    width: view.itemWidth; height: view.itemHeight
+                    property bool enabled: value
 
-                    color: "transparent"
-                    border.color: "#80EEA604"
-                    border.width: 2
+                    anchors {
+                        top: nameText.bottom; topMargin: 6
+                        left: nameText.left
+                        right: nameText.right
+                        bottom: parent.bottom; bottomMargin: 20
+                    }
+
                     radius: 4
+                    color: "#999999"
 
                     Text {
-                        id: nameText
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: parent.width / 5
 
-                        anchors {
-                            top: parent.top; topMargin: 10
-                            left: parent.left; leftMargin: 20
-                            right: parent.right; rightMargin: 20
-                        }
-
-                        text: name
                         color: "white"
-                        wrapMode: Text.WordWrap
+                        text: "On"
+
                         font.bold: true
-                        font.pixelSize: 16
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: parent.width / 5 * 3
+
+                        color: "white"
+                        text: "Off"
+
+                        font.bold: true
                     }
 
                     Rectangle {
-                        property bool enabled: value
+                        x: parent.enabled ? parent.width / 2 : 2
+                        y: 2
 
-                        anchors {
-                            top: nameText.bottom; topMargin: 6
-                            left: nameText.left
-                            right: nameText.right
-                            bottom: parent.bottom; bottomMargin: 20
+                        Behavior on x {
+                            PropertyAnimation { duration: 100 }
                         }
 
+                        width: parent.width / 2 - 4
+                        height: parent.height - 4
                         radius: 4
-                        color: "#999999"
-
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: parent.width / 5
-
-                            color: "white"
-                            text: "On"
-
-                            font.bold: true
-                        }
-
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: parent.width / 5 * 3
-
-                            color: "white"
-                            text: "Off"
-
-                            font.bold: true
-                        }
-
-                        Rectangle {
-                            x: parent.enabled ? parent.width / 2 : 2
-                            y: 2
-
-                            Behavior on x {
-                                PropertyAnimation { duration: 100 }
-                            }
-
-                            width: parent.width / 2 - 4
-                            height: parent.height - 4
-                            radius: 4
-                            color: "#707070"
-                        }
+                        color: "#707070"
                     }
+                }
 
-                    MouseArea {
-                        anchors.fill: parent
+                MouseArea {
+                    anchors.fill: parent
 
-                        onClicked: {
-                            var item = view.model.get(index)
+                    enabled: !view.moving
 
-                            if (item.value == 0) {
-                                item.value = 1
-                            }
-                            else {
-                                item.value = 0
-                            }
+                    onClicked: {
+                        var item = view.model.get(index)
 
-                            DB.saveSetting(item)
+                        if (item.value == 0) {
+                            item.value = 1
                         }
+                        else {
+                            item.value = 0
+                        }
+
+                        DB.saveSetting(item)
                     }
                 }
             }

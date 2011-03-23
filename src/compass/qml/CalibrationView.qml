@@ -17,6 +17,7 @@ Rectangle {
     property bool useVibraEffect
 
     width: 640; height: 360
+    color: "#CCCCCC"
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
@@ -141,7 +142,7 @@ Rectangle {
                 right: parent.right
             }
 
-            text: "Rotate the phone with figure of eight to calibrate " +
+            text: "Rotate the phone in a figure of eight to calibrate " +
                   "the magnetometer sensor."
             color: "black"
             wrapMode: Text.WordWrap

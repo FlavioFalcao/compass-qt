@@ -41,6 +41,9 @@ Item {
         MapCircle {
             id: mapCircle
 
+            center.latitude: 62.2410021
+            center.longitude: 25.7573175
+
             color: "#40FF0000"
             border.color: Qt.darker(color)
             border.width: 3
