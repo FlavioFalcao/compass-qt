@@ -56,11 +56,11 @@ BorderDialog {
                   "finger. The zoom level can be changed by pinching the " +
                   "map with two fingers.The GPS indicator on the upper left " +
                   "corner will iterate when the phone is trying to retrieve " +
-                  "the GPS fix. The indicator is steady when the received " +
-                  "from the satellites. Tapping the GPS indicator will pan " +
-                  "the map to the current location.</p>" +
+                  "the GPS fix. The indicator is steady when the signal is " +
+                  "received from the satellites. Tapping the GPS indicator " +
+                  "will pan the map to the current location.</p>" +
                   "<p>To navigate to some position in a map do the " +
-                  "following, first switch to the Map mode, place the " +
+                  "following: First switch to the Map mode, place the " +
                   "edge of the compass on the map so that it connects " +
                   "the current location with the desired destination " +
                   "and turn the scale of the compass to the map north. " +
