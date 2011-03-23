@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     view.reset(new DeclarativeView);
-    view->engine();
 
     orientationSensor.reset(new QOrientationSensor);
     orientationFilter.reset(new OrientationFilter);
