@@ -59,7 +59,7 @@ BorderDialog {
             id: delegate
 
             Rectangle {
-                width: view.itemWidth; height: view.itemHeight
+                width: view.itemWidth - scrollBar.width - 2; height: view.itemHeight
 
                 color: "transparent"
                 border.color: "#80EEA604"
@@ -71,8 +71,8 @@ BorderDialog {
 
                     anchors {
                         top: parent.top; topMargin: 10
-                        left: parent.left; leftMargin: 20
-                        right: parent.right; rightMargin: 20
+                        left: parent.left; leftMargin: 19
+                        right: parent.right; rightMargin: 19
                     }
 
                     text: name
@@ -154,6 +154,18 @@ BorderDialog {
                     }
                 }
             }
+        }
+
+        Rectangle {
+            id: scrollBar
+
+            anchors.right: view.right
+            y: view.visibleArea.yPosition * view.height
+            width: 4; height: view.visibleArea.heightRatio * view.height
+            opacity: 0.5
+            radius: 2
+
+            color: "#80EEA604"
         }
     }
 

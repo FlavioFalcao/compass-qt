@@ -74,6 +74,29 @@ map north. Now, enter to the Compass mode and turn with the phone as long as
 the compass needle is positioned on top of the outlined orientating arrow. The
 desired bearing is now at your front.
 
+There exists couple of on / off type of settings that adjusts the behavior of
+the application:
+
+Auto north in map:
+    Automatically turn the scale of the compass to the map north when compass
+    is rotated in Map mode.
+
+Bearing turnable in Compass mode:
+    The turnability of the bearing can be prevented in the Compass mode. By
+    setting the turnability off you can prevent accidential touches which would
+    affect to the navigation in the field. Also by enabling the turnability the
+    compass can be used with the real paper map.
+    
+Prevent screensaver:
+    Prevents screensaver for occuring.
+
+Satellite map:
+    Toggles between map and satellite.
+
+Use vibra in calibration:
+    Sets if the haptic feedback is used on the calibration process.
+
+
 
 COMPATIBILITY
 -------------------------------------------------------------------------------
