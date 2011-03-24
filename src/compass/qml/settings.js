@@ -63,6 +63,7 @@ function createDB()
     }
     catch(err) {
         console.log("DB error in createDB: " + err)
+        debugText.addText("DB error in createDB: " + err )
         return false;
     }
 
@@ -80,6 +81,7 @@ function dropTables()
     }
     catch(err) {
         console.log("DB error in resetDB: " + err)
+        debugText.addText("DB error in resetDB: " + err)
     }
 }
 
@@ -131,6 +133,7 @@ function readSettings()
     }
     catch(err) {
         console.log("DB error in readSettings: " + err)
+        debugText.addText("DB error in readSettings: " + err)
         return 0
     }
 
@@ -169,5 +172,6 @@ function saveSetting(item)
     }
     catch(err) {
         console.log("DB error in saveSetting: " + err)
+        debugText.addText("DB error in saveSetting: " + err)
     }
 }

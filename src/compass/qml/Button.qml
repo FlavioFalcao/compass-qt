@@ -11,8 +11,9 @@ Item {
     property alias text: text.text
     property color buttonColor: "#AA000000"
     property alias icon: icon.source
-    property alias animationPlaying: icon.playing
+    property bool animationPlaying
     property bool upsideDown: false
+    property alias enabled: mouseArea.enabled
 
     signal clicked()
 
@@ -43,7 +44,19 @@ Item {
         }
     }
 
-    AnimatedImage {
+    SequentialAnimation {
+        id: animation
+
+        alwaysRunToEnd: true
+        loops: Animation.Infinite
+        running: button.opacity > 0.0 && button.animationPlaying
+
+        PropertyAnimation { target: icon; property: "scale"; to: 0.8; duration: 500 }
+        PropertyAnimation { target: icon; property: "scale"; to: 1.0; duration: 500 }
+    }
+
+
+    Image {
         id: icon
 
         anchors {
@@ -51,7 +64,6 @@ Item {
             margins: 8
         }
 
-        playing: false
         fillMode: Image.PreserveAspectFit
         smooth: true
         rotation: button.portrait ? 0 : 90
@@ -89,6 +101,8 @@ Item {
     Behavior on scale { PropertyAnimation { duration: 50 } }
 
     MouseArea {
+        id: mouseArea
+
         anchors.fill: parent
         onClicked: button.clicked()
         onPressed: button.scale = 0.9

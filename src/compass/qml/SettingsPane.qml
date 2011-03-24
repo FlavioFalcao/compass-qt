@@ -33,6 +33,22 @@ BorderDialog {
         font.pixelSize: 20
     }
 
+    Text {
+        id: debugText
+
+        function addText(t) {
+            text = text + "\n" + t
+        }
+
+        function clear() {
+            text = ""
+        }
+
+        z: 100
+        anchors.centerIn: parent
+
+    }
+
     ListView {
         id: view
 

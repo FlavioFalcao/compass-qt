@@ -4,7 +4,7 @@
 
 import QtQuick 1.0
 
-Rectangle {
+Image {
     id: ui
 
     property real northdeg: 0
@@ -99,7 +99,9 @@ Rectangle {
 
     anchors.fill: parent
     width: 640; height: 360
-    color: "#f8f8f0"
+    //color: "#f8f8f0"
+    source: "images/compass_back.png"
+    fillMode: Image.Stretch
 
     Component.onCompleted: {
         settingsPane.readSettings()
@@ -158,11 +160,9 @@ Rectangle {
 
         function animate(animating) {
             if (animating) {
-                icon = "images/icon_gps_anim.gif"
                 animationPlaying = true
             }
             else {
-                icon = "images/icon_gps.gif"
                 animationPlaying = false
             }
         }
@@ -177,7 +177,7 @@ Rectangle {
         animationPlaying: true
 
         portrait: ui.portrait
-        icon: "images/icon_gps_anim.gif"
+        icon: "images/icon_gps.png"
 
         onClicked: map.panToCoordinate(map.hereCenter)
     }
@@ -325,6 +325,8 @@ Rectangle {
         },
         State {
             name: "TrackMode"
+            PropertyChanges { target: settingsButton; enabled: false }
+            PropertyChanges { target: infoScreenButton; enabled: false }
             PropertyChanges { target: map; opacity: 0 }
             PropertyChanges {
                 target: compass; opacity: 1.0; rotation: 0
@@ -345,6 +347,7 @@ Rectangle {
         },
         State {
             name: "CalibrationMode"
+            PropertyChanges { target: map; opacity: 0 }
             PropertyChanges { target: compass; opacity: 0 }
             PropertyChanges { target: calibrationView; opacity: 1 }
             PropertyChanges { target: mapModeButton; opacity: 0 }

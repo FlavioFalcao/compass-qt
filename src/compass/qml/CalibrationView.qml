@@ -7,7 +7,7 @@ import QtMobility.feedback 1.1
 import QtMultimediaKit 1.1
 import CustomElements 1.0
 
-Rectangle {
+Item {
     id: view
 
     signal calibrated()
@@ -17,7 +17,7 @@ Rectangle {
     property bool useVibraEffect
 
     width: 640; height: 360
-    color: "#CCCCCC"
+    //color: "#CCCCCC"
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
