@@ -4,9 +4,14 @@
 
 #include <QtGui>
 #include <QtDeclarative>
+#include <QGeoPositionInfoSource>
+#include <QGeoPositionInfo>
+#include <QCompass>
+#include <QOrientationSensor>
 #include "arc.h"
-#include "declarativeview.h"
 #include "mainwindow.h"
+#include "declarativeview.h"
+#include "orientationfilter.h"
 #include "compassfilter.h"
 
 
@@ -20,24 +25,23 @@ QTM_USE_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    view.reset(new DeclarativeView);
+    view = new DeclarativeView(this);
 
-    orientationSensor.reset(new QOrientationSensor);
-    orientationFilter.reset(new OrientationFilter);
-    orientationSensor->addFilter(orientationFilter.data());
+    orientationSensor = new QOrientationSensor(this);
+    orientationFilter = new OrientationFilter(this);
+    orientationSensor->addFilter(orientationFilter);
     orientationSensor->start();
 
-    compass.reset(new QCompass);
-    compassFilter.reset(new CompassFilter);
-    compass->addFilter(compassFilter.data());
+    compass = new QCompass(this);
+    compassFilter = new CompassFilter(this);
+    compass->addFilter(compassFilter);
     compass->start();
 
-    geoPositionInfoSource.reset(
-                QGeoPositionInfoSource::createDefaultSource(this));
+    geoPositionInfoSource = QGeoPositionInfoSource::createDefaultSource(this);
     geoPositionInfoSource->setUpdateInterval(5000);
 
     qmlRegisterType<Arc>("CustomElements", 1, 0, "Arc");
-    setCentralWidget(view.data());
+    setCentralWidget(view);
 
 #ifndef QT_NO_OPENGL
     // Use QGLWidget to get the opengl support if available
@@ -54,38 +58,41 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject *rootObject = dynamic_cast<QObject*>(view->rootObject());
 
-    connect(orientationFilter.data(),
-            SIGNAL(orientationChanged(const QVariant&)),
+    // Sensor connections
+    connect(orientationFilter, SIGNAL(orientationChanged(const QVariant&)),
             rootObject, SLOT(orientationChanged(const QVariant&)));
-    connect(compassFilter.data(),
+    connect(compassFilter,
             SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
             rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
     connect(rootObject, SIGNAL(inhibitScreensaver(const QVariant&)),
-            compassFilter.data(), SLOT(screenSaverInhibit(const QVariant&)));
-    connect(view.data(), SIGNAL(scaleFactor(const QVariant&)),
+            compassFilter, SLOT(screenSaverInhibit(const QVariant&)));
+
+    // Multitouch connections
+    connect(view, SIGNAL(scaleFactor(const QVariant&)),
             rootObject, SLOT(scaleChanged(const QVariant&)));
-    connect(view.data(), SIGNAL(scaleFactorEnd(const QVariant&)),
+    connect(view, SIGNAL(scaleFactorEnd(const QVariant&)),
             rootObject, SLOT(scaleChangedEnd(const QVariant&)));
 
     // GPS connections
-    connect(geoPositionInfoSource.data(),
+    connect(geoPositionInfoSource,
             SIGNAL(positionUpdated(const QGeoPositionInfo&)),
             this, SLOT(positionUpdated(const QGeoPositionInfo&)));
-    connect(geoPositionInfoSource.data(), SIGNAL(updateTimeout()),
-            this, SLOT(updateTimeout()));
+    connect(geoPositionInfoSource, SIGNAL(updateTimeout()),
+            rootObject, SLOT(positionTimeout()));
     connect(this, SIGNAL(position(const QVariant&, const QVariant&,
                                   const QVariant&, const QVariant&)),
             rootObject, SLOT(position(const QVariant&, const QVariant&,
                                       const QVariant&, const QVariant&)));
-    connect(this, SIGNAL(positionTimeout()),
-            rootObject, SLOT(positionTimeout()));
 
+    // Framework connections
     connect((QObject*)view->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
 
-    compassFilter.data()->screenSaverInhibit(
+    // Apply the screensaver inhibiter if requested on startup
+    compassFilter->screenSaverInhibit(
                 rootObject->property("screenSaverInhibited"));
 
+    // Query the lask known position
     QGeoPositionInfo geoPositionInfo =
             geoPositionInfoSource->lastKnownPosition();
 
@@ -96,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
                           QGeoPositionInfo::HorizontalAccuracy));
     }
 
+    // Start the GPS
     geoPositionInfoSource->startUpdates();
 }
 
@@ -109,15 +117,8 @@ void MainWindow::positionUpdated(const QGeoPositionInfo &update)
 {
     qreal accuracy = update.attribute(QGeoPositionInfo::HorizontalAccuracy);
 
-    uint secsFrom1970 = QDateTime::currentDateTime().toTime_t();
+    uint secsFrom1970 = update.timestamp().toTime_t();
     QGeoCoordinate c = update.coordinate();
 
     emit position(secsFrom1970, c.latitude(), c.longitude(), accuracy);
-}
-
-
-
-void MainWindow::updateTimeout()
-{
-    emit positionTimeout();
 }

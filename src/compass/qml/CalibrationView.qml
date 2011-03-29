@@ -7,8 +7,9 @@ import QtMobility.feedback 1.1
 import QtMultimediaKit 1.1
 import CustomElements 1.0
 
-Item {
+Rectangle {
     id: view
+    objectName: "calibrationView"
 
     signal calibrated()
 
@@ -17,7 +18,7 @@ Item {
     property bool useVibraEffect
 
     width: 640; height: 360
-    //color: "#CCCCCC"
+    color: "#CCCCCC"
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
@@ -59,27 +60,10 @@ Item {
     Image {
         id: shadow
 
-        anchors {
-            fill: scale
-            margins: parent.width * -0.013
-        }
-
+        anchors.fill: scale
         source: "images/scaleshadow.png"
         smooth: true
-    }
-
-    Image {
-        id: scale
-
-        anchors {
-            bottom: parent.bottom; bottomMargin: 35
-            left: parent.left; leftMargin: 15
-            right: parent.right; rightMargin: 15
-        }
-
-        height: width
-        source: "images/scale100.png"
-        smooth: true
+        opacity: 0.8
     }
 
     Arc {
@@ -98,10 +82,24 @@ Item {
     }
 
     Image {
+        id: scale
+
+        anchors {
+            bottom: parent.bottom; bottomMargin: 25
+            left: parent.left; leftMargin: 5
+            right: parent.right; rightMargin: 5
+        }
+
+        height: width
+        source: "images/scale100.png"
+        smooth: true
+    }
+
+    Image {
         id: needle
 
         anchors.centerIn: scale
-        width: height * 0.1214; height: scale.paintedHeight * 0.63
+        width: height * 0.1214; height: scale.paintedHeight * 0.56
         source: "images/compassneedle.png"
         rotation: calibrationLevel * 360
 

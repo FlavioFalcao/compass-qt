@@ -81,7 +81,6 @@ function dropTables()
     }
     catch(err) {
         console.log("DB error in resetDB: " + err)
-        debugText.addText("DB error in resetDB: " + err)
     }
 }
 
@@ -112,8 +111,8 @@ function readSettings()
     var result;
 
     try {
-        db.transaction(function(tx) {
-            result = tx.executeSql('SELECT * FROM setting ORDER BY name');
+        db.readTransaction(function(tx) {
+            result = tx.executeSql('SELECT * FROM setting ORDER BY id');
         });
 
         if (model != null) {
@@ -133,7 +132,6 @@ function readSettings()
     }
     catch(err) {
         console.log("DB error in readSettings: " + err)
-        debugText.addText("DB error in readSettings: " + err)
         return 0
     }
 
@@ -167,11 +165,44 @@ function saveSetting(item)
             tx.executeSql('UPDATE setting SET value = ? WHERE id = ?',
                           [item.value, item.id]);
         });
-
-        updateProperty(item);
     }
     catch(err) {
         console.log("DB error in saveSetting: " + err)
-        debugText.addText("DB error in saveSetting: " + err)
+    }
+}
+
+
+function toggleSetting(index)
+{
+    console.log("Toggling setting: " + index)
+    var item = model.get(index);
+
+    if (item.value == 0) {
+        item.value = 1;
+    }
+    else {
+        item.value = 0;
+    }
+
+    saveSetting(item);
+    updateProperty(item);
+
+    if (item.id == 1 && item.value == 1) {
+        // If "Auto north in map" is enabled, disable
+        // "Bearing turnable in Compass mode"
+        console.log("Resetting id = 2")
+        var setting = model.get(1);
+        setting.value = 0;
+        saveSetting(setting);
+        updateProperty(setting);
+    }
+    else if (item.id == 2 && item.value == 1) {
+        // If "Bearing turnable in Compass mode" is enabled, disable
+        // "Auto north in map" is enabled, disable
+        console.log("Resetting id = 1")
+        var setting = view.model.get(0);
+        setting.value = 0;
+        saveSetting(setting);
+        updateProperty(setting);
     }
 }

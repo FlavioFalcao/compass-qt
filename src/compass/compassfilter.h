@@ -12,14 +12,12 @@
 QTM_USE_NAMESPACE
 
 
-class CompassFilter :
-    public QObject,
-    public QCompassFilter
+class CompassFilter : public QObject, public QCompassFilter
 {
     Q_OBJECT
 
 public:
-    CompassFilter();
+    CompassFilter(QObject *parent = NULL);
     bool filter(QCompassReading *reading);
 
 signals:

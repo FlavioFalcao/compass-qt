@@ -13,6 +13,11 @@ class OrientationFilter : public QObject, public QOrientationFilter
 {
     Q_OBJECT
 public:
+    OrientationFilter(QObject *parent = NULL)
+        : QObject(parent)
+    {
+    }
+
     bool filter(QOrientationReading *reading) {
         emit orientationChanged(reading->orientation());
 

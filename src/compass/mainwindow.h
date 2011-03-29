@@ -6,17 +6,21 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QScopedPointer>
 #include <QGeoPositionInfo>
-#include <QGeoPositionInfoSource>
-#include <QGeoPositionInfo>
-#include <QCompass>
-#include <QOrientationSensor>
-#include "compassfilter.h"
-#include "orientationfilter.h"
-#include "declarativeview.h"
 
 QTM_USE_NAMESPACE
+
+// Forward declarations for QtMobility classes
+namespace QtMobility
+{
+    class QCompass;
+    class QOrientationSensor;
+    class QGeoPositionInfoSource;
+}
+
+class CompassFilter;
+class OrientationFilter;
+class DeclarativeView;
 
 class MainWindow : public QMainWindow
 {
@@ -28,7 +32,6 @@ public:
 
 public slots:
     void positionUpdated(const QGeoPositionInfo &update);
-    void updateTimeout();
 
 signals:
     void position(const QVariant &time, const QVariant &latitude,
@@ -36,13 +39,12 @@ signals:
     void positionTimeout();
 
 protected:
-    QScopedPointer<DeclarativeView> view;
-    QScopedPointer<QCompass> compass;
-    QScopedPointer<QOrientationSensor> orientationSensor;
-
-    QScopedPointer<CompassFilter> compassFilter;
-    QScopedPointer<OrientationFilter> orientationFilter;
-    QScopedPointer<QGeoPositionInfoSource> geoPositionInfoSource;
+    DeclarativeView *view;
+    QCompass *compass;
+    CompassFilter *compassFilter;
+    QOrientationSensor *orientationSensor;
+    OrientationFilter *orientationFilter;
+    QGeoPositionInfoSource *geoPositionInfoSource;
 };
 
 

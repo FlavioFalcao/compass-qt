@@ -78,23 +78,20 @@ Image {
     Image {
         id: shadow
 
-        anchors {
-            fill: scale
-            margins: parent.width * -0.013
-        }
-
+        anchors.fill: scale
         source: "images/scaleshadow.png"
+        opacity: 0.8
     }
 
     Image {
         id: scale
 
         anchors {
-            bottom: parent.bottom; bottomMargin: parent.height * 0.18
-            right: parent.right; rightMargin: parent.width * 0.06
-            left: parent.left; leftMargin: parent.width * 0.06
+            bottom: parent.bottom; bottomMargin: parent.paintedHeight * 0.145
+            horizontalCenter: parent.horizontalCenter
         }
 
+        width: parent.paintedWidth * 0.95
         height: width
 
         source: "images/Scale.png"
@@ -147,7 +144,7 @@ Image {
         id: needle
 
         anchors.centerIn: scale
-        height: scale.paintedHeight * 0.63
+        height: scale.paintedHeight * 0.56
         width: height * 0.1214
 
         source: "images/compassneedle.png"

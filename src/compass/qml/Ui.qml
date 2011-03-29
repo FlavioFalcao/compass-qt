@@ -99,7 +99,6 @@ Image {
 
     anchors.fill: parent
     width: 640; height: 360
-    //color: "#f8f8f0"
     source: "images/compass_back.png"
     fillMode: Image.Stretch
 
@@ -314,7 +313,7 @@ Image {
             PropertyChanges { target: map; opacity: 1.0 }
             PropertyChanges {
                 target: compass; opacity: 1.0
-                width: 0.453125 * height; height: 260
+                width: 0.48360656 * height; height: 260
                 movable: true
             }
             PropertyChanges { target: calibrationView; opacity: 0 }

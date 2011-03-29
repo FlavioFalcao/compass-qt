@@ -33,9 +33,8 @@ bool DeclarativeView::event(QEvent *event)
                                               touchPoint1.startPos()).length();
 
             // Calculate factor between the distance of the two finger now and
-            // when they first touched the screen. The calculatio has a little
+            // when they first touched the screen. The calculation has a little
             // damping factor 90% to reduce the sensitivity.
-
             qreal currentScaleFactor =
                     (posLineLength - ((posLineLength - startPosLineLength)
                                       * 0.90)) / startPosLineLength;
@@ -46,8 +45,13 @@ bool DeclarativeView::event(QEvent *event)
                 // continue zooming by adding new scale factor to the
                 // existing remembered value.
                 totalScaleFactor *= currentScaleFactor;
+                totalScaleFactor = qRound(totalScaleFactor);
+
                 if (totalScaleFactor > 18.0) {
                     totalScaleFactor = 18.0;
+                }
+                if (totalScaleFactor < 1) {
+                    totalScaleFactor = 1.0;
                 }
                 currentScaleFactor = 1;
 
@@ -57,6 +61,9 @@ bool DeclarativeView::event(QEvent *event)
                 qreal scale = totalScaleFactor * currentScaleFactor;
                 if (scale > 18.0) {
                     scale = 18.0;
+                }
+                if (scale < 1.0) {
+                    scale = 1.0;
                 }
 
                 emit scaleFactor(QVariant(scale));

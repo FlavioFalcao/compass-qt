@@ -33,22 +33,6 @@ BorderDialog {
         font.pixelSize: 20
     }
 
-    Text {
-        id: debugText
-
-        function addText(t) {
-            text = text + "\n" + t
-        }
-
-        function clear() {
-            text = ""
-        }
-
-        z: 100
-        anchors.centerIn: parent
-
-    }
-
     ListView {
         id: view
 
@@ -153,21 +137,7 @@ BorderDialog {
 
                 MouseArea {
                     anchors.fill: parent
-
-                    enabled: !view.moving
-
-                    onClicked: {
-                        var item = view.model.get(index)
-
-                        if (item.value == 0) {
-                            item.value = 1
-                        }
-                        else {
-                            item.value = 0
-                        }
-
-                        DB.saveSetting(item)
-                    }
+                    onClicked: DB.toggleSetting(index)
                 }
             }
         }

@@ -5,8 +5,9 @@
 #include "compassfilter.h"
 
 
-CompassFilter::CompassFilter()
-    : m_ScreenSaver(NULL)
+CompassFilter::CompassFilter(QObject *parent)
+    : QObject(parent),
+      m_ScreenSaver(NULL)
 {
 }
 
