@@ -174,7 +174,6 @@ function saveSetting(item)
 
 function toggleSetting(index)
 {
-    console.log("Toggling setting: " + index)
     var item = model.get(index);
 
     if (item.value == 0) {
@@ -190,7 +189,6 @@ function toggleSetting(index)
     if (item.id == 1 && item.value == 1) {
         // If "Auto north in map" is enabled, disable
         // "Bearing turnable in Compass mode"
-        console.log("Resetting id = 2")
         var setting = model.get(1);
         setting.value = 0;
         saveSetting(setting);
@@ -199,7 +197,6 @@ function toggleSetting(index)
     else if (item.id == 2 && item.value == 1) {
         // If "Bearing turnable in Compass mode" is enabled, disable
         // "Auto north in map" is enabled, disable
-        console.log("Resetting id = 1")
         var setting = view.model.get(0);
         setting.value = 0;
         saveSetting(setting);
