@@ -29,6 +29,8 @@ Item {
         radius: 8
         smooth: true
         gradient: normalGradient
+        border.width: 2
+        border.color: button.buttonColor
 
         Gradient {
             id: normalGradient

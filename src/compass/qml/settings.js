@@ -63,7 +63,6 @@ function createDB()
     }
     catch(err) {
         console.log("DB error in createDB: " + err)
-        debugText.addText("DB error in createDB: " + err )
         return false;
     }
 
