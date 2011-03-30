@@ -3,7 +3,7 @@
  */
 
 import QtQuick 1.0
-import QtMobility.feedback 1.1
+// import QtMobility.feedback 1.1
 import QtMultimediaKit 1.1
 import CustomElements 1.0
 
@@ -33,6 +33,7 @@ Rectangle {
         volume: 0.5
     }
 
+    /*
     HapticsEffect {
         id: vibraEffect
 
@@ -44,6 +45,7 @@ Rectangle {
         fadeIntensity: 0.03
         running: false
     }
+    */
 
     Timer {
         interval: 700 - view.calibrationLevel * 600
@@ -52,7 +54,7 @@ Rectangle {
         triggeredOnStart: true
         onTriggered: {
             if (view.useVibraEffect) {
-                vibraEffect.running = true
+                //vibraEffect.running = true
             }
         }
     }

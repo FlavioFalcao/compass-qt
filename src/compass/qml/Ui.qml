@@ -100,7 +100,7 @@ Image {
     anchors.fill: parent
     width: 640; height: 360
     source: "images/compass_back.png"
-    fillMode: Image.Stretch
+    fillMode: Image.Tile
 
     Component.onCompleted: {
         settingsPane.readSettings()
