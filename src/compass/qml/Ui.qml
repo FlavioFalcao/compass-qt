@@ -120,7 +120,7 @@ Image {
 
         anchors.fill: parent
         opacity: 0
-        useVibraEffect: settingsPane.vibraEnabled
+        useFeedbackEffect: settingsPane.feedbackEnabled
         onCalibrated: {
             ui.state = "MapMode"
             // Most likely the user is holding the phone on portrait

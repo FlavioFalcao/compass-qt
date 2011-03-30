@@ -54,13 +54,11 @@ function createDB()
                               [4, 'Prevent screensaver', 0]);
             }
 
-            /*
             result = tx.executeSql('SELECT * FROM setting WHERE id = 5');
             if (result.rows.length == 0) {
                 tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
-                              [5, 'Use vibra in calibration', 1]);
+                              [5, 'Use feedback in calibration', 1]);
             }
-            */
         });
     }
     catch(err) {
@@ -154,11 +152,9 @@ function updateProperty(item) {
     else if (item.id == 4) {
         pane.screenSaverInhibited = item.value
     }
-    /*
     else if (item.id == 5) {
-        pane.vibraEnabled = item.value
+        pane.feedbackEnabled = item.value
     }
-    */
 }
 
 
@@ -176,16 +172,10 @@ function saveSetting(item)
 }
 
 
-function toggleSetting(index)
+function toggleSetting(index, value)
 {
     var item = model.get(index);
-
-    if (item.value == 0) {
-        item.value = 1;
-    }
-    else {
-        item.value = 0;
-    }
+    item.value = value
 
     saveSetting(item);
     updateProperty(item);

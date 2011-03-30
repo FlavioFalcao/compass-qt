@@ -12,7 +12,7 @@ Item {
     property alias border: background.border
 
     // The elements placed as children of container, will
-    // actaully be children of background
+    // actually be children of background
     default property alias children: background.children
 
     width: 500; height: 300

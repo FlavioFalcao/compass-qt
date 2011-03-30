@@ -12,7 +12,7 @@ BorderDialog {
     property bool bearingTurnInTrackMode
     property bool satelliteMap
     property bool screenSaverInhibited
-    property bool vibraEnabled
+    property bool feedbackEnabled
 
     function readSettings() {
         view.model = DB.readSettings()
@@ -82,7 +82,9 @@ BorderDialog {
                     font.pixelSize: 16
                 }
 
-                Rectangle {
+                BorderImage {
+                    id: switchBackground
+
                     property bool enabled: value
 
                     anchors {
@@ -92,8 +94,7 @@ BorderDialog {
                         bottom: parent.bottom; bottomMargin: 20
                     }
 
-                    radius: 4
-                    color: "#999999"
+                    source: "images/switchbackground.sci"
 
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
@@ -115,9 +116,39 @@ BorderDialog {
                         font.bold: true
                     }
 
+                    MouseArea {
+                        anchors {
+                            left: parent.left
+                            right: parent.horizontalCenter
+                            top: parent.top
+                            bottom: parent.bottom
+                        }
+
+                        onClicked: {
+                            switchBackground.enabled = false
+                            DB.toggleSetting(index, 0)
+                        }
+                    }
+
+                    MouseArea {
+                        anchors {
+                            left: parent.horizontalCenter
+                            right: parent.right
+                            top: parent.top
+                            bottom: parent.bottom
+                        }
+
+                        onClicked: {
+                            switchBackground.enabled = true
+                            DB.toggleSetting(index, 1)
+                        }
+                    }
+
                     Rectangle {
-                        x: parent.enabled ? parent.width / 2 : 3
-                        y: 3
+                        id: knob
+
+                        x: parent.enabled ? parent.width / 2 + 2 : 2
+                        y: 2
 
                         Behavior on x {
                             PropertyAnimation { duration: 100 }
@@ -128,16 +159,33 @@ BorderDialog {
                             GradientStop { position: 1.0; color: "#707070" }
                         }
 
-                        width: parent.width / 2 - 6
-                        height: parent.height - 6
+                        width: parent.width / 2 - 4
+                        height: parent.height - 4
                         radius: 4
                         color: "#707070"
-                    }
-                }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: DB.toggleSetting(index)
+                        MouseArea {
+                            anchors.fill: parent
+
+                            drag.target: parent
+                            drag.axis: Drag.XAxis
+                            drag.minimumX: 1
+                            drag.maximumX: parent.width - 1
+
+                            onReleased: {
+                                if (parent.x > (switchBackground.width / 4)) {
+                                    switchBackground.enabled = false
+                                    switchBackground.enabled = true
+                                    DB.toggleSetting(index, 1)
+                                }
+                                else {
+                                    switchBackground.enabled = true
+                                    switchBackground.enabled = false
+                                    DB.toggleSetting(index, 0)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -166,6 +214,10 @@ BorderDialog {
         radius: 10
         color: "#434343"
 
+        Behavior on scale {
+            PropertyAnimation { duration: 60 }
+        }
+
         Text {
             anchors.centerIn: parent
             text: "Close"
@@ -176,6 +228,8 @@ BorderDialog {
 
         MouseArea {
             anchors.fill: parent
+            onPressed: parent.scale = 0.9
+            onReleased: parent.scale = 1.0
             onClicked: pane.shown = false
         }
     }
@@ -191,6 +245,10 @@ BorderDialog {
         radius: 10
         color: "#434343"
 
+        Behavior on scale {
+            PropertyAnimation { duration: 60 }
+        }
+
         Text {
             anchors.centerIn: parent
             text: "Defaults"
@@ -201,6 +259,8 @@ BorderDialog {
 
         MouseArea {
             anchors.fill: parent
+            onPressed: parent.scale = 0.9
+            onReleased: parent.scale = 1.0
             onClicked: {
                 DB.dropTables()
                 view.model = DB.readSettings()

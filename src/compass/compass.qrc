@@ -23,5 +23,7 @@
         <file>qml/images/icon_info.png</file>
         <file>qml/images/icon_closex.png</file>
         <file>qml/images/icon_gps.png</file>
+        <file>qml/images/switchbackground.png</file>
+        <file>qml/images/switchbackground.sci</file>
     </qresource>
 </RCC>

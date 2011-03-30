@@ -15,7 +15,7 @@ Rectangle {
 
     property bool portrait
     property real calibrationLevel: 0
-    property bool useVibraEffect
+    property bool useFeedbackEffect
 
     width: 640; height: 360
     color: "#CCCCCC"
@@ -53,7 +53,7 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            if (view.useVibraEffect) {
+            if (view.useFeedbackEffect) {
                 //vibraEffect.running = true
             }
         }
@@ -175,7 +175,13 @@ Rectangle {
 
         PauseAnimation { duration: 1000 }
 
-        ScriptAction { script: audioEffect.play() }
+        ScriptAction {
+            script: {
+                if(view.useFeedbackEffect) {
+                    audioEffect.play()
+                }
+            }
+        }
 
         PropertyAnimation {
             target: calibrationCompletedDialog

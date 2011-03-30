@@ -85,6 +85,10 @@ BorderDialog {
         radius: 10
         color: "#434343"
 
+        Behavior on scale {
+            PropertyAnimation { duration: 60 }
+        }
+
         Text {
             anchors.centerIn: parent
             text: "Close"
@@ -95,6 +99,8 @@ BorderDialog {
 
         MouseArea {
             anchors.fill: parent
+            onPressed: parent.scale = 0.9
+            onReleased: parent.scale = 1.0
             onClicked: container.shown = false
         }
     }
