@@ -7,7 +7,7 @@ import QtQuick 1.0
 import QtMultimediaKit 1.1
 import CustomElements 1.0
 
-Rectangle {
+Image {
     id: view
     objectName: "calibrationView"
 
@@ -18,7 +18,8 @@ Rectangle {
     property bool useFeedbackEffect
 
     width: 640; height: 360
-    color: "#CCCCCC"
+    source: "images/compass_back.png"
+    fillMode: Image.Tile
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
