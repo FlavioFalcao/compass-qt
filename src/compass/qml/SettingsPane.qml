@@ -85,6 +85,7 @@ BorderDialog {
                 BorderImage {
                     id: switchBackground
 
+                    // Binding to models value, do not break this binding
                     property bool enabled: value
 
                     anchors {
@@ -116,37 +117,11 @@ BorderDialog {
                         font.bold: true
                     }
 
-                    MouseArea {
-                        anchors {
-                            left: parent.left
-                            right: parent.horizontalCenter
-                            top: parent.top
-                            bottom: parent.bottom
-                        }
-
-                        onClicked: {
-                            switchBackground.enabled = false
-                            DB.toggleSetting(index, 0)
-                        }
-                    }
-
-                    MouseArea {
-                        anchors {
-                            left: parent.horizontalCenter
-                            right: parent.right
-                            top: parent.top
-                            bottom: parent.bottom
-                        }
-
-                        onClicked: {
-                            switchBackground.enabled = true
-                            DB.toggleSetting(index, 1)
-                        }
-                    }
-
                     Rectangle {
                         id: knob
 
+                        // Binding to enabled property which is
+                        // binding to models value property
                         x: parent.enabled ? parent.width / 2 + 2 : 2
                         y: 2
 
@@ -169,20 +144,24 @@ BorderDialog {
 
                             drag.target: parent
                             drag.axis: Drag.XAxis
-                            drag.minimumX: 1
-                            drag.maximumX: parent.width - 1
+                            drag.minimumX: 2
+                            drag.maximumX: parent.width + 6
+
+                            onClicked: DB.toggleSetting(index)
 
                             onReleased: {
-                                if (parent.x > (switchBackground.width / 4)) {
-                                    switchBackground.enabled = false
-                                    switchBackground.enabled = true
-                                    DB.toggleSetting(index, 1)
+                                if (parent.x == 2) {
+                                    if(!switchBackground.enabled) {
+                                        return
+                                    }
                                 }
-                                else {
-                                    switchBackground.enabled = true
-                                    switchBackground.enabled = false
-                                    DB.toggleSetting(index, 0)
+                                if (parent.x == (parent.width + 6)) {
+                                    if(switchBackground.enabled) {
+                                        return
+                                    }
                                 }
+
+                                DB.toggleSetting(index)
                             }
                         }
                     }

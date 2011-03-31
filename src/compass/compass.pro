@@ -29,7 +29,8 @@ OTHER_FILES += qml/Ui.qml \
                qml/PannableMap.qml \
                qml/InfoView.qml \
                qml/settings.js \
-               qml/BorderDialog.qml
+               qml/BorderDialog.qml\
+               backup_registration.xml
 
 RESOURCES = compass.qrc
 
@@ -38,19 +39,25 @@ symbian {
     TARGET.CAPABILITY = NetworkServices \
                         Location
 
-    # To lock the application to landscape orientation
+    # To lock the application to portrait orientation
     LIBS += -lcone -leikcore -lavkon
     ICON = icons/compass.svg
+
+    TARGET.UID3 = 0xE4B73955
 
     TARGET.EPOCHEAPSIZE = 0x100000 0x2000000
     TARGET.EPOCSTACKSIZE = 0x14000
 
     BLD_INF_RULES.prj_exports += "beep.wav ../winscw/c/Data/compass/beep.wav"
+    BLD_INF_RULES.prj_exports += "backup_registration.xml ../winscw/c/Data/compass/backup_registration.xml"
 
     sound.sources = beep.wav
     sound.path = c:/System/compass
 
-    DEPLOYMENT += sound
+    backup.sources = backup_registration.xml
+    backup.path = c:/private/E4B73955
+
+    DEPLOYMENT += sound backup
 }
 
 unix:!symbian {

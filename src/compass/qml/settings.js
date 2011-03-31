@@ -171,10 +171,16 @@ function saveSetting(item)
 }
 
 
-function toggleSetting(index, value)
+function toggleSetting(index)
 {
     var item = model.get(index);
-    item.value = value
+
+    if (item.value == 0) {
+        item.value = 1;
+    }
+    else if (item.value == 1) {
+        item.value = 0;
+    }
 
     saveSetting(item);
     updateProperty(item);
