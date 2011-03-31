@@ -59,7 +59,8 @@ BorderDialog {
             id: delegate
 
             Rectangle {
-                width: view.itemWidth - scrollBar.width - 2; height: view.itemHeight
+                width: view.itemWidth - scrollBar.width - 2
+                height: view.itemHeight
 
                 color: "transparent"
                 border.color: "#80EEA604"

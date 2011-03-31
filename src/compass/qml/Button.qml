@@ -53,8 +53,13 @@ Item {
         loops: Animation.Infinite
         running: button.opacity > 0.0 && button.animationPlaying
 
-        PropertyAnimation { target: icon; property: "scale"; to: 0.8; duration: 500 }
-        PropertyAnimation { target: icon; property: "scale"; to: 1.0; duration: 500 }
+        PropertyAnimation {
+            target: icon; property: "scale"; to: 0.8; duration: 500
+        }
+
+        PropertyAnimation {
+            target: icon; property: "scale"; to: 1.0; duration: 500
+        }
     }
 
 

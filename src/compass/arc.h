@@ -6,7 +6,6 @@
 #define LINE_H
 
 #include <QDeclarativeItem>
-#include <QDebug>
 #include <QPainter>
 
 class Arc : public QDeclarativeItem
