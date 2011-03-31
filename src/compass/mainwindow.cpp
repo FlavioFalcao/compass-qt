@@ -53,6 +53,10 @@ MainWindow::MainWindow(QWidget *parent)
     view->setViewport(glWidget);     // ownership of glWidget is taken
 #endif
 
+    // Tell the QML side the path the app exist, this will be used to find out the
+    // beep.wav which is used in calibration.
+    view->rootContext()->setContextProperty("appFolder", view->engine()->baseUrl().toString());
+
     view->setSource(QUrl("qrc:/qml/Ui.qml"));
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 

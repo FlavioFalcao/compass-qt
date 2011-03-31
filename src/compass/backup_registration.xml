@@ -3,9 +3,6 @@
     <passive_backup>
         <include_directory name="\" />
     </passive_backup>
-    <public_backup>
-        <include_directory name="c:\System\compass\" />
-    </public_backup>
     <system_backup />
     <restore requires_reboot="no" />
 </backup_registration>

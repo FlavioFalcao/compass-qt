@@ -4,7 +4,6 @@ QT       += core gui declarative opengl
 CONFIG   += mobility
 MOBILITY += sensors systeminfo location multimedia #feedback
 
-
 TARGET = compass
 TEMPLATE = app
 
@@ -29,7 +28,7 @@ OTHER_FILES += qml/Ui.qml \
                qml/PannableMap.qml \
                qml/InfoView.qml \
                qml/settings.js \
-               qml/BorderDialog.qml\
+               qml/BorderDialog.qml \
                backup_registration.xml
 
 RESOURCES = compass.qrc
@@ -51,11 +50,13 @@ symbian {
     BLD_INF_RULES.prj_exports += "beep.wav ../winscw/c/Data/compass/beep.wav"
     BLD_INF_RULES.prj_exports += "backup_registration.xml ../winscw/c/Data/compass/backup_registration.xml"
 
+    # The beep is used in calibration, will install to application's private folder.
     sound.sources = beep.wav
-    sound.path = c:/System/compass
+    sound.path = !:/private/E4B73955
 
+    # The backup and restore functionality, will install to application's private folder.
     backup.sources = backup_registration.xml
-    backup.path = c:/private/E4B73955
+    backup.path = !:/private/E4B73955
 
     DEPLOYMENT += sound backup
 }

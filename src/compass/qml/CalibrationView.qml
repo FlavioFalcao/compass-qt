@@ -29,7 +29,9 @@ Rectangle {
     Audio {
         id: audioEffect
 
-        source: "file:///c:/System/compass/beep.wav"
+        // The appFolder is context property set in Qt, the folder is
+        // applications private folder.
+        source: appFolder + "beep.wav"
         volume: 0.5
     }
 
