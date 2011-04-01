@@ -10,7 +10,7 @@ BorderDialog {
     Text {
         x: 35; y: 45
         color: "#eea604"
-        text: "Compass v0.2.0"
+        text: "Compass v1.0"
         font.bold: true
         font.pixelSize: 20
     }

@@ -1,4 +1,4 @@
-Compass v0.2
+Compass v1.0
 ============
 
 Compass is a Forum Nokia example that teaches the use of traditional compass
@@ -13,11 +13,81 @@ https://projects.forum.nokia.com/compass.
 FILES
 -------------------------------------------------------------------------------
 
-main.cpp
+bin/*
+
+- Contains the copiled binaries.
+
+src/arc.h
+
+- Implements custom QML element Arc that can draw arc. Arc is used in the
+  calibration view to represent the calibration level.
+
+src/declarativeview.h / cpp
+
+- Derives QDeclarativeView to handle the multitouch events.
+
+src/main.cpp
 
 - Locks the orientation to portrait, creates the MainWindow object and sets the
   MainWindow object to full screen.
+
+src/mainwindow.h / cpp
+
+- Creates the declarative intepreter, compass sensor / filter, orientation
+  sensor / filter and geo position info source. Connects sensor's signals to
+  QML functions and finally shows the QML UI.
   
+src/orientationfilter.h
+
+- Multiderives QObject and QOrientationFilter to allow emitting of Qt sinals
+  when orientation changes.
+  
+src/backup_registration.xml
+
+- Describes the backup / restore logic how to backup the application in Symbian
+  OS.
+  
+src/qml/BorderDialog.qml
+
+- Implements dialog that has nice borders. Dialog also handles the orientation
+  changes with animations.
+  
+src/qml/CalibrationView.qml
+
+- Implements the calibration view, shows the compass scale and needle to show
+  the calibration level, plays feedback effects, shows calibration completed
+  dialog.
+
+src/qml/Compass.qml
+
+- Implements the compass with compass plate, scale plate and needle. Contains
+  mouse areas to implement rotation of the compass and scale plate as well as
+  the moving of the compass.
+  
+src/qml/InfoView.qml
+
+- Uses BorderDialog.qml to show a info view.
+
+src/qml/PannableMap.qml
+
+- Implements the map that can be panned. Shows also the "you are here" circle
+  on top of the map.
+  
+src/qml/setting.js
+
+- Implements the logic to interact with SQLite DB to load / save the
+  application settings.
+  
+src/qml/SettingsPane.qml
+
+- Uses BorderDialog.qml to show a settings view. The ListModel is used to show
+  the settings. The SQLite DB content is used as data model for the view.
+  
+src/qml/Ui.qml
+
+- The main QML element in this application. Creates all other elements and
+  coordinates the interaction between elements.
+
 
 KNOWN ISSUES
 -------------------------------------------------------------------------------
@@ -38,8 +108,8 @@ There are two ways to install the application on the device.
 0. The Qt libraries (4.7.2 or higher) must be installed. See the section 
    COMPATIBILITY for more information about the installation.
 
-1. a) Drag the compass.sis file to the Nokia Ovi Suite when the device is 
-      connected with the USB cable.
+1. a) Drag the compass_v1_0_s^3.sis file to the Nokia Ovi Suite when the
+      device is connected with the USB cable.
    
    OR
    
@@ -93,8 +163,8 @@ Prevent screensaver:
 Satellite map:
     Toggles between map and satellite.
 
-Use vibra in calibration:
-    Sets if the haptic feedback is used on the calibration process.
+Use feedback in calibration:
+    Sets if an audio feedback is used on the calibration process.
 
 
 
@@ -125,6 +195,6 @@ Developed with:
 
 VERSION HISTORY
 -------------------------------------------------------------------------------
-0.2 Added better graphics. Possibility to disable haptic feedback on 
+1.0 Added better graphics. Possibility to disable haptic feedback on 
     calibration. Bug fixes.
 0.1 First public version in Projects Forum Nokia.
