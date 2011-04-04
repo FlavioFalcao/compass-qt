@@ -36,38 +36,59 @@ BorderDialog {
             width: flickable.width
             font.pixelSize: 14
             color: "white"
-            text: "<p>Compass is a Forum Nokia example that teaches the use " +
-                  "of traditional compass and allows the user to have a " +
-                  "bearing to the desired place using the Ovi maps. The " +
-                  "main purpose of the example is to demonstrate use of " +
-                  "Maps and navigation API. See more information about the " +
-                  "project at " +
+            text: "<p>Compass is a Forum Nokia example application that " +
+                  "teaches the use of a traditional compass and allows the " +
+                  "user to determine the bearing to the desired location " +
+                  "using Ovi maps. The main purpose of the example " +
+                  "application is to demonstrate the use of the Maps and " +
+                  "Navigation API.</p>" +
+                  "<p>For more information about the project, see " +
                   "<a href=\"https://projects.forum.nokia.com/compass\">" +
                   "https://projects.forum.nokia.com/compass</a>.</p>" +
-                  "<p>The application consists two modes: Compass mode and " +
-                  "Map mode.</p>" +
-                  "<p>In the Map mode you are able to view the map  with " +
-                  "your current position retrieved by GPS and shown " +
-                  "with a red circle. The radius of the red circle will " +
-                  "change according to the GPS fix accuracy. The more " +
-                  "accurate fix the more smaller circle is shown giving " +
-                  "you more precise location of you current whereabout. " +
-                  "The map can be panned by dragging the map with a " +
-                  "finger. The zoom level can be changed by pinching the " +
-                  "map with two fingers.The GPS indicator on the upper left " +
-                  "corner will iterate when the phone is trying to retrieve " +
-                  "the GPS fix. The indicator is steady when the signal is " +
-                  "received from the satellites. Tapping the GPS indicator " +
-                  "will pan the map to the current location.</p>" +
-                  "<p>To navigate to some position in a map do the " +
-                  "following: First switch to the Map mode, place the " +
-                  "edge of the compass on the map so that it connects " +
-                  "the current location with the desired destination " +
-                  "and turn the scale of the compass to the map north. " +
-                  "Now, enter to the Compass mode and turn with the phone " +
-                  "as long as the compass needle is positioned on top of " +
-                  "the outlined orientating arrow. The desired bearing " +
-                  "is now at your front.</p><p>\n</p>"
+                  "<p>The application has two modes: Compass mode and Map " +
+                  "mode.</p>" +
+                  "<p>In the Map mode you can view the map with your " +
+                  "current position retrieved by GPS and indicated with a " +
+                  "red circle. The radius of the red circle changes " +
+                  "according to the GPS fix accuracy. The more accurate the " +
+                  "fix, the smaller the circle; indicating your current " +
+                  "location more precisely. The map can be panned by " +
+                  "dragging it with a finger. The zoom level can be changed " +
+                  "by pinching the map with two fingers. The GPS indicator " +
+                  "in the upper left corner will iterate when the phone is " +
+                  "trying to retrieve the GPS fix. The indicator is steady " +
+                  "when the signal is received from the satellites. Tapping " +
+                  "the GPS indicator will pan the map to the current " +
+                  "location.</p>" +
+                  "<p>To navigate to a certain position in a map:</p>" +
+                  "<ul>1. Switch to the Map mode, place the edge of the " +
+                  "compass on the map so that it connects the current " +
+                  "location with the desired destination, and turn the " +
+                  "scale of the compass to the grid north.</ul>" +
+                  "<ul>2. Switch back to the Compass mode and turn around " +
+                  "with the phone until the compass needle is positioned " +
+                  "on top of the outlined orientating arrow. The desired " +
+                  "bearing is now in front of you.</ul>" +
+                  "<p>The following on / off settings adjust the behavior " +
+                  "of the application:</p>" +
+                  "Auto north in the map:" +
+                  "<ul>Automatically turn the scale of the compass to the " +
+                  "grid north when the compass is rotated in the Map " +
+                  "mode.</ul>" +
+                  "<p>Bearing turnable in the Compass mode:</p>" +
+                  "<ul>The turnability of the bearing can be prevented in " +
+                  "the Compass mode. By setting the turnability off you can " +
+                  "prevent accidential touch events which would affect to " +
+                  "the navigation in the field. When turnability is " +
+                  "enabled, the compass application can be used with a real " +
+                  "paper map.</ul>" +
+                  "<p>Prevent screensaver:</p>" +
+                  "<ul>Prevents the screensaver from getting activated.</ul>" +
+                  "<p>Satellite map:</p>" +
+                  "<ul>Toggles between the map and the satellite.</ul>" +
+                  "<p>Use sound in calibration:</p>" +
+                  "<ul>Defines whether audio feedback is used during the " +
+                  "calibration process.</ul><p>\n</p>"
 
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)

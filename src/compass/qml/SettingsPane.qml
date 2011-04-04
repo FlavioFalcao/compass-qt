@@ -78,9 +78,8 @@ BorderDialog {
 
                     text: name
                     color: "white"
-                    wrapMode: Text.WordWrap
                     font.bold: true
-                    font.pixelSize: 16
+                    font.pixelSize: 14
                 }
 
                 BorderImage {
@@ -125,10 +124,6 @@ BorderDialog {
                         // binding to models value property
                         x: parent.enabled ? parent.width / 2 + 2 : 2
                         y: 2
-
-                        Behavior on x {
-                            PropertyAnimation { duration: 100 }
-                        }
 
                         gradient: Gradient {
                             GradientStop { position: 0.0; color: "#909090" }

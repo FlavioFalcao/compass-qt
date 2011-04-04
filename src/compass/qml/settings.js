@@ -39,7 +39,7 @@ function createDB()
             result = tx.executeSql('SELECT * FROM setting WHERE id = 2');
             if (result.rows.length == 0) {
                 tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
-                              [2, 'Bearing turnable in Compass mode', 1]);
+                              [2, 'Bearing turnable in the Compass mode', 1]);
             }
 
             result = tx.executeSql('SELECT * FROM setting WHERE id = 3');
@@ -57,7 +57,7 @@ function createDB()
             result = tx.executeSql('SELECT * FROM setting WHERE id = 5');
             if (result.rows.length == 0) {
                 tx.executeSql('INSERT INTO setting VALUES(?, ?, ?)',
-                              [5, 'Use feedback in calibration', 1]);
+                              [5, 'Use sound in calibration', 1]);
             }
         });
     }

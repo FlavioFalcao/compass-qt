@@ -27,18 +27,17 @@ Item {
         rotation: container.portrait ? 0 : 90
         opacity: container.shown ? 1.0 : 0.0
 
-        Behavior on width { PropertyAnimation { duration: 100 } }
-        Behavior on height { PropertyAnimation { duration: 100 } }
-
+        Behavior on width { PropertyAnimation { duration: 400 } }
+        Behavior on height { PropertyAnimation { duration: 400 } }
         Behavior on rotation {
             RotationAnimation {
                 direction: RotationAnimation.Shortest
-                duration: 100
+                duration: 400
                 easing.type: Easing.InOutQuad
             }
         }
 
-        Behavior on opacity { PropertyAnimation { duration: 250 } }
+        Behavior on opacity { PropertyAnimation { duration: 150 } }
 
         source: "images/infoback.png"
 
