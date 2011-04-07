@@ -8,11 +8,14 @@
 #include <QGeoPositionInfo>
 #include <QCompass>
 #include <QOrientationSensor>
+#include <QSensor>
 #include "arc.h"
 #include "mainwindow.h"
 #include "declarativeview.h"
 #include "orientationfilter.h"
 #include "compassfilter.h"
+#include "screensaverinhibiter.h"
+#include "symbiansensor/symbiansensor.h"
 
 
 #ifndef QT_NO_OPENGL
@@ -32,10 +35,14 @@ MainWindow::MainWindow(QWidget *parent)
     orientationSensor->addFilter(orientationFilter);
     orientationSensor->start();
 
-    compass = new QCompass(this);
-    compassFilter = new CompassFilter(this);
-    compass->addFilter(compassFilter);
-    compass->start();
+    //compass = new QCompass(this);
+    //compassFilter = new CompassFilter(this);
+    //compass->addFilter(compassFilter);
+    //compass->start();
+
+    compassFilter = new SymbianSensor(this);
+
+    screenSaverInhibiter = new ScreenSaverInhibiter(this);
 
     geoPositionInfoSource = QGeoPositionInfoSource::createDefaultSource(this);
     geoPositionInfoSource->setUpdateInterval(5000);
@@ -71,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent)
             SIGNAL(azimuthChanged(const QVariant&, const QVariant&)),
             rootObject, SLOT(handleAzimuth(const QVariant&, const QVariant&)));
     connect(rootObject, SIGNAL(inhibitScreensaver(const QVariant&)),
-            compassFilter, SLOT(screenSaverInhibit(const QVariant&)));
+            screenSaverInhibiter, SLOT(screenSaverInhibit(const QVariant&)));
 
     // Multitouch connections
     connect(view, SIGNAL(scaleFactor(const QVariant&)),
@@ -95,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent)
             qApp, SLOT(quit()));
 
     // Apply the screensaver inhibiter if requested on startup
-    compassFilter->screenSaverInhibit(
+    screenSaverInhibiter->screenSaverInhibit(
                 rootObject->property("screenSaverInhibited"));
 
     // Query the lask known position

@@ -13,12 +13,20 @@ HEADERS += compassfilter.h \
            arc.h \
            mainwindow.h \
            declarativeview.h \
-           orientationfilter.h
+           orientationfilter.h \
+           screensaverinhibiter.h \
+           symbiansensor/symbiansensor.h \
+           symbiansensor/sensorchecking.h
+
 
 SOURCES += main.cpp \
            compassfilter.cpp \
            mainwindow.cpp \
-           declarativeview.cpp
+           declarativeview.cpp \
+           screensaverinhibiter.cpp \
+           symbiansensor/symbiansensor.cpp \
+           symbiansensor/sensorchecking.cpp
+
 
 OTHER_FILES += qml/Ui.qml \
                qml/Compass.qml \
@@ -42,13 +50,14 @@ symbian {
     LIBS += -lcone -leikcore -lavkon
     ICON = icons/compass.svg
 
+
+    # For Symbian compass sensor code
+    LIBS += -lsensrvclient -lsensrvutil
+
     TARGET.UID3 = 0xE4B73955
 
     TARGET.EPOCHEAPSIZE = 0x100000 0x2000000
     TARGET.EPOCSTACKSIZE = 0x14000
-
-    BLD_INF_RULES.prj_exports += "beep.wav ../winscw/c/Data/compass/beep.wav"
-    BLD_INF_RULES.prj_exports += "backup_registration.xml ../winscw/c/Data/compass/backup_registration.xml"
 
     # The beep is used in calibration, will install to application's private folder.
     sound.sources = beep.wav

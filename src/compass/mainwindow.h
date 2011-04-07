@@ -21,6 +21,8 @@ namespace QtMobility
 class CompassFilter;
 class OrientationFilter;
 class DeclarativeView;
+class ScreenSaverInhibiter;
+class SymbianSensor;
 
 class MainWindow : public QMainWindow
 {
@@ -40,8 +42,16 @@ signals:
 
 protected:
     DeclarativeView *view;
-    QCompass *compass;
-    CompassFilter *compassFilter;
+
+    SymbianSensor *compassFilter;
+
+    // Commented out until QtMobility is fixed, SymbianSensor
+    // is used as workaround, to directly read the compass
+    // data from the sensor.
+    //QCompass *compass;
+    //CompassFilter *compassFilter;
+
+    ScreenSaverInhibiter *screenSaverInhibiter;
     QOrientationSensor *orientationSensor;
     OrientationFilter *orientationFilter;
     QGeoPositionInfoSource *geoPositionInfoSource;
