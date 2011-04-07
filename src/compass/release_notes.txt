@@ -1,4 +1,4 @@
-Compass v1.0
+Compass v0.9
 ============
 
 Compass is a Forum Nokia example application that teaches the use of a
@@ -96,6 +96,15 @@ KNOWN ISSUES
 - The walked route cannot be drawn on top of the map by using the MapPolyLine
   element. This feature will be implemented when QtMobility is mature enough to
   support it.
+  
+- The QtMobility class QSensor does not work on QtSDK 1.1RC. It's use is
+  commented out from the code. Direct Symbian code is used as workaround to
+  get the magnetometer data from the sensor.
+
+  In some cases the sensor reports the calibration level to be OK, but actually
+  it is not. This happens sometimes on the start of the application. This
+  problem is resolved by rotating the phone, which shows the calibration dialog
+  again.
 
   
 INSTALLATION INSTRUCTIONS
@@ -106,10 +115,10 @@ Mobile device (Symbian^3)
 
 There are two ways to install the application on the device.
 
-0. The Qt libraries (4.7.2 or higher) must be installed. See COMPATIBILITY for
+0. The Qt libraries (4.7.3 or higher) must be installed. See COMPATIBILITY for
    more information about the installation.
 
-1. a) Drag the compass_v1_0_s^3.sis file to the Nokia Ovi Suite when the
+1. a) Drag the compass_v0_9_s^3.sis file to the Nokia Ovi Suite when the
       device is connected with the USB cable.
    
    OR
@@ -175,13 +184,13 @@ Use sound in calibration:
 COMPATIBILITY
 -------------------------------------------------------------------------------
 
-- Symbian^3 with Qt version 4.7.2 or higher.
+- Symbian^3 with Qt version 4.7.3 or higher.
 
-  1. Download Qt for Symbian (4.7.2 or higher) from qt.nokia.com.
+  1. Download Qt for Symbian (4.7.3 or higher) from qt.nokia.com.
   
   2. Drag qt_installer.sis on top of the device in Nokia Ovi Suite while the 
      device is connected. The SIS package is found in the installation folder 
-     of Qt for Symbian (4.7.2 or higher).
+     of Qt for Symbian (4.7.3 or higher).
      
      
 Tested on:
@@ -194,11 +203,11 @@ Tested on:
 
 Developed with:
 
--QtSDK 1.1beta
+-QtSDK 1.1RC
 
 
 VERSION HISTORY
 -------------------------------------------------------------------------------
-1.0 Added better graphics. Possibility to disable audio feedback on 
-    calibration. Bug fixes.
+0.9 Added better graphics. Possibility to disable audio feedback on 
+    calibration. Bug fixes. Work-around for QCompass crash by Symbian code.
 0.1 First public version in Projects Forum Nokia.

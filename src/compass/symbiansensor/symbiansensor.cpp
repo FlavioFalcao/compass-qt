@@ -18,8 +18,5 @@ void SymbianSensor::AngleAndAccuracyReceivedL(TInt aAngle, TInt aAccuracyLevel)
 {
     // Scale the aAccuracyLevel to the range 0..1
     qreal calibrationLevel = aAccuracyLevel / 3.0;
-
-    qDebug() << "Values changed: " << aAngle << ", " << calibrationLevel;
-
     emit azimuthChanged(QVariant(aAngle), QVariant(calibrationLevel));
 }
