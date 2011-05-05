@@ -15,7 +15,6 @@
 #include "orientationfilter.h"
 #include "compassfilter.h"
 #include "screensaverinhibiter.h"
-#include "symbiansensor/symbiansensor.h"
 
 
 #ifndef QT_NO_OPENGL
@@ -35,12 +34,10 @@ MainWindow::MainWindow(QWidget *parent)
     orientationSensor->addFilter(orientationFilter);
     orientationSensor->start();
 
-    //compass = new QCompass(this);
-    //compassFilter = new CompassFilter(this);
-    //compass->addFilter(compassFilter);
-    //compass->start();
-
-    compassFilter = new SymbianSensor(this);
+    compass = new QCompass(this);
+    compassFilter = new CompassFilter(this);
+    compass->addFilter(compassFilter);
+    compass->start();
 
     screenSaverInhibiter = new ScreenSaverInhibiter(this);
 

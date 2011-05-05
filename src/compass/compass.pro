@@ -2,31 +2,26 @@
 
 QT       += core gui declarative opengl
 CONFIG   += mobility
-MOBILITY += sensors systeminfo location multimedia #feedback
+MOBILITY += sensors systeminfo location multimedia # feedback
+# feedback is commented out due to the problems on feedback API
 
 TARGET = compass
 TEMPLATE = app
 
-VERSION = 0.9
+VERSION = 1.0
 
 HEADERS += compassfilter.h \
            arc.h \
            mainwindow.h \
            declarativeview.h \
            orientationfilter.h \
-           screensaverinhibiter.h \
-           symbiansensor/symbiansensor.h \
-           symbiansensor/sensorchecking.h
-
+           screensaverinhibiter.h
 
 SOURCES += main.cpp \
            compassfilter.cpp \
            mainwindow.cpp \
            declarativeview.cpp \
-           screensaverinhibiter.cpp \
-           symbiansensor/symbiansensor.cpp \
-           symbiansensor/sensorchecking.cpp
-
+           screensaverinhibiter.cpp
 
 OTHER_FILES += qml/Ui.qml \
                qml/Compass.qml \

@@ -43,13 +43,8 @@ signals:
 protected:
     DeclarativeView *view;
 
-    SymbianSensor *compassFilter;
-
-    // Commented out until QtMobility is fixed, SymbianSensor
-    // is used as workaround, to directly read the compass
-    // data from the sensor.
-    //QCompass *compass;
-    //CompassFilter *compassFilter;
+    QCompass *compass;
+    CompassFilter *compassFilter;
 
     ScreenSaverInhibiter *screenSaverInhibiter;
     QOrientationSensor *orientationSensor;
