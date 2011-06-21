@@ -35,9 +35,13 @@ public:
         setFlag(QGraphicsItem::ItemHasNoContents, false);
     }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option,
                QWidget *widget)
     {
+        Q_UNUSED(option);
+        Q_UNUSED(widget);
+
         QConicalGradient gradient(width() / 2, height() / 2,
                                   m_startAngle + 90);
         gradient.setColorAt(0, m_endColor);

@@ -7,11 +7,14 @@
 
 #include <QOrientationFilter>
 
+// Namespace declaration for Qt Mobility
 QTM_USE_NAMESPACE
+
 
 class OrientationFilter : public QObject, public QOrientationFilter
 {
     Q_OBJECT
+
 public:
     OrientationFilter(QObject *parent = NULL)
         : QObject(parent)

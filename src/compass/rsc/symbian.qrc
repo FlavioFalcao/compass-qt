@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="../qml/AppWindow.qml">../qml/symbian.qml</file>
+        <file alias="../qml/PannableMap.qml">../qml/pannablemap_symbian.qml</file>
+    </qresource>
+</RCC>

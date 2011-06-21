@@ -1,4 +1,4 @@
-Compass v1.0
+Compass v1.1
 ============
 
 Compass is a Forum Nokia example application that teaches the use of a
@@ -6,8 +6,8 @@ traditional compass and allows the user to determine the bearing to the desired
 location using Ovi maps. The main purpose of the example application is to
 demonstrate the use of the Maps and Navigation API.
 
-For more information about the project, see
-https://projects.forum.nokia.com/compass.
+For more information about the project, see:
+https://projects.developer.nokia.com/compass
 
 
 FILES
@@ -94,33 +94,44 @@ KNOWN ISSUES
 -------------------------------------------------------------------------------
 
 - The walked route cannot be drawn on top of the map by using the MapPolyLine
-  element. This feature will be implemented when QtMobility is mature enough to
-  support it.
+  element. This feature will be implemented when Qt Mobility is mature enough 
+  to support it.
   
   
 INSTALLATION INSTRUCTIONS
 -------------------------------------------------------------------------------
 
-Mobile device (Symbian^3)
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-There are two ways to install the application on the device.
+Mobile device (Symbian^1 and Symbian^3)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 0. The Qt libraries (4.7.3 or higher) must be installed. See COMPATIBILITY for
    more information about the installation.
 
-1. a) Drag the compass_v1_0_s^3.sis file to the Nokia Ovi Suite when the
-      device is connected with the USB cable.
-   
-   OR
-   
-   b) Send the application directly to the Messaging Inbox (for example,
-      through Bluetooth).
+1. Drag the appropriate SIS file to the Nokia Ovi Suite while the device is
+   connected with the USB cable.
 
-2. After the installation is complete, return to the Application menu and
+2. After the installation is complete, return to the application menu and
    select the Applications folder.
    
 3. Locate the Compass icon and select it to launch the application.
+
+
+Mobile device (MeeGo 1.2 Harmattan)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Copy the compass_v1_1_harmattan.deb file into a specific folder on the
+   device.
+
+2. Start Terminal. Type 'ssh root@localhost' to get root access. The password
+   is 'rootme'.
+
+3. 'cd' to the directory to which you copied the package.
+
+4. As root, install the package:
+   dpkg -i compass_v1_1_harmattan.deb
+
+5. Locate the Compass icon in the Applications view and tap it to launch
+   the application.
 
 
 RUNNING THE APPLICATION
@@ -128,23 +139,23 @@ RUNNING THE APPLICATION
 
 The application has two modes: Compass mode and Map mode.
 
-In the Map mode you can view the map with your current position
-retrieved by GPS and indicated with a red circle. The radius of the red circle
-changes according to the GPS fix accuracy. The more accurate the fix, the
-smaller the circle; indicating your current location more precisely. The map
-can be panned by dragging it with a finger. The zoom level can be changed by
-pinching the map with two fingers. The GPS indicator in the upper left corner
-will iterate when the phone is trying to retrieve the GPS fix. The indicator is
-steady when the signal is received from the satellites. Tapping the GPS
-indicator will pan the map to the current location.
+In Map mode you can view the map with your current position retrieved by GPS 
+and indicated with a red circle. The radius of the red circle changes 
+according to the GPS fix accuracy. The more accurate the fix, the smaller the 
+circle, indicating your current location more precisely. The map can be panned 
+by dragging it with a finger. The zoom level can be changed by pinching the 
+map with two fingers. The GPS indicator in the upper left corner will iterate 
+when the phone is trying to retrieve the GPS fix. The indicator is steady when 
+the signal is received from the satellites. Tapping the GPS indicator will pan 
+the map to the current location.
 
 To navigate to a certain position in a map:
 
-1. Switch to the Map mode, place the edge of the compass on the map so that it
+1. Switch to Map mode, place the edge of the compass on the map so that it
    connects the current location with the desired destination, and turn the
    scale of the compass to the grid north.
 
-2. Switch back to the Compass mode and turn around with the phone until the
+2. Switch back to Compass mode and turn around with the phone until the 
    compass needle is positioned on top of the outlined orientating arrow. The
    desired bearing is now in front of you.
 
@@ -153,13 +164,13 @@ The following on / off settings adjust the behavior of the application:
 
 Auto north in the map:
     Automatically turn the scale of the compass to the grid north when the
-    compass is rotated in the Map mode.
+    compass is rotated in Map mode.
 
 Bearing turnable in the Compass mode:
-    The turnability of the bearing can be prevented in the Compass mode. By
+    The turnability of the bearing can be prevented in Compass mode. By
     setting the turnability off you can prevent accidential touch events which
-    would affect to the navigation in the field. When turnability is enabled,
-    the compass application can be used with a real paper map.
+    would affect the navigation in the field. When turnability is enabled, the 
+    compass application can be used with a real paper map.
     
 Prevent screensaver:
     Prevents the screensaver from getting activated.
@@ -171,11 +182,10 @@ Use sound in calibration:
     Defines whether audio feedback is used during the calibration process.
 
 
-
 COMPATIBILITY
 -------------------------------------------------------------------------------
 
-- Symbian^3 with Qt version 4.7.3 or higher.
+- Symbian^1 and Symbian^3 with Qt version 4.7.3 or higher.
 
   1. Download Qt for Symbian (4.7.3 or higher) from qt.nokia.com.
   
@@ -183,22 +193,28 @@ COMPATIBILITY
      device is connected. The SIS package is found in the installation folder 
      of Qt for Symbian (4.7.3 or higher).
      
+- MeeGo 1.2 Harmattan
+
      
 Tested on:
 
-- Nokia N8-00
-- Nokia E7-00
-- Nokia C7-00
+- Nokia 5800 XpressMusic
 - Nokia C6-01
+- Nokia C7-00
+- Nokia E7-00
+- Nokia N8-00
+- Nokia X7-00
+- Nokia N950
 
 
 Developed with:
 
--QtSDK 1.1
+- Qt SDK 1.1
 
 
 VERSION HISTORY
 -------------------------------------------------------------------------------
+1.1 Added support for Symbian^1 and MeeGo 1.2 Harmattan.
 1.0 Compass data via Qt QCompass.
 0.9 Added better graphics. Possibility to disable audio feedback on 
     calibration. Bug fixes. Work-around for QCompass crash by Symbian code.

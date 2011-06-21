@@ -1,10 +1,10 @@
-/*
+/**
  * Copyright (c) 2011 Nokia Corporation.
  */
 
 import QtQuick 1.0
 
-Image {
+AppWindow {
     id: ui
 
     property real northdeg: 0
@@ -68,7 +68,7 @@ Image {
         // Stop the animation of GPS indicator
         gpsIndicator.animate(false)
 
-        if(time != 0 && accuracyInMeters < 100) {
+        if (time != 0 && accuracyInMeters < 100) {
             // The GPS position is accurate enough and the position
             // is not the last known position, we can save this
             // to our route.
@@ -80,16 +80,15 @@ Image {
             */
         }
 
-        if(time == 0) {
+        if (time == 0) {
             // This is last known position and the application is just starting
             // set map to show that position
+            console.log("Setting the last known position to:" + latitude + ", " + longitude)
             map.mapCenter.latitude = latitude
             map.mapCenter.longitude = longitude
         }
 
-        map.hereCenter.latitude = latitude
-        map.hereCenter.longitude = longitude
-        map.hereAccuracy = accuracyInMeters
+        map.moveHereToCoordinate(latitude, longitude, accuracyInMeters)
     }
 
     function positionTimeout() {
@@ -97,14 +96,27 @@ Image {
         gpsIndicator.animate(true)
     }
 
-    anchors.fill: parent
-    width: 640; height: 360
-    source: "images/compass_back.png"
-    fillMode: Image.Tile
+    /**
+     * Displays a warning note informing the user that the compass sensor
+     * does not work.
+     */
+    function displayNoCompassNote()
+    {
+        console.debug("Ui.qml: displayNoCompassNote()");
+        noCompassNoteLoader.source = "NoCompassNote.qml";
+    }
 
     Component.onCompleted: {
         settingsPane.readSettings()
-        ui.state = "CalibrationMode"
+        ui.state = "MapMode"
+    }
+
+    Image {
+        id: background
+
+        anchors.fill: parent
+        source: "images/compass_back.png"
+        fillMode: Image.Tile
     }
 
     PannableMap {
@@ -171,7 +183,7 @@ Image {
             top: parent.top
         }
 
-        width:  buttonRow.buttonWidth
+        width: buttonRow.buttonWidth; height: buttonRow.buttonHeight
         upsideDown: true
         animationPlaying: true
 
@@ -184,7 +196,8 @@ Image {
     Item {
         id: buttonRow
 
-        property real buttonWidth: width / 5
+        property real buttonWidth: background.width * 0.2
+        property real buttonHeight: background.height * 0.09375
 
         anchors {
             bottom: parent.bottom
@@ -199,7 +212,7 @@ Image {
 
             anchors.left: parent.left
 
-            width: parent.buttonWidth
+            width: parent.buttonWidth; height: parent.buttonHeight
             portrait: ui.portrait
 
             icon: ui.state == "TrackMode" ? "images/icon_mapmode.png"
@@ -223,7 +236,7 @@ Image {
                 leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
             }
 
-            width: buttonRow.buttonWidth
+            width: buttonRow.buttonWidth; height: parent.buttonHeight
             portrait: ui.portrait
 
             icon: "images/icon_settings.png"
@@ -245,7 +258,7 @@ Image {
                 leftMargin: (parent.width - 4 * buttonRow.buttonWidth) / 3
             }
 
-            width: parent.buttonWidth
+            width: parent.buttonWidth; height: parent.buttonHeight
             portrait: ui.portrait
 
             icon: "images/icon_info.png"
@@ -261,9 +274,10 @@ Image {
         Button {
             id: closeButton
 
+            visible: ui.exitButtonVisible
             anchors.right: parent.right
 
-            width: parent.buttonWidth
+            width: parent.buttonWidth; height: parent.buttonHeight
             portrait: ui.portrait
             icon: "images/icon_closex.png"
 
@@ -307,13 +321,20 @@ Image {
         }
     }
 
+    Loader {
+        id: noCompassNoteLoader
+
+        width: parent.width
+        height: parent.height - buttonRow.height
+    }
+
     states: [
         State {
             name: "MapMode"
             PropertyChanges { target: map; opacity: 1.0 }
             PropertyChanges {
                 target: compass; opacity: 1.0
-                width: 0.48360656 * height; height: 260
+                width: 0.483607 * height; height: 0.40625 * background.height
                 movable: true
             }
             PropertyChanges { target: calibrationView; opacity: 0 }
@@ -329,7 +350,8 @@ Image {
             PropertyChanges { target: map; opacity: 0 }
             PropertyChanges {
                 target: compass; opacity: 1.0; rotation: 0
-                x: 33; y: 0; width: 295; height: 610
+                width: 0.483607 * height; height: background.height * 0.953125
+                x: (background.width - width) / 2; y: 0;
                 movable: false
             }
             PropertyChanges { target: calibrationView; opacity: 0 }

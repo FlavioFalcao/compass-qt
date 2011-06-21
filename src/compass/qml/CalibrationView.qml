@@ -14,7 +14,7 @@ Image {
     signal calibrated()
 
     property bool portrait
-    property real calibrationLevel: 0
+    property real calibrationLevel: 1
     property bool useFeedbackEffect
 
     width: 640; height: 360

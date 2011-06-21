@@ -8,11 +8,11 @@ BorderDialog {
     id: container
 
     Text {
-        x: 35; y: 45
+        x: 35; y: 42
         color: "#eea604"
-        text: "Compass v1.0"
+        text: "Compass v1.1"
         font.bold: true
-        font.pixelSize: 20
+        font.pixelSize: container.width * 0.056
     }
 
     Flickable {
@@ -34,17 +34,17 @@ BorderDialog {
             id: infoText
 
             width: flickable.width
-            font.pixelSize: 14
+            font.pixelSize: container.width * 0.0389
             color: "white"
-            text: "<p>Compass is a Forum Nokia example application that " +
+            text: "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +
                   "user to determine the bearing to the desired location " +
                   "using Ovi maps. The main purpose of the example " +
                   "application is to demonstrate the use of the Maps and " +
                   "Navigation API.</p>" +
                   "<p>For more information about the project, see " +
-                  "<a href=\"https://projects.forum.nokia.com/compass\">" +
-                  "https://projects.forum.nokia.com/compass</a>.</p>" +
+                  "<a href=\"https://projects.developer.nokia.com/compass\">" +
+                  "https://projects.developer.nokia.com/compass</a>.</p>" +
                   "<p>The application has two modes: Compass mode and Map " +
                   "mode.</p>" +
                   "<p>In the Map mode you can view the map with your " +
@@ -88,7 +88,7 @@ BorderDialog {
                   "<ul>Toggles between the map and the satellite.</ul>" +
                   "<p>Use sound in calibration:</p>" +
                   "<ul>Defines whether audio feedback is used during the " +
-                  "calibration process.</ul><p>\n</p>"
+                  "calibration process.</ul><p><br><br></p>"
 
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
@@ -102,8 +102,9 @@ BorderDialog {
             bottom: parent.bottom; bottomMargin: 18
         }
 
-        width: 79; height: 49
-        radius: 10
+        width: Math.min(parent.width, parent.height) * 0.23
+        height: Math.max(parent.width, parent.height) * 0.09
+        radius: 6
         color: "#434343"
 
         Behavior on scale {
@@ -111,11 +112,15 @@ BorderDialog {
         }
 
         Text {
-            anchors.centerIn: parent
+            anchors {
+                centerIn: parent
+                verticalCenterOffset: -4
+            }
+
             text: "Close"
             color: "#eea604"
             font.bold: true
-            font.pixelSize: 15
+            font.pixelSize: parent.height * 0.4
         }
 
         MouseArea {

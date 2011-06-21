@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QGeoPositionInfo>
 
+// Namespace declaration for Qt Mobility
 QTM_USE_NAMESPACE
 
 // Forward declarations for QtMobility classes
@@ -22,7 +23,7 @@ class CompassFilter;
 class OrientationFilter;
 class DeclarativeView;
 class ScreenSaverInhibiter;
-class SymbianSensor;
+
 
 class MainWindow : public QMainWindow
 {
@@ -41,15 +42,13 @@ signals:
     void positionTimeout();
 
 protected:
-    DeclarativeView *view;
-
-    QCompass *compass;
-    CompassFilter *compassFilter;
-
-    ScreenSaverInhibiter *screenSaverInhibiter;
-    QOrientationSensor *orientationSensor;
-    OrientationFilter *orientationFilter;
-    QGeoPositionInfoSource *geoPositionInfoSource;
+    DeclarativeView *m_view;
+    QCompass *m_compass;
+    CompassFilter *m_compassFilter;
+    ScreenSaverInhibiter *m_screenSaverInhibiter;
+    QOrientationSensor *m_orientationSensor;
+    OrientationFilter *m_orientationFilter;
+    QGeoPositionInfoSource *m_geoPositionInfoSource;
 };
 
 
