@@ -8,6 +8,7 @@
         <file>qml/InfoView.qml</file>
         <file>qml/NoCompassNote.qml</file>
         <file>qml/SettingsPane.qml</file>
+        <file>qml/SplashScreen.qml</file>
         <file>qml/settings.js</file>
         <file>qml/images/compassplate.png</file>
         <file>qml/images/scaleshadow.png</file>

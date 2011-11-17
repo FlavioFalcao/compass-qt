@@ -8,7 +8,7 @@ MOBILITY += sensors systeminfo location multimedia # feedback
 TARGET = compass
 TEMPLATE = app
 
-VERSION = 1.1
+VERSION = 1.2
 
 HEADERS += \
     arc.h \
@@ -34,8 +34,10 @@ OTHER_FILES += \
     qml/NoCompassNote.qml \
     qml/SettingsPane.qml \
     qml/Ui.qml \
+    qml/SplashScreen.qml \
     qml/settings.js \
     backup_registration.xml
+
 
 RESOURCES = compass.qrc
 
@@ -103,3 +105,4 @@ unix:!symbian:!maemo5 {
         icon \
         sound
 }
+

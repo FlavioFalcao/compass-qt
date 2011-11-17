@@ -19,6 +19,12 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_SYMBIAN
+    // Fixes the bug where UI does not update any more after sending app
+    // to background and foreground.
+    QApplication::setGraphicsSystem("opengl");
+#endif
+
     QApplication app(argc, argv);
 
 #ifdef Q_OS_SYMBIAN
@@ -26,12 +32,12 @@ int main(int argc, char *argv[])
     CAknAppUi* appUi = dynamic_cast<CAknAppUi*> (CEikonEnv::Static()->AppUi());
 
     TRAP_IGNORE(
-        if (appUi)
-            appUi->SetOrientationL(CAknAppUi::EAppUiOrientationPortrait);
-    )
-#endif
+                if (appUi)
+                appUi->SetOrientationL(CAknAppUi::EAppUiOrientationPortrait);
+            )
+        #endif
 
-    QScopedPointer<MainWindow> mainWindow(new MainWindow);
+            QScopedPointer<MainWindow> mainWindow(new MainWindow);
 
 #if defined(Q_WS_HARMATTAN) || defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
     mainWindow->setGeometry(QApplication::desktop()->screenGeometry());
