@@ -264,7 +264,10 @@ Item {
                     id: trackingOn
 
                     text: "On"
-                    onClicked: pane.trackingOn = true;
+                    onClicked: {
+                        pane.trackingOn = true;
+                        //persistentStorage.createWaypoint();
+                    }
                 }
 
                 Button {

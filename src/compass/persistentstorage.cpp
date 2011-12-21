@@ -105,7 +105,7 @@ void PersistentStorage::createDocument()
     // Create Style.LineStyle"
     QDomElement lineStyle = m_DomDocument->createElement("LineStyle");
     QDomElement color = m_DomDocument->createElement("color");
-    color.appendChild(m_DomDocument->createTextNode("7fff0000"));
+    color.appendChild(m_DomDocument->createTextNode("aa0000ff"));
     lineStyle.appendChild(color);
 
     QDomElement width = m_DomDocument->createElement("width");
@@ -276,10 +276,14 @@ void PersistentStorage::clearRoute()
 /*!
   Loads the route from KML file, if the loading of existing route fails or
   it does not exist, create the new KML file with empty route.
+
+  The parameter must be QML MapPolyLine element, which must have function
+  "addRoutePoint" with two parameters that will be placed longitude and
+  latitude values.
 */
-void PersistentStorage::loadRoute(const QVariant &varRoute)
+void PersistentStorage::loadRoute(const QVariant &varMapPolyLine)
 {
-    QObject *mapPolyLine = varRoute.value<QObject*>();
+    QObject *mapPolyLine = varMapPolyLine.value<QObject*>();
 
     if (loadDocument() == false) {
         createDocument();
@@ -317,4 +321,16 @@ void PersistentStorage::loadRoute(const QVariant &varRoute)
                                   Q_ARG(QVariant, longitude),
                                   Q_ARG(QVariant, latitude));
     }
+}
+
+
+/*!
+  Adds waypoint to the KML file. This feature is implemented to get
+  start / end positions of the route in external KML-viewer application.
+*/
+void PersistentStorage::createWaypoint(const QVariant &name,
+                                       const QVariant &timestamp)
+{
+    // ToDo: Implement feature.
+    qDebug() << "createWaypoint is not yet implemented";
 }

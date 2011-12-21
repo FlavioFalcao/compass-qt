@@ -94,10 +94,15 @@ Item {
         MapPolyline {
             id: route
 
+            /*!
+              Used to add route points when loading the existing route from
+              KML file by PersistentStorage object.
+            */
             function addRoutePoint(longitude, latitude) {
                 coordinateTemplate.latitude = latitude;
                 coordinateTemplate.longitude = longitude;
 
+                // coordinateTemplate is used to construct Coordinate element.
                 route.addCoordinate(coordinateTemplate);
             }
 
