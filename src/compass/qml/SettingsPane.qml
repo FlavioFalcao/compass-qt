@@ -2,264 +2,296 @@
  * Copyright (c) 2011 Nokia Corporation.
  */
 
-import QtQuick 1.0
-import "settings.js" as DB
+import QtQuick 1.1
+import com.nokia.symbian 1.1
+import CustomElements 1.0
 
-BorderDialog {
+
+Item {
     id: pane
 
-    property bool autoNorthInMap
-    property bool bearingTurnInTrackMode
+    signal clearRoute();
+
     property bool satelliteMap
     property bool screenSaverInhibited
-    property bool feedbackEnabled
+    property bool trackingOn: false
 
+    /*!
+      Read settings from DB.
+    */
     function readSettings() {
-        view.model = DB.readSettings()
+        satelliteMap = persistentStorage.loadSetting(
+                    persistentStorage.satelliteMap, false);
+
+        screenSaverInhibited = persistentStorage.loadSetting(
+                    persistentStorage.screenSaverInhibited, false);
     }
 
-    function saveRouteCoordinate(time, latitude, longitude, accuracyInMeters) {
-        // Commented out for now, when we can draw the route on top of the map
-        // this code will be used
 
-        //DB.insertRouteCoordinate(time, latitude, longitude, accuracyInMeters)
+    /*
+      Reads the stored route from the DB and places it
+      to the given MapPolyLine element.
+    */
+    function readRoute(route) {
+        persistentStorage.loadRoute(route);
     }
 
-    Text {
-        x: 35; y: 42
-        color: "#eea604"
-        text: "Settings"
-        font.bold: true
-        font.pixelSize: pane.width * 0.056
+
+    /*!
+      Saves route coordinate to the DB.
+    */
+    function saveRouteCoordinate(time, coordinate, accuracyInMeters) {
+        persistentStorage.addRouteCoordinate(coordinate.longitude,
+                                             coordinate.latitude,
+                                             coordinate.altitude);
     }
 
-    ListView {
-        id: view
+    onOpacityChanged: {
+        // Work-around for
+        // https://bugreports.qt.nokia.com/browse/QTCOMPONENTS-1178
+        if (opacity == 1.0) {
+            // Setting is now visible, update all button rows
+            if (satelliteMap) {
+                mapTypeButtonRow.checkedButton = mapTypeSatelliteMapDay;
+            }
+            else {
+                mapTypeButtonRow.checkedButton = mapTypeStreetMap;
+            }
 
-        property real itemHeight: pane.portrait ? view.height / 3
-                                                  - view.spacing
-                                                : view.height
-                                                  - view.spacing
-        property real itemWidth: view.width
+            if (screenSaverInhibited) {
+                screenTimeoutButtonRow.checkedButton = screenTimeoutOn;
+            }
+            else {
+                screenTimeoutButtonRow.checkedButton = screenTimeoutOff;
+            }
+
+            // The tracking is always defaultly off
+            if (pane.trackingOn) {
+                trackingButtonRow.checkedButton = trackingOn;
+            }
+            else {
+                trackingButtonRow.checkedButton = trackingOff;
+            }
+        }
+    }
+
+    PersistenStorage {
+        id: persistentStorage
+
+        property string satelliteMap: "satelliteMap"
+        property string screenSaverInhibited: "screenSaverInhibited"
+    }
+
+    Item {
+        id: screenLockSetting
 
         anchors {
-            fill: parent
-            leftMargin: pane.border.left
-            rightMargin: pane.border.right
-            topMargin: pane.border.top + 2
-            bottomMargin: closeRectangle.height +
-                          closeRectangle.anchors.bottomMargin + 2
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.horizontalCenter; rightMargin: 4
         }
 
-        clip: true
-        delegate: delegate
-        snapMode: ListView.SnapOneItem
-        spacing: 6
+        height: 80
 
-        Component {
-            id: delegate
+        Rectangle {
+            anchors.fill: parent
+            opacity: 0.5
+            color: "black"
+        }
 
-            Item {
-                width: view.itemWidth - scrollBar.width
-                height: view.itemHeight
+        Text {
+            id: screenTimeoutText
 
-                Rectangle {
-                    anchors {
-                        fill: parent
-                        margins: border.width
-                    }
+            x: 3; y: 3
+            font.pointSize: 5
+            color: "white"
+            text: "Screen/keylock timeout";
+            style: Text.Raised
+            styleColor: "gray"
+        }
 
-                    color: "transparent"
-                    border.color: "#80EEA604"
-                    border.width: 2
-                    radius: 4
+        ButtonRow {
+            id: screenTimeoutButtonRow
 
-                    Text {
-                        id: nameText
+            anchors {
+                top: screenTimeoutText.bottom; topMargin: 3
+                horizontalCenter: parent.horizontalCenter
+            }
 
-                        anchors {
-                            top: parent.top; topMargin: 10
-                            left: parent.left; leftMargin: 19
-                            right: parent.right; rightMargin: 19
-                        }
+            exclusive: true
 
-                        text: name
-                        color: "white"
-                        font.bold: true
-                        font.pixelSize: parent.height * 0.10
-                    }
+            Button {
+                id: screenTimeoutOn
 
-                    BorderImage {
-                        id: switchBackground
+                checkable: true
+                text: "On"
+                onClicked: {
+                    pane.screenSaverInhibited = true;
+                    persistentStorage.saveSetting(
+                                persistentStorage.screenSaverInhibited,
+                                true);
+                }
+            }
 
-                        // Binding to models value, do not break this binding
-                        property bool enabled: value
+            Button {
+                id: screenTimeoutOff
 
-                        anchors {
-                            top: nameText.bottom; topMargin: 6
-                            left: nameText.left
-                            right: nameText.right
-                            bottom: parent.bottom; bottomMargin: 20
-                        }
+                checkable: true
+                text: "Off"
+                onClicked: {
+                    pane.screenSaverInhibited = false;
+                    persistentStorage.saveSetting(
+                                persistentStorage.screenSaverInhibited,
+                                false);
+                }
+            }
+        }
+    }
 
-                        source: "images/switchbackground.sci"
+    Item {
+        id: mapStyleSetting
 
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: parent.width / 5
+        anchors {
+            bottom: parent.bottom
+            left: parent.horizontalCenter; leftMargin: 4
+            right: parent.right
+        }
 
-                            color: "white"
-                            text: "On"
+        height: 80
 
-                            font.bold: true
-                            font.pixelSize: parent.height * 0.25
-                        }
+        Rectangle {
+            anchors.fill: parent
+            opacity: 0.5
+            color: "black"
+        }
 
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: parent.width / 6 * 4
+        Text {
+            id: mapStyleText
 
-                            color: "white"
-                            text: "Off"
+            x: 3; y: 3
+            font.pointSize: 5
+            color: "white"
+            text: "Map style"
+            style: Text.Raised
+            styleColor: "gray"
+        }
 
-                            font.bold: true
-                            font.pixelSize: parent.height * 0.25
-                        }
+        ButtonRow {
+            id: mapTypeButtonRow
 
-                        Rectangle {
-                            id: knob
+            anchors {
+                top: mapStyleText.bottom; topMargin: 3
+                horizontalCenter: parent.horizontalCenter
+            }
 
-                            // Binding to enabled property which is
-                            // binding to models value property
-                            x: parent.enabled ? parent.width / 2 + 2 : 2
-                            y: 2
+            exclusive: true
 
-                            gradient: Gradient {
-                                GradientStop { position: 0.0; color: "#909090" }
-                                GradientStop { position: 1.0; color: "#707070" }
-                            }
+            Button {
+                id: mapTypeStreetMap
 
-                            width: parent.width / 2 - 4
-                            height: parent.height - 4
-                            radius: 4
-                            color: "#707070"
+                checkable: true
+                text: "Street"
+                onClicked: {
+                    pane.satelliteMap = false;
+                    persistentStorage.saveSetting(
+                                persistentStorage.satelliteMap,
+                                false);
+                }
+            }
 
-                            MouseArea {
-                                anchors.fill: parent
+            Button {
+                id: mapTypeSatelliteMapDay
 
-                                drag.target: parent
-                                drag.axis: Drag.XAxis
-                                drag.minimumX: 2
-                                drag.maximumX: parent.width + 6
+                checkable: true
+                text: "Sat"
+                onClicked: {
+                    pane.satelliteMap = true;
+                    persistentStorage.saveSetting(
+                                persistentStorage.satelliteMap,
+                                true);
+                }
+            }
+        }
+    }
 
-                                onClicked: DB.toggleSetting(index)
+    Item {
+        id: trackingSetting
 
-                                onReleased: {
-                                    if (parent.x == 2) {
-                                        if(!switchBackground.enabled) {
-                                            return
-                                        }
-                                    }
-                                    if (parent.x == (parent.width + 6)) {
-                                        if(switchBackground.enabled) {
-                                            return
-                                        }
-                                    }
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: screenLockSetting.top; bottomMargin: 10
+        }
 
-                                    DB.toggleSetting(index)
-                                }
-                            }
-                        }
-                    }
+        height: 80
+
+        Rectangle {
+            anchors.fill: parent
+            opacity: 0.5
+            color: "black"
+        }
+
+        Item {
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.horizontalCenter; rightMargin: 4
+            }
+
+            Text {
+                id: trackingText
+
+                x: 3; y: 3
+                font.pointSize: 5
+                color: "white"
+                text: "Tracking"
+                style: Text.Raised
+                styleColor: "gray"
+            }
+
+            ButtonRow {
+                id: trackingButtonRow
+
+                anchors {
+                    top: trackingText.bottom; topMargin: 3
+                    horizontalCenter: parent.horizontalCenter
+                }
+
+                checkedButton: trackingOff
+
+                Button {
+                    id: trackingOn
+
+                    text: "On"
+                    onClicked: pane.trackingOn = true;
+                }
+
+                Button {
+                    id: trackingOff
+
+                    text: "Off"
+                    onClicked: pane.trackingOn = false;
                 }
             }
         }
 
-        Rectangle {
-            id: scrollBar
-
-            anchors.right: view.right
-            y: view.visibleArea.yPosition * view.height
-            width: 4; height: view.visibleArea.heightRatio * view.height
-            opacity: 0.5
-            radius: 2
-
-            color: "#80EEA604"
-        }
-    }
-
-    Rectangle {
-        id: closeRectangle
-
-        anchors {
-            right: parent.right; rightMargin: 18
-            bottom: parent.bottom; bottomMargin: 18
-        }
-
-        width: Math.min(parent.width, parent.height) * 0.23
-        height: Math.max(parent.width, parent.height) * 0.09
-        radius: 6
-        color: "#434343"
-
-        Behavior on scale {
-            PropertyAnimation { duration: 60 }
-        }
-
-        Text {
+        Item {
             anchors {
-                centerIn: parent
-                verticalCenterOffset: -4
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.horizontalCenter; leftMargin: 4
+                right: parent.right
             }
 
-            text: "Close"
-            color: "#eea604"
-            font.bold: true
-            font.pixelSize: parent.height * 0.4
-        }
+            Button {
+                anchors.centerIn: parent
 
-        MouseArea {
-            anchors.fill: parent
-            onPressed: parent.scale = 0.9
-            onReleased: parent.scale = 1.0
-            onClicked: pane.shown = false
-        }
-    }
-
-    Rectangle {
-
-        anchors {
-            left: parent.left; leftMargin: 18
-            bottom: parent.bottom; bottomMargin: 18
-        }
-
-        width: Math.min(parent.width, parent.height) * 0.3
-        height: Math.max(parent.width, parent.height) * 0.09
-        radius: 6
-        color: "#434343"
-
-        Behavior on scale {
-            PropertyAnimation { duration: 60 }
-        }
-
-        Text {
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -4
-            }
-
-            text: "Defaults"
-            color: "#eea604"
-            font.bold: true
-            font.pixelSize: parent.height * 0.4
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onPressed: parent.scale = 0.9
-            onReleased: parent.scale = 1.0
-            onClicked: {
-                DB.dropTables()
-                view.model = DB.readSettings()
+                text: "Clear"
+                onClicked: {
+                    persistentStorage.clearRoute();
+                    pane.clearRoute();
+                }
             }
         }
     }

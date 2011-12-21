@@ -2,29 +2,40 @@
  * Copyright (c) 2011 Nokia Corporation.
  */
 
-import QtQuick 1.0
+import QtQuick 1.1
 // import QtMobility.feedback 1.1
+import com.nokia.symbian 1.1
 import QtMultimediaKit 1.1
 import CustomElements 1.0
 
-Image {
+
+Page {
     id: view
     objectName: "calibrationView"
 
-    signal calibrated()
-
     property bool portrait
-    property real calibrationLevel: 1
-    property bool useFeedbackEffect
+    property real calibrationLevel: 0
+    property bool useFeedbackEffect: true
 
-    width: 640; height: 360
-    source: "images/compass_back.png"
-    fillMode: Image.Tile
+
+    tools: ToolBarLayout {
+        ToolButton {
+            iconSource: "toolbar-back"
+            onClicked: Qt.quit()
+        }
+    }
+
+    orientationLock: PageOrientation.LockPortrait
 
     onCalibrationLevelChanged: {
         if(calibrationLevel >= 1.0) {
             calibrationCompletedAnimation.start()
         }
+    }
+
+    Component.onCompleted: {
+        // Extra step is required to set the custom toolbar
+        window.myTools = tools;
     }
 
     Audio {
@@ -63,6 +74,13 @@ Image {
     }
 
     Image {
+        anchors.fill: parent
+
+        source: "images/compass_back.png"
+        fillMode: Image.Tile
+    }
+
+    Image {
         id: shadow
 
         anchors.fill: scale
@@ -90,7 +108,7 @@ Image {
         id: scale
 
         anchors {
-            bottom: parent.bottom; bottomMargin: 25
+            bottom: parent.bottom; bottomMargin: 45
             left: parent.left; leftMargin: 5
             right: parent.right; rightMargin: 5
         }
@@ -106,11 +124,9 @@ Image {
         anchors.centerIn: scale
         width: height * 0.1214; height: scale.paintedHeight * 0.56
         source: "images/compassneedle.png"
-        rotation: calibrationLevel * 360
-
-        Behavior on rotation { PropertyAnimation { duration: 750 } }
-
         smooth: true
+        rotation: calibrationLevel * 360
+        Behavior on rotation { PropertyAnimation { duration: 750 } }
     }
 
     Item {
@@ -193,19 +209,12 @@ Image {
             duration: 400
         }
 
-        PauseAnimation { duration: 1000 }
-
-        PropertyAnimation {
-            target: view
-            property: "opacity"
-            to: 0.0
-            duration: 1000
-        }
+        PauseAnimation { duration: 800 }
 
         ScriptAction {
             script: {
-                view.calibrated()
-                calibrationCompletedDialog.opacity = 0
+                view.pageStack.pop();
+                view.pageStack.currentPage.showToolBar();
             }
         }
     }

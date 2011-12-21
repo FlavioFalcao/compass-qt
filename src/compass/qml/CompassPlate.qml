@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Nokia Corporation.
  */
 
-import QtQuick 1.0
+import QtQuick 1.1
 
 Image {
     id: compass
@@ -13,6 +13,8 @@ Image {
     property alias bearingRotable: bearingMouseArea.enabled
     property alias bearing: scale.rotation
     property alias compassRotable: compassRotateArea.enabled
+
+    property real azimuth: 0
 
     x: 34
     width: 290; height: 600
@@ -33,27 +35,27 @@ Image {
         anchors.fill: parent
 
         onPressed: {
-            previousX = mouse.x
-            previousY = mouse.y
+            previousX = mouse.x;
+            previousY = mouse.y;
         }
 
         onPositionChanged: {
-            var ax = mouse.x - centerx
-            var ay = centery - mouse.y
-            var bx = previousX - centerx
-            var by = centery - previousY
+            var ax = mouse.x - centerx;
+            var ay = centery - mouse.y;
+            var bx = previousX - centerx;
+            var by = centery - previousY;
 
             var angledelta = (Math.atan2(by, bx) - Math.atan2(ay, ax))
-                             * 57.2957795
+                             * 57.2957795;
             if (angledelta > 180) {
-                angledelta -= 360
+                angledelta -= 360;
             }
             else if (angledelta < -180) {
-                angledelta += 360
+                angledelta += 360;
             }
 
-            compass.rotation = (compass.rotation + angledelta) % 360
-            compass.userRotatedCompass()
+            compass.rotation = (compass.rotation + angledelta) % 360;
+            compass.userRotatedCompass();
         }
     }
 
@@ -121,21 +123,21 @@ Image {
             }
 
             onPositionChanged: {
-                var ax = mouse.x - centerx
-                var ay = centery - mouse.y
-                var bx = previousX - centerx
-                var by = centery - previousY
+                var ax = mouse.x - centerx;
+                var ay = centery - mouse.y;
+                var bx = previousX - centerx;
+                var by = centery - previousY;
 
                 var angledelta = (Math.atan2(by, bx) - Math.atan2(ay, ax))
-                                 * 57.2957795
+                                 * 57.2957795;
                 if (angledelta > 180) {
-                    angledelta -= 360
+                    angledelta -= 360;
                 }
                 else if (angledelta < -180) {
-                    angledelta += 360
+                    angledelta += 360;
                 }
 
-                scale.rotation = (scale.rotation + angledelta) % 360
+                scale.rotation = (scale.rotation + angledelta) % 360;
             }
         }
     }
@@ -150,7 +152,7 @@ Image {
         source: "images/compassneedle.png"
         smooth: true
 
-        rotation: ui.northdeg - compass.rotation
+        rotation: -azimuth - compass.rotation
         Behavior on rotation {
             RotationAnimation {
                 duration: 100

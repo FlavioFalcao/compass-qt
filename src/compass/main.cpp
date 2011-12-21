@@ -3,18 +3,10 @@
  */
 
 #include <QApplication>
+#include <QDeclarativeView>
 #include <QDesktopWidget>
-#include <QScopedPointer>
-
-#include "mainwindow.h"
-
-// Lock orientation in Symbian
-#ifdef Q_OS_SYMBIAN
-#include <eikenv.h>
-#include <eikappui.h>
-#include <aknenv.h>
-#include <aknappui.h>
-#endif
+#include <QTimer>
+#include "qmlloader.h"
 
 
 int main(int argc, char *argv[])
@@ -27,24 +19,21 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-#ifdef Q_OS_SYMBIAN
-    // Lock orientation to landscape in Symbian.
-    CAknAppUi* appUi = dynamic_cast<CAknAppUi*> (CEikonEnv::Static()->AppUi());
+    QDeclarativeView view;
+    view.setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    view.setAutoFillBackground(false);
 
-    TRAP_IGNORE(
-                if (appUi)
-                appUi->SetOrientationL(CAknAppUi::EAppUiOrientationPortrait);
-            )
-        #endif
+    QMLLoader qmlLoader(&view);
+    qmlLoader.loadSplashScreen();
 
-            QScopedPointer<MainWindow> mainWindow(new MainWindow);
+    QTimer::singleShot(0, &qmlLoader, SLOT(loadMainQML()));
 
 #if defined(Q_WS_HARMATTAN) || defined(Q_OS_SYMBIAN) || defined(Q_WS_SIMULATOR)
-    mainWindow->setGeometry(QApplication::desktop()->screenGeometry());
-    mainWindow->showFullScreen();
+    view.setGeometry(QApplication::desktop()->screenGeometry());
+    view.showFullScreen();
 #else
-    mainWindow->setGeometry((QRect(100, 100, 640, 360)));
-    mainWindow->show();
+    view.setGeometry((QRect(100, 100, 640, 360)));
+    view.show();
 #endif
 
     return app.exec();

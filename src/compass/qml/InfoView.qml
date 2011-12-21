@@ -2,17 +2,30 @@
  * Copyright (c) 2011 Nokia Corporation.
  */
 
-import QtQuick 1.0
+import QtQuick 1.1
+import com.nokia.symbian 1.1
 
-BorderDialog {
+
+Page {
     id: container
 
-    Text {
-        x: 35; y: 42
-        color: "#eea604"
-        text: "Compass v1.2"
-        font.bold: true
-        font.pixelSize: container.width * 0.056
+    property string version: "1.3"
+
+    orientationLock: PageOrientation.LockPortrait
+
+    tools: ToolBarLayout {
+        ToolButton {
+            iconSource: "toolbar-back"
+            onClicked: {
+                container.pageStack.pop();
+                container.pageStack.currentPage.showToolBar();
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        // Extra step is required to set the custom toolbar
+        window.myTools = tools;
     }
 
     Flickable {
@@ -20,10 +33,7 @@ BorderDialog {
 
         anchors {
             fill: parent
-            leftMargin: container.border.left
-            rightMargin: container.border.right
-            topMargin: container.border.top
-            bottomMargin: container.border.bottom
+            margins: 8
         }
 
         contentWidth: width
@@ -36,7 +46,8 @@ BorderDialog {
             width: flickable.width
             font.pixelSize: container.width * 0.0389
             color: "white"
-            text: "<p>Compass is a Nokia example application that " +
+            text: "<h2>Compass v" + container.version + "</h2>" +
+                  "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +
                   "user to determine the bearing to the desired location " +
                   "using Ovi maps. The main purpose of the example " +
@@ -95,39 +106,7 @@ BorderDialog {
         }
     }
 
-    Rectangle {
-
-        anchors {
-            right: parent.right; rightMargin: 18
-            bottom: parent.bottom; bottomMargin: 18
-        }
-
-        width: Math.min(parent.width, parent.height) * 0.23
-        height: Math.max(parent.width, parent.height) * 0.09
-        radius: 6
-        color: "#434343"
-
-        Behavior on scale {
-            PropertyAnimation { duration: 60 }
-        }
-
-        Text {
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -4
-            }
-
-            text: "Close"
-            color: "#eea604"
-            font.bold: true
-            font.pixelSize: parent.height * 0.4
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onPressed: parent.scale = 0.9
-            onReleased: parent.scale = 1.0
-            onClicked: container.shown = false
-        }
+    ScrollDecorator {
+        flickableItem: flickable
     }
 }

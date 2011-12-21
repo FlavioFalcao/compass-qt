@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file alias="../qml/AppWindow.qml">../qml/harmattan.qml</file>
-        <file alias="../qml/PannableMap.qml">../qml/pannablemap_harmattan.qml</file>
     </qresource>
 </RCC>

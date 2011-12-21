@@ -1,53 +1,39 @@
 # Copyright (c) 2011 Nokia Corporation.
 
-QT       += core gui declarative opengl
+QT       += declarative opengl xml
+CONFIG   += qt-components
 CONFIG   += mobility
-MOBILITY += sensors systeminfo location multimedia # feedback
+MOBILITY += sensors systeminfo location multimedia #feedback
 # feedback is commented out due to the problems on feedback API
 
 TARGET = compass
 TEMPLATE = app
 
-VERSION = 1.2
+VERSION = 1.3
 
 HEADERS += \
     arc.h \
-    compassfilter.h \
-    declarativeview.h \
-    mainwindow.h \
-    orientationfilter.h \
-    screensaverinhibiter.h
+    qmlloader.h \
+    persistentstorage.h
 
 SOURCES += \
     main.cpp \
-    compassfilter.cpp \
-    declarativeview.cpp \
-    mainwindow.cpp \
-    screensaverinhibiter.cpp
+    qmlloader.cpp \
+    persistentstorage.cpp
 
 OTHER_FILES += \
-    qml/BorderDialog.qml \
-    qml/Button.qml \
-    qml/CalibrationView.qml \
-    qml/Compass.qml \
-    qml/InfoView.qml \
-    qml/NoCompassNote.qml \
-    qml/SettingsPane.qml \
-    qml/Ui.qml \
-    qml/SplashScreen.qml \
-    qml/settings.js \
+    qml/*.qml \
     backup_registration.xml
 
-
-RESOURCES = compass.qrc
 
 symbian {
     TARGET = Compass
     TARGET.UID3 = 0xE4B73955
     TARGET.CAPABILITY = NetworkServices \
                         Location
-    TARGET.EPOCHEAPSIZE = 0x100000 0x2000000
+
     TARGET.EPOCSTACKSIZE = 0x14000
+    TARGET.EPOCHEAPSIZE = 0x1000 0x1800000 # 24MB
 
     !contains(SYMBIAN_VERSION, Symbian3) {
         message(Symbian^1)
@@ -57,11 +43,6 @@ symbian {
         DEFINES += QT_NO_OPENGL
     }
 
-    RESOURCES += rsc/symbian.qrc
-    OTHER_FILES += \
-        qml/symbian.qml \
-        qml/pannablemap_symbian.qml
-
     # To lock the application to portrait orientation
     LIBS += -lcone -leikcore -lavkon
     ICON = icons/compass.svg
@@ -70,11 +51,14 @@ symbian {
     sound.sources = beep.wav
     sound.path = !:/private/E4B73955
 
+    # Deploy the qml folder recursively
+    qmlfiles.sources = qml
+
     # The backup and restore functionality, will install to application's private folder.
     backup.sources = backup_registration.xml
     backup.path = !:/private/E4B73955
 
-    DEPLOYMENT += sound backup
+    DEPLOYMENT += sound backup qmlfiles
 }
 
 # Harmattan
@@ -82,11 +66,8 @@ unix:!symbian:!maemo5 {
     message(Harmattan build)
     DEFINES += Q_WS_HARMATTAN
 
-    RESOURCES += rsc/harmattan.qrc
     OTHER_FILES += \
-        qml/harmattan.qml \
-        qml/pannablemap_harmattan.qml
-
+        qml/harmattan.qml
 
     target.path = /opt/usr/bin
 
@@ -105,4 +86,3 @@ unix:!symbian:!maemo5 {
         icon \
         sound
 }
-
