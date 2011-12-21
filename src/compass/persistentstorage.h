@@ -25,10 +25,10 @@ public:
     Q_INVOKABLE void addRouteCoordinate(const QVariant &varLongitude,
                                         const QVariant &varLatitude,
                                         const QVariant &varAltitude);
+    Q_INVOKABLE void createWaypoint(const QVariant &varName,
+                                    const QVariant &varTimestamp);
     Q_INVOKABLE void clearRoute();
     Q_INVOKABLE void loadRoute(const QVariant &varMapPolyLine);
-    Q_INVOKABLE void createWaypoint(const QVariant &name,
-                                    const QVariant &timestamp);
     
 protected:
     QSettings *m_Settings;

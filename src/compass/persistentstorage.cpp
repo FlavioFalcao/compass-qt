@@ -52,7 +52,6 @@ PersistentStorage::~PersistentStorage()
 */
 void PersistentStorage::saveSetting(const QVariant &key, const QVariant &value)
 {
-    qDebug() << "Saving setting: " << key.toString() << " value: " << value;
     m_Settings->setValue(key.toString(), value);
 }
 
@@ -65,9 +64,7 @@ void PersistentStorage::saveSetting(const QVariant &key, const QVariant &value)
 QVariant PersistentStorage::loadSetting(const QVariant &key,
                                         const QVariant &defaultValue)
 {
-    QVariant variant = m_Settings->value(key.toString(), defaultValue);
-    qDebug() << "Load setting: " << key.toString() << " value: " << variant;
-    return variant;
+    return m_Settings->value(key.toString(), defaultValue);
 }
 
 
@@ -258,6 +255,18 @@ void PersistentStorage::addRouteCoordinate(const QVariant &varLongitude,
 
 
 /*!
+  Adds waypoint to the KML file. This feature is implemented to get
+  start / end positions of the route in external KML-viewer application.
+*/
+void PersistentStorage::createWaypoint(const QVariant &varName,
+                                       const QVariant &varTimestamp)
+{
+    // ToDo: Implement feature.
+    qDebug() << "createWaypoint is not yet implemented";
+}
+
+
+/*!
   Clears the saved route.
 */
 void PersistentStorage::clearRoute()
@@ -321,16 +330,4 @@ void PersistentStorage::loadRoute(const QVariant &varMapPolyLine)
                                   Q_ARG(QVariant, longitude),
                                   Q_ARG(QVariant, latitude));
     }
-}
-
-
-/*!
-  Adds waypoint to the KML file. This feature is implemented to get
-  start / end positions of the route in external KML-viewer application.
-*/
-void PersistentStorage::createWaypoint(const QVariant &name,
-                                       const QVariant &timestamp)
-{
-    // ToDo: Implement feature.
-    qDebug() << "createWaypoint is not yet implemented";
 }
