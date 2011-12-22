@@ -82,10 +82,10 @@ Page {
             console.log("Position: " + coordinate.latitude + ", " + coordinate.longitude +
                         " accuracy " + accuracyInMeters + " m");
 
-            if (settingsPane.trackingOn === true && accuracyInMeters < 50) {
+            if (settingsPane.trackingOn === true && accuracyInMeters < 200) {// good value: 50) {
                 // The recording is on and the GPS position is accurate
                 // enough.
-                settingsPane.saveRouteCoordinate(time, coordinate, accuracyInMeters);
+                settingsPane.saveRouteCoordinate(coordinate, time, accuracyInMeters);
                 map.addRoute(coordinate);
             }
 

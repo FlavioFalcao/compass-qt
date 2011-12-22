@@ -26,7 +26,10 @@ public:
                                         const QVariant &varLatitude,
                                         const QVariant &varAltitude);
     Q_INVOKABLE void createWaypoint(const QVariant &varName,
-                                    const QVariant &varTimestamp);
+                                    const QVariant &varTimestamp,
+                                    const QVariant &varLongitude,
+                                    const QVariant &varLatitude,
+                                    const QVariant &varAltitude);
     Q_INVOKABLE void clearRoute();
     Q_INVOKABLE void loadRoute(const QVariant &varMapPolyLine);
     
@@ -41,6 +44,7 @@ protected:
 
     void createDocument();
     bool loadDocument();
+    bool saveDocument();
 };
 
 QML_DECLARE_TYPE(PersistentStorage)

@@ -6,7 +6,7 @@ Item {
     id: container
 
     signal compass(real azimuth, real calibrationLevel);
-    signal position(variant time, variant coordinate, real accuracyInMeters);
+    signal position(variant coordinate, variant time, real accuracyInMeters);
 
     // Inhibits screen saver if true
     property bool screenSaverInhibited: false
@@ -71,7 +71,8 @@ Item {
             var accuracyInMeters = Math.max(position.horizontalAccuracy,
                                             position.verticalAccuracy);
 
-            container.position(position.timestamp, position.coordinate,
+            container.position(position.coordinate,
+                               position.timestamp,
                                accuracyInMeters);
         }
     }

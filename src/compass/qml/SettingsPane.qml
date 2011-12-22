@@ -21,10 +21,10 @@ Item {
     */
     function readSettings() {
         satelliteMap = persistentStorage.loadSetting(
-                    persistentStorage.satelliteMap, false);
+                    privateProperties.satelliteMapString, false);
 
         screenSaverInhibited = persistentStorage.loadSetting(
-                    persistentStorage.screenSaverInhibited, false);
+                    privateProperties.screenSaverInhibitedString, false);
     }
 
 
@@ -40,17 +40,30 @@ Item {
     /*!
       Saves route coordinate to the DB.
     */
-    function saveRouteCoordinate(time, coordinate, accuracyInMeters) {
+    function saveRouteCoordinate(coordinate, timestamp, accuracyInMeters) {
         persistentStorage.addRouteCoordinate(coordinate.longitude,
                                              coordinate.latitude,
                                              coordinate.altitude);
+
+        if (privateProperties.saveNextCoordinateAsWaypoint == true) {
+            persistentStorage.createWaypoint(privateProperties.nextWaypointName,
+                                             timestamp,
+                                             coordinate.longitude,
+                                             coordinate.latitude,
+                                             coordinate.altitude);
+            privateProperties.saveNextCoordinateAsWaypoint = false;
+            privateProperties.lastCoordinateValid = true;
+        }
+
+        privateProperties.lastCoordinate = coordinate;
+        privateProperties.lastCoordinateTimestamp = timestamp;
     }
 
     onOpacityChanged: {
         // Work-around for
         // https://bugreports.qt.nokia.com/browse/QTCOMPONENTS-1178
         if (opacity == 1.0) {
-            // Setting is now visible, update all button rows
+            // SettingsPane is now visible, update all button rows
             if (satelliteMap) {
                 mapTypeButtonRow.checkedButton = mapTypeSatelliteMapDay;
             }
@@ -58,7 +71,7 @@ Item {
                 mapTypeButtonRow.checkedButton = mapTypeStreetMap;
             }
 
-            if (screenSaverInhibited) {
+            if (pane.screenSaverInhibited) {
                 screenTimeoutButtonRow.checkedButton = screenTimeoutOn;
             }
             else {
@@ -75,11 +88,22 @@ Item {
         }
     }
 
+    QtObject {
+        id: privateProperties
+
+        property string satelliteMapString: "satelliteMap"
+        property string screenSaverInhibitedString: "screenSaverInhibited"
+
+        property bool saveNextCoordinateAsWaypoint: false
+        property string nextWaypointName
+
+        property bool lastCoordinateValid: false
+        property variant lastCoordinate
+        property variant lastCoordinateTimestamp
+    }
+
     PersistenStorage {
         id: persistentStorage
-
-        property string satelliteMap: "satelliteMap"
-        property string screenSaverInhibited: "screenSaverInhibited"
     }
 
     Item {
@@ -128,7 +152,7 @@ Item {
                 onClicked: {
                     pane.screenSaverInhibited = true;
                     persistentStorage.saveSetting(
-                                persistentStorage.screenSaverInhibited,
+                                privateProperties.screenSaverInhibitedString,
                                 true);
                 }
             }
@@ -141,7 +165,7 @@ Item {
                 onClicked: {
                     pane.screenSaverInhibited = false;
                     persistentStorage.saveSetting(
-                                persistentStorage.screenSaverInhibited,
+                                privateProperties.screenSaverInhibitedString,
                                 false);
                 }
             }
@@ -194,7 +218,7 @@ Item {
                 onClicked: {
                     pane.satelliteMap = false;
                     persistentStorage.saveSetting(
-                                persistentStorage.satelliteMap,
+                                privateProperties.satelliteMapString,
                                 false);
                 }
             }
@@ -207,7 +231,7 @@ Item {
                 onClicked: {
                     pane.satelliteMap = true;
                     persistentStorage.saveSetting(
-                                persistentStorage.satelliteMap,
+                                privateProperties.satelliteMapString,
                                 true);
                 }
             }
@@ -265,8 +289,12 @@ Item {
 
                     text: "On"
                     onClicked: {
+                        // Enable the tracking, when the first coordinate is
+                        // retrieved from the position source a waypoint will
+                        // also be stored to KML.
+                        privateProperties.saveNextCoordinateAsWaypoint = true;
+                        privateProperties.nextWaypointName = "Tracking on";
                         pane.trackingOn = true;
-                        //persistentStorage.createWaypoint();
                     }
                 }
 
@@ -274,7 +302,21 @@ Item {
                     id: trackingOff
 
                     text: "Off"
-                    onClicked: pane.trackingOn = false;
+                    onClicked: {
+                        if (privateProperties.lastCoordinateValid == true) {
+
+                            persistentStorage.createWaypoint(
+                                    "Tracking off",
+                                    privateProperties.lastCoordinateTimestamp,
+                                    privateProperties.lastCoordinate.longitude,
+                                    privateProperties.lastCoordinate.latitude,
+                                    privateProperties.lastCoordinate.altitude);
+
+                            privateProperties.lastCoordinateValid = false;
+                        }
+
+                        pane.trackingOn = false;
+                    }
                 }
             }
         }

@@ -95,24 +95,36 @@ void PersistentStorage::createDocument()
     name.appendChild(m_DomDocument->createTextNode("Compass path"));
     m_Document.appendChild(name);
 
-    // Create "Style"
+
+    // Create "Style" redLine
     QDomElement style = m_DomDocument->createElement("Style");
     style.setAttribute("id", "redLine");
 
-    // Create Style.LineStyle"
-    QDomElement lineStyle = m_DomDocument->createElement("LineStyle");
-    QDomElement color = m_DomDocument->createElement("color");
-    color.appendChild(m_DomDocument->createTextNode("aa0000ff"));
-    lineStyle.appendChild(color);
+    {
+        // Create "Style.LineStyle"
+        QDomElement lineStyle = m_DomDocument->createElement("LineStyle");
+        QDomElement color = m_DomDocument->createElement("color");
+        color.appendChild(m_DomDocument->createTextNode("aa0000ff"));
+        lineStyle.appendChild(color);
 
-    QDomElement width = m_DomDocument->createElement("width");
-    width.appendChild(m_DomDocument->createTextNode("2"));
-    lineStyle.appendChild(width);
+        QDomElement width = m_DomDocument->createElement("width");
+        width.appendChild(m_DomDocument->createTextNode("2"));
+        lineStyle.appendChild(width);
 
-    style.appendChild(lineStyle);
+        style.appendChild(lineStyle);
+    }
+
+    {
+        // Create "Style.PolyStyle"
+        QDomElement polyStyle = m_DomDocument->createElement("PolyStyle");
+        QDomElement color = m_DomDocument->createElement("color");
+        color.appendChild(m_DomDocument->createTextNode("aa0000bb"));
+        polyStyle.appendChild(color);
+
+        style.appendChild(polyStyle);
+    }
 
     m_Document.appendChild(style);
-
 
 
     // Create "PlaceMark"
@@ -210,31 +222,11 @@ bool PersistentStorage::loadDocument()
 
 
 /*!
-  Adds route point to the QDomDocument.
+  Saves the m_DomDocument to the m_KmlFilePath. If the file already exists
+  it will be overwritten.
 */
-void PersistentStorage::addRouteCoordinate(const QVariant &varLongitude,
-                                           const QVariant &varLatitude,
-                                           const QVariant &varAltitude)
+bool PersistentStorage::saveDocument()
 {
-    QString longitude = varLongitude.toString();
-    QString latitude = varLatitude.toString();
-    QString altitude = varAltitude.toString();
-
-    // Make sure that the decimal separator is '.'!
-    longitude.replace(',', '.');
-    latitude.replace(',', '.');
-    altitude.replace(',', '.');
-
-    qDebug() << "longitude: " << longitude << " latitude: " << latitude << " altitude: " << altitude;
-
-    m_Coordinates.appendChild(
-                m_DomDocument->createTextNode(QString("%1,%2,%3\n")
-                                              .arg(longitude)
-                                              .arg(latitude)
-                                              .arg(altitude)));
-
-    qDebug() << m_DomDocument->toString(2);
-
     if (QFile::exists(m_KmlFilePath)) {
         QFile::remove(m_KmlFilePath);
     }
@@ -255,14 +247,82 @@ void PersistentStorage::addRouteCoordinate(const QVariant &varLongitude,
 
 
 /*!
+  Adds route point to the QDomDocument.
+*/
+void PersistentStorage::addRouteCoordinate(const QVariant &varLongitude,
+                                           const QVariant &varLatitude,
+                                           const QVariant &varAltitude)
+{
+    QString longitude = varLongitude.toString();
+    QString latitude = varLatitude.toString();
+    QString altitude = varAltitude.toString();
+
+    // Make sure that the decimal separator is '.'!
+    longitude.replace(',', '.');
+    latitude.replace(',', '.');
+    altitude.replace(',', '.');
+
+    m_Coordinates.appendChild(
+                m_DomDocument->createTextNode(QString("%1,%2,%3\n")
+                                              .arg(longitude)
+                                              .arg(latitude)
+                                              .arg(altitude)));
+
+    saveDocument();
+}
+
+
+/*!
   Adds waypoint to the KML file. This feature is implemented to get
   start / end positions of the route in external KML-viewer application.
 */
 void PersistentStorage::createWaypoint(const QVariant &varName,
-                                       const QVariant &varTimestamp)
+                                       const QVariant &varTimestamp,
+                                       const QVariant &varLongitude,
+                                       const QVariant &varLatitude,
+                                       const QVariant &varAltitude)
 {
-    // ToDo: Implement feature.
-    qDebug() << "createWaypoint is not yet implemented";
+    QString longitude = varLongitude.toString();
+    QString latitude = varLatitude.toString();
+    QString altitude = varAltitude.toString();
+
+    // Make sure that the decimal separator is '.'!
+    longitude.replace(',', '.');
+    latitude.replace(',', '.');
+    altitude.replace(',', '.');
+
+
+    QDomElement placeMark = m_DomDocument->createElement("Placemark");
+    QDomElement name = m_DomDocument->createElement("name");
+    name.appendChild(m_DomDocument->createTextNode(varName.toString()));
+    placeMark.appendChild(name);
+
+    QDomElement description = m_DomDocument->createElement("description");
+    description.appendChild(m_DomDocument->createTextNode(varTimestamp.toString()));
+    placeMark.appendChild(description);
+
+    QDomElement point = m_DomDocument->createElement("Point");
+    QDomElement extrude = m_DomDocument->createElement("extrude");
+    extrude.appendChild(m_DomDocument->createTextNode("1"));
+    point.appendChild(extrude);
+
+    QDomElement altitudeMode = m_DomDocument->createElement("altitudeMode");
+    altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
+    point.appendChild(altitudeMode);
+
+    QDomElement coordinates = m_DomDocument->createElement("coordinates");
+    coordinates.appendChild(m_DomDocument->createTextNode(QString("%1,%2,%3")
+                                                          .arg(longitude)
+                                                          .arg(latitude)
+                                                          .arg(altitude)));
+
+    point.appendChild(coordinates);
+
+    placeMark.appendChild(point);
+
+    m_Document.appendChild(placeMark);
+
+    saveDocument();
 }
 
 
@@ -271,8 +331,6 @@ void PersistentStorage::createWaypoint(const QVariant &varName,
 */
 void PersistentStorage::clearRoute()
 {
-    qDebug() << "clearRoute called";
-
     if (QFile::exists(m_KmlFilePath)) {
         QFile::remove(m_KmlFilePath);
     }
