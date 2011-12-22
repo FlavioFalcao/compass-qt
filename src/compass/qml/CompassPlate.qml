@@ -77,9 +77,9 @@ Image {
 
         drag.axis: Drag.XandYAxis
         drag.minimumX: -compass.width * 0.5
-        drag.minimumY: -compass.height * 0.5
+        drag.minimumY: -compass.height * 0.3
         drag.maximumX: background.width - compass.width * 0.5
-        drag.maximumY: background.height - compass.height * 0.5
+        drag.maximumY: background.height - compass.height * 0.8
         drag.target: parent
     }
 
