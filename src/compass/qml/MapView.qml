@@ -46,7 +46,13 @@ Page {
     Component.onCompleted: {
         mapView.state = "MapMode";
         mobility.active = true;
-        settingsPane.readSettings();
+
+        var initialCoordinate = settingsPane.readSettings();
+
+        map.mapCenter = initialCoordinate;
+        map.hereCenter.longitude = initialCoordinate.longitude;
+        map.hereCenter.latitude = initialCoordinate.latitude;
+
         settingsPane.readRoute(map.route);
 
         // Extra step is required to set the custom toolbar
@@ -67,7 +73,8 @@ Page {
             // If it does not exist and it should be shown, create and push it
             // to the stack.
             if (calibrationLevel < 1.0 && calibrationView === null) {
-                calibrationView = mapView.pageStack.push(Qt.resolvedUrl("CalibrationView.qml"));
+                calibrationView = mapView.pageStack.push(
+                            Qt.resolvedUrl("CalibrationView.qml"));
             }
 
             // If the calibration view exists, set the calibration level to it.
@@ -79,10 +86,13 @@ Page {
         }
 
         onPosition: {
-            console.log("Position: " + coordinate.latitude + ", " + coordinate.longitude +
+            console.log("Position: " + coordinate.latitude +
+                        ", " + coordinate.longitude +
                         " accuracy " + accuracyInMeters + " m");
 
-            if (settingsPane.trackingOn === true && accuracyInMeters < 200) {// good value: 50) {
+            settingsPane.saveInitialCoordinate(coordinate);
+
+            if (settingsPane.trackingOn === true && accuracyInMeters < 75) {
                 // The recording is on and the GPS position is accurate
                 // enough.
                 settingsPane.saveRouteCoordinate(coordinate, time, accuracyInMeters);

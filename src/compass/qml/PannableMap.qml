@@ -80,15 +80,15 @@ Item {
 
         // The initial coordinate where map opens.
         center: Coordinate {
-            latitude: 62.2410021
             longitude: 25.7573175
+            latitude: 62.2410021
         }
 
         Coordinate {
             id: coordinateTemplate
 
-            latitude: 62.2410021
             longitude: 25.7573175
+            latitude: 62.2410021
         }
 
         MapPolyline {
@@ -114,8 +114,8 @@ Item {
             id: mapCircle
 
             center: Coordinate {
-                latitude: 62.2410021
                 longitude: 25.7573175
+                latitude: 62.2410021
             }
 
             color: "#40FF0000"

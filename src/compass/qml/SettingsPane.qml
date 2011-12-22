@@ -3,6 +3,7 @@
  */
 
 import QtQuick 1.1
+import QtMobility.location 1.2
 import com.nokia.symbian 1.1
 import CustomElements 1.0
 
@@ -17,7 +18,8 @@ Item {
     property bool trackingOn: false
 
     /*!
-      Read settings from DB.
+      Read settings from persistent storage. Returns the initial coordinate,
+      the coordinate where the application were used last time.
     */
     function readSettings() {
         satelliteMap = persistentStorage.loadSetting(
@@ -25,11 +27,34 @@ Item {
 
         screenSaverInhibited = persistentStorage.loadSetting(
                     privateProperties.screenSaverInhibitedString, false);
+
+        initialCoordinate.longitude = persistentStorage.loadSetting(
+                    privateProperties.initialLongitudeString, 25.7573175);
+
+        initialCoordinate.latitude = persistentStorage.loadSetting(
+                    privateProperties.initialLatitudeString, 62.2410021);
+
+        return initialCoordinate;
     }
 
 
-    /*
-      Reads the stored route from the DB and places it
+    /*!
+      Saves the initial coordinate to persistent storage. Initial coordinate
+      is used when the application is opened next time, to open the map
+      where it was last time.
+    */
+    function saveInitialCoordinate(coordinate) {
+        persistentStorage.saveSetting(
+                    privateProperties.initialLongitudeString,
+                    coordinate.longitude);
+        persistentStorage.saveSetting(
+                    privateProperties.initialLatitudeString,
+                    coordinate.latitude);
+    }
+
+
+    /*!
+      Reads the stored route from KML file and places it
       to the given MapPolyLine element.
     */
     function readRoute(route) {
@@ -38,7 +63,7 @@ Item {
 
 
     /*!
-      Saves route coordinate to the DB.
+      Saves route coordinate to the KML.
     */
     function saveRouteCoordinate(coordinate, timestamp, accuracyInMeters) {
         persistentStorage.addRouteCoordinate(coordinate.longitude,
@@ -88,11 +113,17 @@ Item {
         }
     }
 
+    Coordinate {
+        id: initialCoordinate
+    }
+
     QtObject {
         id: privateProperties
 
         property string satelliteMapString: "satelliteMap"
         property string screenSaverInhibitedString: "screenSaverInhibited"
+        property string initialLongitudeString: "initialLongitude"
+        property string initialLatitudeString: "initialLatitude"
 
         property bool saveNextCoordinateAsWaypoint: false
         property string nextWaypointName
