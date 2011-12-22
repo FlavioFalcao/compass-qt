@@ -37,6 +37,12 @@ Image {
         onPressed: {
             previousX = mouse.x;
             previousY = mouse.y;
+
+            needleBehavior.enabled = false;
+        }
+
+        onReleased: {
+            needleBehavior.enabled = true;
         }
 
         onPositionChanged: {
@@ -154,6 +160,8 @@ Image {
 
         rotation: -azimuth - compass.rotation
         Behavior on rotation {
+            id: needleBehavior
+
             RotationAnimation {
                 duration: 100
                 direction: RotationAnimation.Shortest
