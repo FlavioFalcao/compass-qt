@@ -82,24 +82,11 @@ Page {
                   "bearing is now in front of you.</ul>" +
                   "<p>The following on / off settings adjust the behavior " +
                   "of the application:</p>" +
-                  "Auto north in the map:" +
-                  "<ul>Automatically turn the scale of the compass to the " +
-                  "grid north when the compass is rotated in the Map " +
-                  "mode.</ul>" +
-                  "<p>Bearing turnable in the Compass mode:</p>" +
-                  "<ul>The turnability of the bearing can be prevented in " +
-                  "the Compass mode. By setting the turnability off you can " +
-                  "prevent accidential touch events which would affect to " +
-                  "the navigation in the field. When turnability is " +
-                  "enabled, the compass application can be used with a real " +
-                  "paper map.</ul>" +
-                  "<p>Prevent screensaver:</p>" +
+                  "<p>Screen/keyloack timeout:</p>" +
                   "<ul>Prevents the screensaver from getting activated.</ul>" +
-                  "<p>Satellite map:</p>" +
+                  "<p>Map style:</p>" +
                   "<ul>Toggles between the map and the satellite.</ul>" +
-                  "<p>Use sound in calibration:</p>" +
-                  "<ul>Defines whether audio feedback is used during the " +
-                  "calibration process.</ul><p><br><br></p>"
+                  "<p><br><br></p>"
 
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
