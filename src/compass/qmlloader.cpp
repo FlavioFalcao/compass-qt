@@ -60,7 +60,7 @@ void QMLLoader::loadMainQML()
 #endif
 
     QDeclarativeComponent component(m_View->engine(),
-                                    QUrl::fromLocalFile("qml/Ui.qml"));
+                                    QUrl::fromLocalFile("qml/Main.qml"));
 
     if (component.status() == QDeclarativeComponent::Error) {
         qDebug() << "Error(s): " << component.errors();
