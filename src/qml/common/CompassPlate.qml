@@ -18,7 +18,7 @@ Image {
 
     x: 34
     width: 290; height: 600
-    source: "images/compassplate.png"
+    source: "../images/compassplate.png"
     fillMode: Image.PreserveAspectFit
     smooth: true
 
@@ -87,7 +87,7 @@ Image {
         id: shadow
 
         anchors.fill: scale
-        source: "images/scaleshadow.png"
+        source: "../images/scaleshadow.png"
         opacity: 0.8
     }
 
@@ -102,7 +102,7 @@ Image {
         width: parent.paintedWidth * 0.95
         height: width
 
-        source: "images/Scale.png"
+        source: "../images/Scale.png"
         smooth: true
 
         MouseArea {
@@ -155,7 +155,7 @@ Image {
         height: scale.paintedHeight * 0.56
         width: height * 0.1214
 
-        source: "images/compassneedle.png"
+        source: "../images/compassneedle.png"
         smooth: true
 
         rotation: -azimuth - compass.rotation

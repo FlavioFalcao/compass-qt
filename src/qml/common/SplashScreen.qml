@@ -12,7 +12,7 @@ Image {
     anchors.fill: parent
     width: 360; height: 640
     z: 10
-    source: "images/compass_back.png"
+    source: "../images/compass_back.png"
     fillMode: Image.Tile
 
     Text {
@@ -29,7 +29,7 @@ Image {
         id: shadow
 
         anchors.fill: scale
-        source: "images/scaleshadow.png"
+        source: "../images/scaleshadow.png"
         smooth: true
         opacity: 0.8
     }
@@ -44,7 +44,7 @@ Image {
         }
 
         height: width
-        source: "images/Scale.png"
+        source: "../images/Scale.png"
         smooth: true
     }
 
@@ -53,7 +53,7 @@ Image {
 
         anchors.centerIn: scale
         width: height * 0.1214; height: scale.paintedHeight * 0.56
-        source: "images/compassneedle.png"
+        source: "../images/compassneedle.png"
         smooth: true
     }
 

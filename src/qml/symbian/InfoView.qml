@@ -34,7 +34,7 @@ Page {
         id: background
 
         anchors.fill: parent
-        source: "images/compass_back.png"
+        source: "../images/compass_back.png"
     }
 
     Flickable {

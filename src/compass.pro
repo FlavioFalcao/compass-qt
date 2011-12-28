@@ -47,14 +47,17 @@ symbian {
     LIBS += -lcone -leikcore -lavkon
     ICON = icons/compass.svg
 
-    # The beep is used in calibration, will install to application's private folder.
+    # The beep is used in calibration, will install to application's
+    # private folder.
     sound.sources = beep.wav
     sound.path = !:/private/E4B73955
 
-    # Deploy the qml folder recursively
-    qmlfiles.sources = qml
+    # Deploy the symbian qml files
+    qmlfiles.sources = qml/common qml/symbian qml/images
+    qmlfiles.path = qml
 
-    # The backup and restore functionality, will install to application's private folder.
+    # The backup and restore functionality, will install to application's
+    # private folder.
     backup.sources = backup_registration.xml
     backup.path = !:/private/E4B73955
 

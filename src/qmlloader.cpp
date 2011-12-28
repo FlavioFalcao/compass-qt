@@ -26,8 +26,10 @@ QMLLoader::QMLLoader(QDeclarativeView *view)
 */
 void QMLLoader::loadSplashScreen()
 {
+    QString splashQmlFile = "qml/common/SplashScreen.qml";
+
     QDeclarativeComponent splashComponent(m_View->engine(),
-                                          QUrl::fromLocalFile("qml/SplashScreen.qml"));
+                                          QUrl::fromLocalFile(splashQmlFile));
 
     m_SplashItem = qobject_cast<QDeclarativeItem *>(splashComponent.create());
 
@@ -59,8 +61,15 @@ void QMLLoader::loadMainQML()
                                               .toString());
 #endif
 
+#ifdef Q_WS_HARMATTAN
+    QString mainQmlFile = "qml/harmattan/Main.qml";
+#else
+    QString mainQmlFile = "qml/symbian/Main.qml";
+#endif
+
+
     QDeclarativeComponent component(m_View->engine(),
-                                    QUrl::fromLocalFile("qml/Main.qml"));
+                                    QUrl::fromLocalFile(mainQmlFile));
 
     if (component.status() == QDeclarativeComponent::Error) {
         qDebug() << "Error(s): " << component.errors();

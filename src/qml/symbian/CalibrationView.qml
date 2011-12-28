@@ -82,7 +82,7 @@ Page {
     Image {
         anchors.fill: parent
 
-        source: "images/compass_back.png"
+        source: "../images/compass_back.png"
         fillMode: Image.Tile
     }
 
@@ -90,7 +90,7 @@ Page {
         id: shadow
 
         anchors.fill: scale
-        source: "images/scaleshadow.png"
+        source: "../images/scaleshadow.png"
         smooth: true
         opacity: 0.8
     }
@@ -120,7 +120,7 @@ Page {
         }
 
         height: width
-        source: "images/scale100.png"
+        source: "../images/scale100.png"
         smooth: true
     }
 
@@ -129,7 +129,7 @@ Page {
 
         anchors.centerIn: scale
         width: height * 0.1214; height: scale.paintedHeight * 0.56
-        source: "images/compassneedle.png"
+        source: "../images/compassneedle.png"
         smooth: true
         rotation: calibrationLevel * 360
         Behavior on rotation { PropertyAnimation { duration: 750 } }
@@ -154,7 +154,7 @@ Page {
             smooth: true
             fillMode: Image.PreserveAspectFit
 
-            source: "images/calibration8.png"
+            source: "../images/calibration8.png"
         }
 
         Text {
@@ -182,7 +182,7 @@ Page {
             margins: 5
         }
 
-        iconSource: "images/icon_info.png"
+        iconSource: "../images/icon_info.png"
         onClicked: {
             if (view.pageStack.busy === false) {
                 view.pageStack.push(Qt.resolvedUrl("InfoView.qml"));

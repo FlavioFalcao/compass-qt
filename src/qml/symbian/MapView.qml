@@ -4,6 +4,8 @@
 
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import "../common"
+
 
 
 Page {
@@ -24,7 +26,7 @@ Page {
         ToolButton {
             id: gpsIndicator
 
-            iconSource: "images/icon_gps.png"
+            iconSource: "../images/icon_gps.png"
             onClicked: map.panToCoordinate(map.hereCenter)
         }
 
@@ -32,7 +34,7 @@ Page {
             id: compassMode
 
             checkable: true
-            iconSource: "images/icon_compassmode.png"
+            iconSource: "../images/icon_compassmode.png"
         }
 
         ToolButton {
@@ -108,7 +110,7 @@ Page {
 
         anchors.fill: parent
 
-        source: "images/compass_back.png"
+        source: "../images/compass_back.png"
         fillMode: Image.Tile
     }
 
@@ -152,7 +154,7 @@ Page {
             margins: 5
         }
 
-        iconSource: "images/icon_info.png"
+        iconSource: "../images/icon_info.png"
         opacity: settingsPane.opacity
         onClicked: {
             if (mapView.pageStack.busy === false) {
