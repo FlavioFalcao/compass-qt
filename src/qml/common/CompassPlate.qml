@@ -116,16 +116,20 @@ Image {
             anchors.fill: parent
 
             onPressed: {
+                bearingRotationAnimation.stop();
                 previousX = mouse.x
                 previousY = mouse.y
             }
 
             onDoubleClicked: RotationAnimation {
+                id: bearingRotationAnimation
+
                 target: scale
                 property: "rotation"
                 to: -compass.rotation
-                duration: 250
+                duration: 750
                 direction: RotationAnimation.Shortest
+                easing.type: Easing.InOutCubic
             }
 
             onPositionChanged: {

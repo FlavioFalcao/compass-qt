@@ -3,7 +3,7 @@
  */
 
 import QtQuick 1.1
-import com.nokia.symbian 1.1
+import com.nokia.meego 1.0
 
 
 Page {
@@ -14,20 +14,12 @@ Page {
     orientationLock: PageOrientation.LockPortrait
 
     tools: ToolBarLayout {
-        ToolButton {
-            iconSource: "toolbar-back"
+        ToolIcon {
+            platformIconId: "toolbar-back"
             onClicked: {
                 container.pageStack.pop();
-
-                // This is required to show our custom toolbar
-                container.pageStack.currentPage.showToolBar();
             }
         }
-    }
-
-    Component.onCompleted: {
-        // Extra step is required to set the custom toolbar
-        window.myTools = tools;
     }
 
     Image {
@@ -46,7 +38,7 @@ Page {
             leftMargin: 20
             rightMargin: 20
             topMargin: 20
-            bottomMargin: tools.height + 20
+            bottomMargin: 20
         }
 
         contentWidth: width
@@ -57,7 +49,7 @@ Page {
             id: infoText
 
             width: flickable.width - 6
-            font.pixelSize: platformStyle.fontSizeMedium
+            font.pixelSize: 18
             color: "black"
             text: "<h2>Compass v" + container.version + "</h2>" +
                   "<p>Compass is a Nokia example application that " +

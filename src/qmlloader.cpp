@@ -61,8 +61,10 @@ void QMLLoader::loadMainQML()
                                               .toString());
 #endif
 
+    qDebug() << "Loading main QML";
+
 #ifdef Q_WS_HARMATTAN
-    QString mainQmlFile = "qml/harmattan/Main.qml";
+    QString mainQmlFile = "/opt/usr/bin/compass/qml/harmattan/Main.qml";
 #else
     QString mainQmlFile = "qml/symbian/Main.qml";
 #endif
@@ -89,8 +91,10 @@ void QMLLoader::loadMainQML()
     connect((QObject*)m_View->engine(), SIGNAL(quit()),
             qApp, SLOT(quit()));
 
+#ifdef Q_OS_SYMBIAN
     // Begin the hide animation of the splash screen
     QMetaObject::invokeMethod(m_SplashItem, "startHideAnimation");
+#endif
 }
 
 

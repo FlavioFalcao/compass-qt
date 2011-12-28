@@ -223,7 +223,8 @@ bool PersistentStorage::loadDocument()
 
 /*!
   Saves the m_DomDocument to the m_KmlFilePath. If the file already exists
-  it will be overwritten.
+  it will be overwritten. Returns true if file was succesfully saved,
+  otherwise returns false.
 */
 bool PersistentStorage::saveDocument()
 {
@@ -231,18 +232,23 @@ bool PersistentStorage::saveDocument()
         QFile::remove(m_KmlFilePath);
     }
 
+    bool ret;
+
     // Write KML to file.
     QFile file(m_KmlFilePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text) == false) {
         qDebug() << "Failed to open file " << m_KmlFilePath << " to write!";
-
+        ret = false;
     }
     else {
         qint64 bytesWritten = file.write(m_DomDocument->toByteArray(2));
         qDebug() << "Wrote " << bytesWritten << " bytes to KML file "
                  << m_KmlFilePath;
+        ret = true;
     }
     file.close();
+
+    return ret;
 }
 
 

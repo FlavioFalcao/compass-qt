@@ -22,9 +22,10 @@ SOURCES += \
     persistentstorage.cpp
 
 OTHER_FILES += \
-    qml/*.qml \
+    qml/symbian/*.* \
+    qml/harmattan/*.* \
+    qml/common/*.* \
     backup_registration.xml
-
 
 symbian {
     TARGET = Compass
@@ -69,10 +70,10 @@ unix:!symbian:!maemo5 {
     message(Harmattan build)
     DEFINES += Q_WS_HARMATTAN
 
-    OTHER_FILES += \
-        qml/harmattan.qml
+    target.path = /opt/usr/bin/compass
 
-    target.path = /opt/usr/bin
+    qml.files = qml/common qml/harmattan qml/images
+    qml.path = /opt/usr/bin/compass/qml
 
     desktopfile.files = qtc_packaging/debian_harmattan/$${TARGET}.desktop
     desktopfile.path = /usr/share/applications
@@ -81,10 +82,11 @@ unix:!symbian:!maemo5 {
     icon.path = /usr/share/icons/hicolor/64x64/apps
 
     sound.files = beep.wav
-    sound.path = /opt/usr/bin
+    sound.path = /opt/usr/bin/compass
 
     INSTALLS += \
         target \
+        qml \
         desktopfile \
         icon \
         sound

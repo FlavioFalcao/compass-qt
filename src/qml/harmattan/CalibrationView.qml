@@ -4,7 +4,7 @@
 
 import QtQuick 1.1
 // import QtMobility.feedback 1.1
-import com.nokia.symbian 1.1
+import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import CustomElements 1.0
 
@@ -17,23 +17,12 @@ Page {
     property real calibrationLevel: 0
     property bool useFeedbackEffect: true
 
-    function showToolBar() {
-        window.myTools = tools;
-    }
-
     function setCalibrationLevel(calibrationLevel) {
         view.calibrationLevel = calibrationLevel;
 
         if(view.pageStack.currentPage === view && calibrationLevel >= 1.0 &&
                 !calibrationCompletedAnimation.running) {
             calibrationCompletedAnimation.start()
-        }
-    }
-
-    tools: ToolBarLayout {
-        ToolButton {
-            iconSource: "toolbar-back"
-            onClicked: Qt.quit()
         }
     }
 
@@ -237,7 +226,6 @@ Page {
         ScriptAction {
             script: {
                 view.pageStack.pop();
-                view.pageStack.currentPage.showToolBar();
             }
         }
     }

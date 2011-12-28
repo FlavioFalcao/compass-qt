@@ -24,7 +24,10 @@ int main(int argc, char *argv[])
     view.setAutoFillBackground(false);
 
     QMLLoader qmlLoader(&view);
+
+#ifdef Q_OS_SYMBIAN
     qmlLoader.loadSplashScreen();
+#endif
 
     QTimer::singleShot(0, &qmlLoader, SLOT(loadMainQML()));
 
