@@ -17,6 +17,18 @@ Page {
     property real calibrationLevel: 0
     property bool useFeedbackEffect: true
 
+    function showToolBar() {
+        window.myTools = tools;
+    }
+
+    function setCalibrationLevel(calibrationLevel) {
+        view.calibrationLevel = calibrationLevel;
+
+        if(view.pageStack.currentPage === view && calibrationLevel >= 1.0 &&
+                !calibrationCompletedAnimation.running) {
+            calibrationCompletedAnimation.start()
+        }
+    }
 
     tools: ToolBarLayout {
         ToolButton {
@@ -26,12 +38,6 @@ Page {
     }
 
     orientationLock: PageOrientation.LockPortrait
-
-    onCalibrationLevelChanged: {
-        if(calibrationLevel >= 1.0) {
-            calibrationCompletedAnimation.start()
-        }
-    }
 
     Component.onCompleted: {
         // Extra step is required to set the custom toolbar
@@ -167,6 +173,23 @@ Page {
         }
     }
 
+    Button {
+        id: infoButton
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            margins: 5
+        }
+
+        iconSource: "images/icon_info.png"
+        onClicked: {
+            if (view.pageStack.busy === false) {
+                view.pageStack.push(Qt.resolvedUrl("InfoView.qml"));
+            }
+        }
+    }
+
     Rectangle {
         id: calibrationCompletedDialog
 
@@ -213,6 +236,12 @@ Page {
 
         ScriptAction {
             script: {
+                // There might be info view showing on top of this view
+                // when the the calibration ends. Lets make sure that
+                // to find this view from the page stack and remove it
+                // while letting the info view still be on top of the
+                // stack.
+
                 view.pageStack.pop();
                 view.pageStack.currentPage.showToolBar();
             }

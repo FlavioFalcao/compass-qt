@@ -18,6 +18,8 @@ Page {
             iconSource: "toolbar-back"
             onClicked: {
                 container.pageStack.pop();
+
+                // This is required to show our custom toolbar
                 container.pageStack.currentPage.showToolBar();
             }
         }
@@ -28,12 +30,22 @@ Page {
         window.myTools = tools;
     }
 
+    Image {
+        id: background
+
+        anchors.fill: parent
+        source: "images/compass_back.png"
+    }
+
     Flickable {
         id: flickable
 
         anchors {
             fill: parent
-            margins: 8
+            leftMargin: 20
+            rightMargin: 20
+            topMargin: 20
+            bottomMargin: tools.height + 20
         }
 
         contentWidth: width
@@ -43,9 +55,9 @@ Page {
         Text {
             id: infoText
 
-            width: flickable.width
-            font.pixelSize: container.width * 0.0389
-            color: "white"
+            width: flickable.width - 6
+            font.pixelSize: platformStyle.fontSizeMedium
+            color: "black"
             text: "<h2>Compass v" + container.version + "</h2>" +
                   "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +
@@ -65,12 +77,7 @@ Page {
                   "fix, the smaller the circle; indicating your current " +
                   "location more precisely. The map can be panned by " +
                   "dragging it with a finger. The zoom level can be changed " +
-                  "by pinching the map with two fingers. The GPS indicator " +
-                  "in the upper left corner will iterate when the phone is " +
-                  "trying to retrieve the GPS fix. The indicator is steady " +
-                  "when the signal is received from the satellites. Tapping " +
-                  "the GPS indicator will pan the map to the current " +
-                  "location.</p>" +
+                  "by pinching the map with two fingers.</p>" +
                   "<p>To navigate to a certain position in a map:</p>" +
                   "<ul>1. Switch to the Map mode, place the edge of the " +
                   "compass on the map so that it connects the current " +
@@ -82,7 +89,7 @@ Page {
                   "bearing is now in front of you.</ul>" +
                   "<p>The following on / off settings adjust the behavior " +
                   "of the application:</p>" +
-                  "<p>Screen/keyloack timeout:</p>" +
+                  "<p>Screen/keylock timeout:</p>" +
                   "<ul>Prevents the screensaver from getting activated.</ul>" +
                   "<p>Map style:</p>" +
                   "<ul>Toggles between the map and the satellite.</ul>" +

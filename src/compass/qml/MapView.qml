@@ -79,7 +79,7 @@ Page {
 
             // If the calibration view exists, set the calibration level to it.
             if (calibrationView !== null) {
-                calibrationView.calibrationLevel = calibrationLevel;
+                calibrationView.setCalibrationLevel(calibrationLevel);
             }
 
             compass.azimuth = azimuth;
