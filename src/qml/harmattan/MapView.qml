@@ -13,54 +13,49 @@ Page {
 
     orientationLock: PageOrientation.LockPortrait
 
-    ToolButtonStyle {
-        id: style
-
-        buttonWidth: 54
-        buttonHeight: 54
-        backgroundVisible: false
-    }
-
     tools: ToolBarLayout {
-        ToolButton {
 
-            platformStyle: style
+        ToolIcon {
+            id: infoViewButton
+
             iconSource: "../images/icon_info_small.png"
             onClicked: {
-                if (mapView.pageStack.busy === false) {
+                if (mapView.pageStack.currentPage === mapView) {
                     mapView.pageStack.push(Qt.resolvedUrl("InfoView.qml"));
                 }
             }
         }
 
-        ToolButton {
+        ToolIcon {
             id: gpsIndicator
 
-            platformStyle: style
             iconSource: "../images/icon_gps_small.png"
             onClicked: map.panToCoordinate(map.hereCenter)
         }
 
-        ToolButton {
+        ToolIcon {
             id: compassMode
 
-            platformStyle: style
-            checkable: true
-            iconSource: "../images/icon_compassmode_small.png"
+            property bool checked: false
+            property string selectedString: checked ? "-selected" : ""
+
+            iconSource: "../images/icon_compassmode_small" + selectedString + ".png"
+            onClicked: { checked = !checked; }
         }
 
-
-        ToolButton {
+        ToolIcon {
             id: settingsToolButton
 
-            platformStyle: style
-            checkable: true
-            iconSource: "image://theme/icon-m-toolbar-settings"
+            property bool checked: false
+            property string selectedString: checked ? "-selected" : ""
+
+            //iconSource: "image://theme/icon-m-toolbar-settings-white" + selectedString
+            platformIconId: "toolbar-settings-white" + selectedString
+            onClicked: { checked = !checked; }
         }
     }
 
     Component.onCompleted: {
-        mapView.state = "MapMode";
         mobility.active = true;
 
         var initialCoordinate = settingsPane.readSettings();
@@ -136,7 +131,7 @@ Page {
     CompassPlate {
         id: compass
 
-        opacity: 0
+        x: 34
 
         // Turns automatically the bearing to the map north
         onUserRotatedCompass: compass.bearing = -compass.rotation

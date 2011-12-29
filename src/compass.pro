@@ -46,6 +46,7 @@ symbian {
 
     # To lock the application to portrait orientation
     LIBS += -lcone -leikcore -lavkon
+
     ICON = icons/compass.svg
 
     # The beep is used in calibration, will install to application's
@@ -81,13 +82,19 @@ unix:!symbian:!maemo5 {
     icon.files = icons/compass.png
     icon.path = /usr/share/icons/hicolor/64x64/apps
 
+    # The beep is used in calibration
     sound.files = beep.wav
     sound.path = /opt/usr/bin/compass
+
+    # Classifies the application as a game, allows the beep to be heard.
+    gamingclassify.files = qtc_packaging/debian_harmattan/compass.conf
+    gamingclassify.path = /usr/share/policy/etc/syspart.conf.d
 
     INSTALLS += \
         target \
         qml \
         desktopfile \
         icon \
-        sound
+        sound \
+        gamingclassify
 }

@@ -15,7 +15,7 @@ Page {
 
     tools: ToolBarLayout {
         ToolIcon {
-            platformIconId: "toolbar-back"
+            platformIconId: "toolbar-back-white"
             onClicked: {
                 container.pageStack.pop();
             }
@@ -36,22 +36,23 @@ Page {
         anchors {
             fill: parent
             leftMargin: 20
-            rightMargin: 20
-            topMargin: 20
-            bottomMargin: 20
+            rightMargin: 6
+            topMargin: 0
+            bottomMargin: 0
         }
 
         contentWidth: width
         contentHeight: infoText.height
-        clip: true
 
         Text {
             id: infoText
 
-            width: flickable.width - 6
-            font.pixelSize: 18
+            width: flickable.width - 14
+            font.pixelSize: 20
             color: "black"
-            text: "<h2>Compass v" + container.version + "</h2>" +
+            horizontalAlignment: Text.AlignJustify
+            text: "<br>" +
+                  "<h2>Compass v" + container.version + "</h2>" +
                   "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +
                   "user to determine the bearing to the desired location " +

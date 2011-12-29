@@ -3,7 +3,7 @@
  */
 
 import QtQuick 1.1
-// import QtMobility.feedback 1.1
+import QtMobility.feedback 1.1
 import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import CustomElements 1.0
@@ -26,12 +26,18 @@ Page {
         }
     }
 
-    orientationLock: PageOrientation.LockPortrait
-
-    Component.onCompleted: {
-        // Extra step is required to set the custom toolbar
-        window.myTools = tools;
+    tools: ToolBarLayout {
+        ToolIcon {
+            iconSource: "../images/icon_info_small.png"
+            onClicked: {
+                if (view.pageStack.busy === false) {
+                    view.pageStack.push(Qt.resolvedUrl("InfoView.qml"));
+                }
+            }
+        }
     }
+
+    orientationLock: PageOrientation.LockPortrait
 
     Audio {
         id: audioEffect
@@ -39,10 +45,9 @@ Page {
         // The appFolder is context property set in Qt, the folder is
         // applications private folder.
         source: appFolder + "beep.wav"
-        volume: 0.5
+        volume: 1.0
     }
 
-    /*
     HapticsEffect {
         id: vibraEffect
 
@@ -54,7 +59,6 @@ Page {
         fadeIntensity: 0.03
         running: false
     }
-    */
 
     Timer {
         interval: 700 - view.calibrationLevel * 600
@@ -63,7 +67,7 @@ Page {
         triggeredOnStart: true
         onTriggered: {
             if (view.useFeedbackEffect) {
-                //vibraEffect.running = true
+                vibraEffect.running = true
             }
         }
     }
@@ -159,23 +163,6 @@ Page {
             color: "black"
             wrapMode: Text.WordWrap
             font.pixelSize: 25
-        }
-    }
-
-    Button {
-        id: infoButton
-
-        anchors {
-            top: parent.top
-            right: parent.right
-            margins: 5
-        }
-
-        iconSource: "../images/icon_info.png"
-        onClicked: {
-            if (view.pageStack.busy === false) {
-                view.pageStack.push(Qt.resolvedUrl("InfoView.qml"));
-            }
         }
     }
 

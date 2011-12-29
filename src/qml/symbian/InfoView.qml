@@ -44,7 +44,7 @@ Page {
         anchors {
             fill: parent
             leftMargin: 20
-            rightMargin: 20
+            rightMargin: 10
             topMargin: 20
             bottomMargin: tools.height + 20
         }
@@ -56,9 +56,10 @@ Page {
         Text {
             id: infoText
 
-            width: flickable.width - 6
+            width: flickable.width - 10
             font.pixelSize: platformStyle.fontSizeMedium
             color: "black"
+            horizontalAlignment: Text.AlignJustify
             text: "<h2>Compass v" + container.version + "</h2>" +
                   "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +

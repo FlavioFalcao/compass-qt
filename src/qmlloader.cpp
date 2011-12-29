@@ -64,7 +64,8 @@ void QMLLoader::loadMainQML()
     qDebug() << "Loading main QML";
 
 #ifdef Q_WS_HARMATTAN
-    QString mainQmlFile = "/opt/usr/bin/compass/qml/harmattan/Main.qml";
+    QString mainQmlFile =
+            qApp->applicationDirPath() + "/qml/harmattan/Main.qml";
 #else
     QString mainQmlFile = "qml/symbian/Main.qml";
 #endif

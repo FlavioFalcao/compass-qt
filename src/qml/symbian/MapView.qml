@@ -125,8 +125,6 @@ Page {
     CompassPlate {
         id: compass
 
-        opacity: 0
-
         // Turns automatically the bearing to the map north
         onUserRotatedCompass: compass.bearing = -compass.rotation
         bearingRotable: true

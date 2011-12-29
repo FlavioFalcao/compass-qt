@@ -16,8 +16,6 @@ Image {
 
     property real azimuth: 0
 
-    x: 34
-    width: 290; height: 600
     source: "../images/compassplate.png"
     fillMode: Image.PreserveAspectFit
     smooth: true

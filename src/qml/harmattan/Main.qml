@@ -31,6 +31,12 @@ Window {
         anchors.top: parent.top
     }
 
+    ToolBarStyle {
+        id: toolBarStyle
+
+        inverted: true
+    }
+
     ToolBar {
         id: toolBar
 
@@ -40,6 +46,6 @@ Window {
             bottom: parent.bottom
         }
 
-
+        platformStyle: toolBarStyle
     }
 }

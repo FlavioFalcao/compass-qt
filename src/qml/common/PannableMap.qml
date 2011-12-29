@@ -69,8 +69,10 @@ Item {
     Map {
         id: map
 
-        anchors.fill: parent
-        anchors.margins: -40
+        anchors {
+            fill: parent
+            margins: -40
+        }
 
         plugin : Plugin { name : "nokia" }
         zoomLevel: 14
@@ -127,24 +129,43 @@ Item {
     PinchArea {
         id: pincharea
 
-        property double oldZoom
-
-        anchors.fill: parent
+        property double oldZoomLevel
 
         function calcZoomDelta(zoom, percent) {
-            return zoom + Math.log(percent) / Math.log(2);
+            var zoomLevel = zoom + Math.log(percent) / Math.log(2);
+            zoomLevel = Math.round(zoomLevel);
+            if (zoomLevel > map.maximumZoomLevel) {
+                zoomLevel = map.maximumZoomLevel;
+            }
+            else if (zoomLevel < map.minimumZoomLevel) {
+                zoomLevel = map.minimumZoomLevel;
+            }
+
+            return zoomLevel;
         }
 
+        anchors.fill: parent
         onPinchStarted: {
-            oldZoom = map.zoomLevel;
+            oldZoomLevel = map.zoomLevel;
         }
 
         onPinchUpdated: {
+            if (oldZoomLevel >= map.maximumZoomLevel &&
+                    pinch.scale > 1.0) {
+                // Don't allow the user to zoom more than the map supports
+                return;
+            }
+            else if (oldZoomLevel <= map.minimumZoomLevel &&
+                     pinch.scale < 1.0) {
+                // Don't allow the user to zoom less than the map supports
+                return;
+            }
+
             map.scale = pinch.scale;
         }
 
         onPinchFinished: {
-            map.zoomLevel = calcZoomDelta(oldZoom, pinch.scale);
+            map.zoomLevel = calcZoomDelta(oldZoomLevel, pinch.scale);
             map.scale = 1;
         }
     }
@@ -152,12 +173,11 @@ Item {
     MouseArea {
         id: panMouseArea
 
-        anchors.fill: parent
-
         property bool mouseDown: false
         property int lastX: -1
         property int lastY: -1
 
+        anchors.fill: parent
         hoverEnabled: true
 
         onPressed: {
