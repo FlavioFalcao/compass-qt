@@ -71,6 +71,8 @@ unix:!symbian:!maemo5 {
     message(Harmattan build)
     DEFINES += Q_WS_HARMATTAN
 
+    CONFIG += qdeclarative-boostable
+
     target.path = /opt/usr/bin/compass
 
     qml.files = qml/common qml/harmattan qml/images

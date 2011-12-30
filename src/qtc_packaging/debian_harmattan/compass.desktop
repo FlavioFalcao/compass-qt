@@ -4,7 +4,7 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Compass
-Exec=/opt/usr/bin/compass/compass
+Exec=invoker --single-instance --type=e /opt/usr/bin/compass/compass
 Icon=/usr/share/icons/hicolor/64x64/apps/compass.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
