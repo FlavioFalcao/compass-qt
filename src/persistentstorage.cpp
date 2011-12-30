@@ -17,7 +17,7 @@
 #ifdef Q_OS_SYMBIAN
 const QString PersistentStorage::m_KmlFilePath = QString("E:\\Compass.kml");
 #else
-const QString PersistentStorage::m_KmlFilePath = QString("/usr/home/Compass.kml");
+const QString PersistentStorage::m_KmlFilePath = QString("/home/user/Compass.kml");
 #endif
 
 

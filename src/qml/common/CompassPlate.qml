@@ -13,6 +13,7 @@ Image {
     property alias bearingRotable: bearingMouseArea.enabled
     property alias bearing: scale.rotation
     property alias compassRotable: compassRotateArea.enabled
+    property alias needleBehavior: needleBehavior
 
     property real azimuth: 0
 

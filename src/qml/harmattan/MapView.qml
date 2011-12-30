@@ -37,9 +37,8 @@ Page {
             id: compassMode
 
             property bool checked: false
-            property string selectedString: checked ? "-selected" : ""
 
-            iconSource: "../images/icon_compassmode_small" + selectedString + ".png"
+            iconSource: "../images/icon_compassmode_small.png"
             onClicked: { checked = !checked; }
         }
 
@@ -47,10 +46,8 @@ Page {
             id: settingsToolButton
 
             property bool checked: false
-            property string selectedString: checked ? "-selected" : ""
 
-            //iconSource: "image://theme/icon-m-toolbar-settings-white" + selectedString
-            platformIconId: "toolbar-settings-white" + selectedString
+            platformIconId: "toolbar-settings"
             onClicked: { checked = !checked; }
         }
     }
@@ -144,7 +141,7 @@ Page {
         anchors {
             left: parent.left
             right: parent.right
-            bottom: parent.bottom; bottomMargin: parent.tools.height + 8
+            bottom: parent.bottom
         }
 
         opacity: settingsToolButton.checked ? 1.0 : 0.0
@@ -181,17 +178,27 @@ Page {
     ]
 
     transitions: Transition {
-        PropertyAnimation {
-            properties: "x,y,width,height,opacity"
-            duration: 500
-            easing.type: Easing.InOutCirc
-        }
+        SequentialAnimation {
+            ScriptAction {
+                script: compass.needleBehavior.enabled = false;
+            }
+            ParallelAnimation {
+                PropertyAnimation {
+                    properties: "x,y,width,height,opacity"
+                    duration: 500
+                    easing.type: Easing.InOutCirc
+                }
 
-        RotationAnimation {
-            property: "rotation"
-            duration: 500
-            easing.type: Easing.InOutCirc
-            direction:  RotationAnimation.Shortest
+                RotationAnimation {
+                    property: "rotation"
+                    duration: 500
+                    easing.type: Easing.InOutCirc
+                    direction:  RotationAnimation.Shortest
+                }
+            }
+            ScriptAction {
+                script: compass.needleBehavior.enabled = true;
+            }
         }
     }
 }

@@ -22,6 +22,9 @@ Window {
 
         Component.onCompleted: {
             pageStack.push(Qt.resolvedUrl("MapView.qml"));
+
+            // We use the black theme
+            theme.inverted = true;
         }
     }
 
@@ -29,12 +32,6 @@ Window {
         id: statusBar
 
         anchors.top: parent.top
-    }
-
-    ToolBarStyle {
-        id: toolBarStyle
-
-        inverted: true
     }
 
     ToolBar {
@@ -45,7 +42,5 @@ Window {
             right: parent.right
             bottom: parent.bottom
         }
-
-        platformStyle: toolBarStyle
     }
 }

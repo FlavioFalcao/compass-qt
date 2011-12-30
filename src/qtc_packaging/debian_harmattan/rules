@@ -49,7 +49,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/compass.
-	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/compass install
+	$(MAKE)  INSTALL_ROOT="$(CURDIR)"/debian/compass install
 
 
 # Build architecture-independent files here.

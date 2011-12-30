@@ -16,7 +16,7 @@
     #include <aknappui.h>
 #endif
 
-int main(int argc, char *argv[])
+Q_DECL_EXPORT int main(int argc, char *argv[])
 {
 #ifdef Q_OS_SYMBIAN
     // Fixes the bug where UI does not update any more after sending app

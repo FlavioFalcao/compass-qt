@@ -178,7 +178,6 @@ Item {
         property int lastY: -1
 
         anchors.fill: parent
-        hoverEnabled: true
 
         onPressed: {
             panAnimation.stop();

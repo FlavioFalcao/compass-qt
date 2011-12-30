@@ -15,7 +15,7 @@ Page {
 
     tools: ToolBarLayout {
         ToolIcon {
-            platformIconId: "toolbar-back-white"
+            platformIconId: "toolbar-back"
             onClicked: {
                 container.pageStack.pop();
             }

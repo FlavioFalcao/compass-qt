@@ -191,17 +191,27 @@ Page {
     ]
 
     transitions: Transition {
-        PropertyAnimation {
-            properties: "x,y,width,height,opacity"
-            duration: 500
-            easing.type: Easing.InOutCirc
-        }
+        SequentialAnimation {
+            ScriptAction {
+                script: compass.needleBehavior.enabled = false;
+            }
+            ParallelAnimation {
+                PropertyAnimation {
+                    properties: "x,y,width,height,opacity"
+                    duration: 500
+                    easing.type: Easing.InOutCirc
+                }
 
-        RotationAnimation {
-            property: "rotation"
-            duration: 500
-            easing.type: Easing.InOutCirc
-            direction:  RotationAnimation.Shortest
+                RotationAnimation {
+                    property: "rotation"
+                    duration: 500
+                    easing.type: Easing.InOutCirc
+                    direction:  RotationAnimation.Shortest
+                }
+            }
+            ScriptAction {
+                script: compass.needleBehavior.enabled = true;
+            }
         }
     }
 }
