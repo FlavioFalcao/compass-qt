@@ -61,8 +61,6 @@ void QMLLoader::loadMainQML()
                                               .toString());
 #endif
 
-    qDebug() << "Loading main QML";
-
 #ifdef Q_WS_HARMATTAN
     QString mainQmlFile =
             qApp->applicationDirPath() + "/qml/harmattan/Main.qml";

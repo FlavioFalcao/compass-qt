@@ -137,7 +137,7 @@ Item {
         id: persistentStorage
     }
 
-    Item {
+    Rectangle {
         id: screenLockSetting
 
         anchors {
@@ -147,12 +147,7 @@ Item {
         }
 
         height: 80
-
-        Rectangle {
-            anchors.fill: parent
-            opacity: 0.5
-            color: "black"
-        }
+        color: "#7F000000"
 
         Text {
             id: screenTimeoutText
@@ -160,7 +155,7 @@ Item {
             x: 3; y: 3
             font.pointSize: 5
             color: "white"
-            text: "Screen/keylock timeout";
+            text: "Screen timeout";
             style: Text.Raised
             styleColor: "gray"
         }
@@ -169,8 +164,9 @@ Item {
             id: screenTimeoutButtonRow
 
             anchors {
-                top: screenTimeoutText.bottom; topMargin: 3
-                horizontalCenter: parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: 10
+                right: parent.right; rightMargin: 12
             }
 
             exclusive: true
@@ -203,7 +199,7 @@ Item {
         }
     }
 
-    Item {
+    Rectangle {
         id: mapStyleSetting
 
         anchors {
@@ -213,12 +209,7 @@ Item {
         }
 
         height: 80
-
-        Rectangle {
-            anchors.fill: parent
-            opacity: 0.5
-            color: "black"
-        }
+        color: "#7F000000"
 
         Text {
             id: mapStyleText
@@ -235,8 +226,9 @@ Item {
             id: mapTypeButtonRow
 
             anchors {
-                top: mapStyleText.bottom; topMargin: 3
-                horizontalCenter: parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: 10
+                right: parent.right; rightMargin: 12
             }
 
             exclusive: true
@@ -269,7 +261,7 @@ Item {
         }
     }
 
-    Item {
+    Rectangle {
         id: trackingSetting
 
         anchors {
@@ -279,95 +271,76 @@ Item {
         }
 
         height: 80
+        color: "#7F000000"
 
-        Rectangle {
-            anchors.fill: parent
-            opacity: 0.5
-            color: "black"
+        Text {
+            id: trackingText
+
+            x: 3; y: 3
+            font.pointSize: 5
+            color: "white"
+            text: "Tracking"
+            style: Text.Raised
+            styleColor: "gray"
         }
 
-        Item {
+        ButtonRow {
+            id: trackingButtonRow
+
             anchors {
-                top: parent.top
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.horizontalCenter; rightMargin: 4
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: 10
+                right: parent.horizontalCenter; rightMargin: 12 + 4
             }
 
-            Text {
-                id: trackingText
+            checkedButton: trackingOff
 
-                x: 3; y: 3
-                font.pointSize: 5
-                color: "white"
-                text: "Tracking"
-                style: Text.Raised
-                styleColor: "gray"
-            }
+            Button {
+                id: trackingOn
 
-            ButtonRow {
-                id: trackingButtonRow
-
-                anchors {
-                    top: trackingText.bottom; topMargin: 3
-                    horizontalCenter: parent.horizontalCenter
+                text: "On"
+                onClicked: {
+                    // Enable the tracking, when the first coordinate is
+                    // retrieved from the position source a waypoint will
+                    // also be stored to KML.
+                    privateProperties.saveNextCoordinateAsWaypoint = true;
+                    privateProperties.nextWaypointName = "Tracking on";
+                    pane.trackingOn = true;
                 }
-
-                checkedButton: trackingOff
-
-                Button {
-                    id: trackingOn
-
-                    text: "On"
-                    onClicked: {
-                        // Enable the tracking, when the first coordinate is
-                        // retrieved from the position source a waypoint will
-                        // also be stored to KML.
-                        privateProperties.saveNextCoordinateAsWaypoint = true;
-                        privateProperties.nextWaypointName = "Tracking on";
-                        pane.trackingOn = true;
-                    }
-                }
-
-                Button {
-                    id: trackingOff
-
-                    text: "Off"
-                    onClicked: {
-                        if (privateProperties.lastCoordinateValid == true) {
-
-                            persistentStorage.createWaypoint(
-                                    "Tracking off",
-                                    privateProperties.lastCoordinateTimestamp,
-                                    privateProperties.lastCoordinate.longitude,
-                                    privateProperties.lastCoordinate.latitude,
-                                    privateProperties.lastCoordinate.altitude);
-
-                            privateProperties.lastCoordinateValid = false;
-                        }
-
-                        pane.trackingOn = false;
-                    }
-                }
-            }
-        }
-
-        Item {
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-                left: parent.horizontalCenter; leftMargin: 4
-                right: parent.right
             }
 
             Button {
-                anchors.centerIn: parent
+                id: trackingOff
 
-                text: "Clear"
+                text: "Off"
                 onClicked: {
-                    persistentStorage.clearRoute();
-                    pane.clearRoute();
+                    if (privateProperties.lastCoordinateValid == true) {
+                        persistentStorage.createWaypoint(
+                                "Tracking off",
+                                privateProperties.lastCoordinateTimestamp,
+                                privateProperties.lastCoordinate.longitude,
+                                privateProperties.lastCoordinate.latitude,
+                                privateProperties.lastCoordinate.altitude);
+
+                        privateProperties.lastCoordinateValid = false;
+                    }
+
+                    pane.trackingOn = false;
                 }
+            }
+        }
+
+        Button {
+            anchors {
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: 10
+                right: parent.right; rightMargin: 44
+            }
+
+            text: "Clear"
+            onClicked: {
+                persistentStorage.clearRoute();
+                pane.clearRoute();
             }
         }
     }

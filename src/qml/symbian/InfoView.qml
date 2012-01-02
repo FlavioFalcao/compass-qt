@@ -89,13 +89,18 @@ Page {
                   "with the phone until the compass needle is positioned " +
                   "on top of the outlined orientating arrow. The desired " +
                   "bearing is now in front of you.</ul>" +
-                  "<p>The following on / off settings adjust the behavior " +
-                  "of the application:</p>" +
-                  "<p>Screen/keylock timeout:</p>" +
+                  "<p>The following settings adjust the behavior of the " +
+                  "application:</p>" +
+                  "<p>Tracking</p>" +
+                  "<ul>Gathers walked route points. The Clear button clears " +
+                  "the route.</ul>" +
+                  "<p>Screen timeout:</p>" +
                   "<ul>Prevents the screensaver from getting activated.</ul>" +
-                  "<p>Map style:</p>" +
-                  "<ul>Toggles between the map and the satellite.</ul>" +
-                  "<p><br><br></p>"
+                  "<p>Satellitem map:</p>" +
+                  "<ul>Toggles between satellite and streep map.</ul>" +
+                  "<p>Note. The gathered route is stored in " +
+                  "<i>E:\\Compass.kml</i> file and it can be opened in " +
+                  "external map application.</p>"
 
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
