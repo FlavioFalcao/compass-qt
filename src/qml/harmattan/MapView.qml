@@ -53,7 +53,7 @@ Page {
     }
 
     Component.onCompleted: {
-        mobility.active = true;
+        mobility.startSensors();
 
         var initialCoordinate = settingsPane.readSettings();
 

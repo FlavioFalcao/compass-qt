@@ -46,8 +46,7 @@ Page {
     }
 
     Component.onCompleted: {
-        mapView.state = "MapMode";
-        mobility.active = true;
+        mobility.startSensors();
 
         var initialCoordinate = settingsPane.readSettings();
 
@@ -102,6 +101,10 @@ Page {
             }
 
             map.moveHereToCoordinate(coordinate, accuracyInMeters);
+        }
+
+        onNoCompassDetected: {
+            mapView.pageStack.push(Qt.resolvedUrl("NoCompassNote.qml"));
         }
     }
 

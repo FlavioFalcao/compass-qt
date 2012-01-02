@@ -3,88 +3,68 @@
  */
 
 import QtQuick 1.1
+import com.nokia.symbian 1.1
+import "../common"
 
-BorderDialog {
-    id: container
+Page {
+    id: page
 
-    shown: true
-    portrait: ui.portrait
+    orientationLock: PageOrientation.LockPortrait
 
-    Text {
-        x: 35; y: 42
-        color: "#eea604"
-        text: "Warning!"
-        font.bold: true
-        font.pixelSize: container.width * 0.056
+    tools: ToolBarLayout {
+        ToolButton {
+            iconSource: "toolbar-back"
+            onClicked: {
+                if (!page.pageStack.busy) {
+                    page.pageStack.pop();
+                }
+            }
+        }
     }
 
-    Flickable {
-        id: flickable
+    BorderDialog {
+        id: dialog
 
         anchors {
             fill: parent
-            leftMargin: container.border.left
-            rightMargin: container.border.right
-            topMargin: container.border.top
-            bottomMargin: container.border.bottom
+            bottomMargin: page.tools.height
         }
 
-        contentWidth: width
-        contentHeight: infoText.height
-        clip: true
+        heading: Text {
 
-        Text {
-            id: infoText
+            anchors.verticalCenter: parent.verticalCenter
 
-            width: flickable.width
-            font.pixelSize: container.width * 0.05
-            color: "white"
-            text: "<p><b>The application failed to start the compass " +
-                  "sensor.</b> This may indicate that your device has not " +
-                  "been equipped with the magnetometer hardware sensor " +
-                  "required by the compass feature.</p>" +
-                  "<p>You can still use the map and location features of " +
-                  "the application but the compass will not " +
-                  "function properly, i.e. the compass does not give the " +
-                  "correct bearing.</p>";
-
-            wrapMode: Text.Wrap
-        }
-    }
-
-    Rectangle {
-
-        anchors {
-            right: parent.right; rightMargin: 18
-            bottom: parent.bottom; bottomMargin: 18
-        }
-
-        width: Math.min(parent.width, parent.height) * 0.23
-        height: Math.max(parent.width, parent.height) * 0.09
-        radius: 6
-        color: "#434343"
-
-        Behavior on scale {
-            PropertyAnimation { duration: 60 }
-        }
-
-        Text {
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -4
-            }
-
-            text: "Ok"
             color: "#eea604"
+            text: "Warning!"
             font.bold: true
-            font.pixelSize: parent.height * 0.4
+            font.pixelSize: platformStyle.fontSizeLarge
         }
 
-        MouseArea {
+        Flickable {
+            id: flickable
+
             anchors.fill: parent
-            onPressed: parent.scale = 0.9
-            onReleased: parent.scale = 1.0
-            onClicked: container.shown = false
+
+            contentWidth: width
+            contentHeight: infoText.height
+
+            Text {
+                id: infoText
+
+                width: flickable.width
+                color: "white"
+                font.pixelSize: platformStyle.fontSizeMedium
+                horizontalAlignment: Text.AlignJustify
+                wrapMode: Text.Wrap
+                text: "<p><b>The application failed to start the compass " +
+                      "sensor.</b> This may indicate that your device has not " +
+                      "been equipped with the magnetometer hardware sensor " +
+                      "required by the compass feature.</p>" +
+                      "<p>You can still use the map and location features of " +
+                      "the application but the compass will not " +
+                      "function properly, i.e. the compass does not give the " +
+                      "correct bearing.</p>";
+            }
         }
     }
 }

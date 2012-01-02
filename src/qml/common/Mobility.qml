@@ -7,12 +7,20 @@ Item {
 
     signal compass(real azimuth, real calibrationLevel);
     signal position(variant coordinate, variant time, real accuracyInMeters);
+    signal noCompassDetected();
 
     // Inhibits screen saver if true
     property bool screenSaverInhibited: false
 
     // Activates compass sensor and position source
     property bool active: false
+
+    // Starts the compass sensor and position source
+    function startSensors() {
+        noCompassCheck.running = true;
+        compassSensor.active = true;
+        positionSource.active = true;
+    }
 
     /*!
       Creates dynamically the ScreenSaver element to inhibit the screensaver.
@@ -50,12 +58,29 @@ Item {
         property variant inhibiter: null
     }
 
+    Timer {
+        id: noCompassCheck
+
+        property bool compassReadingReceived: false
+
+        running: false
+        interval: 5000
+        onTriggered: {
+            if (!compassReadingReceived) {
+                // Compass reading hasn't been received from the sensor
+                // in 5 seconds.
+                container.noCompassDetected();
+                running = false;
+            }
+        }
+    }
+
     Compass {
         id: compassSensor
 
-        active: container.active
-
+        active: false
         onReadingChanged: {
+            noCompassCheck.compassReadingReceived = true;
             container.compass(reading.azimuth,
                               reading.calibrationLevel);
         }
@@ -64,7 +89,7 @@ Item {
     PositionSource {
         id: positionSource
 
-        active: container.active
+        active: false
         updateInterval: 5000
 
         onPositionChanged: {
