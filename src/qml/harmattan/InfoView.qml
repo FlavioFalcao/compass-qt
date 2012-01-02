@@ -42,21 +42,21 @@ Page {
         }
 
         contentWidth: width
-        contentHeight: infoText.height
+        contentHeight: infoText.height + 20
 
         Text {
             id: infoText
 
+            y: 10
             width: flickable.width - 14
             font.pixelSize: 20
             color: "black"
             horizontalAlignment: Text.AlignJustify
-            text: "<br>" +
-                  "<h2>Compass v" + container.version + "</h2>" +
+            text: "<h2>Compass v" + container.version + "</h2>" +
                   "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +
                   "user to determine the bearing to the desired location " +
-                  "using Ovi maps. The main purpose of the example " +
+                  "using Nokia maps. The main purpose of the example " +
                   "application is to demonstrate the use of the Maps and " +
                   "Navigation API.</p>" +
                   "<p>For more information about the project, see " +
@@ -81,13 +81,18 @@ Page {
                   "with the phone until the compass needle is positioned " +
                   "on top of the outlined orientating arrow. The desired " +
                   "bearing is now in front of you.</ul>" +
-                  "<p>The following on / off settings adjust the behavior " +
-                  "of the application:</p>" +
-                  "<p>Screen/keylock timeout:</p>" +
+                  "<p>The following settings adjust the behavior of the " +
+                  "application:</p>" +
+                  "<p>Tracking</p>" +
+                  "<ul>Gathers walked route points. The recycle bin clears " +
+                  "the route.</ul>" +
+                  "<p>Screen timeout:</p>" +
                   "<ul>Prevents the screensaver from getting activated.</ul>" +
-                  "<p>Map style:</p>" +
-                  "<ul>Toggles between the map and the satellite.</ul>" +
-                  "<p><br><br></p>"
+                  "<p>Satellitem map:</p>" +
+                  "<ul>Toggles between satellite and streep map.</ul>" +
+                  "<p>Note. The gathered route is stored in " +
+                  "<i>/home/user/Compass.kml</i> file and it can be opened "+
+                  "in external map application.</p>"
 
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)

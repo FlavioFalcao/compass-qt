@@ -64,7 +64,7 @@ Page {
                   "<p>Compass is a Nokia example application that " +
                   "teaches the use of a traditional compass and allows the " +
                   "user to determine the bearing to the desired location " +
-                  "using Ovi maps. The main purpose of the example " +
+                  "using Nokia maps. The main purpose of the example " +
                   "application is to demonstrate the use of the Maps and " +
                   "Navigation API.</p>" +
                   "<p>For more information about the project, see " +

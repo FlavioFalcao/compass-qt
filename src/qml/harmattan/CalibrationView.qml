@@ -22,14 +22,26 @@ Page {
 
         if(view.pageStack.currentPage === view && calibrationLevel >= 1.0 &&
                 !calibrationCompletedAnimation.running) {
+
+            // Prevents user to go to info page while the end of calibration
+            // animation is ongoing.
+            infoIcon.enabled = false;
             calibrationCompletedAnimation.start()
         }
     }
 
     tools: ToolBarLayout {
         ToolIcon {
+            id: infoIcon
+
+            property bool enabled: true
+
             iconSource: "../images/icon_info_small.png"
             onClicked: {
+                if (!enabled) {
+                    return;
+                }
+
                 if (view.pageStack.busy === false) {
                     view.pageStack.push(Qt.resolvedUrl("InfoView.qml"));
                 }
@@ -213,6 +225,7 @@ Page {
         ScriptAction {
             script: {
                 view.pageStack.pop();
+                infoIcon.enabled = true;
             }
         }
     }
