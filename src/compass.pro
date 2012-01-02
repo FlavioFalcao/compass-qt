@@ -73,20 +73,20 @@ unix:!symbian:!maemo5 {
 
     CONFIG += qdeclarative-boostable
 
-    target.path = /opt/usr/bin/compass
+    target.path = /opt/compass/bin
 
     qml.files = qml/common qml/harmattan qml/images
-    qml.path = /opt/usr/bin/compass/qml
+    qml.path = /opt/compass/qml
 
     desktopfile.files = qtc_packaging/debian_harmattan/$${TARGET}.desktop
     desktopfile.path = /usr/share/applications
 
     icon.files = icons/compass.png
-    icon.path = /usr/share/icons/hicolor/64x64/apps
+    icon.path = /usr/share/icons/hicolor/80x80/apps
 
     # The beep is used in calibration
     sound.files = beep.wav
-    sound.path = /opt/usr/bin/compass
+    sound.path = /opt/compass/bin
 
     # Classifies the application as a game, allows the beep to be heard.
     gamingclassify.files = qtc_packaging/debian_harmattan/compass.conf

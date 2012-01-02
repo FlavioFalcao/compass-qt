@@ -9,7 +9,7 @@ Homepage: <insert the upstream URL, if relevant>
 Package: compass
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Demo application utilizing QCompass API of Qt Mobility
+Description: Demo application utilizing Maps and Navigation API
  <insert long description, indented with spaces>
 XSBC-Maemo-Display-Name: Compass
 XB-Meego-Desktop-Entry: 
