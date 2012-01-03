@@ -99,7 +99,7 @@ Page {
                       "the route.</ul>" +
                       "<p>Screen timeout:</p>" +
                       "<ul>Prevents the screensaver from getting activated.</ul>" +
-                      "<p>Satellitem map:</p>" +
+                      "<p>Satellite map:</p>" +
                       "<ul>Toggles between satellite and streep map.</ul>" +
                       "<p>Note. The gathered route is stored in " +
                       "<i>E:\\Compass.kml</i> file and it can be opened in " +

@@ -19,22 +19,22 @@ BorderImage {
     anchors.fill: parent
     source: "../images/infoback.png"
     border {
-        top: 71
-        bottom: 10
-        left: 10
-        right: 10
+        top: 70
+        bottom: 0
+        left: 0
+        right: 0
     }
 
     Item {
         id: heading
 
         anchors {
-            top: parent.top; topMargin: 15
-            left: parent.left; leftMargin: 20
-            right: parent.right; rightMargin: 20
+            top: parent.top; topMargin: 6
+            left: parent.left; leftMargin: 15
+            right: parent.right; rightMargin: 15
         }
 
-        height: 59
+        height: 46
         clip: true
     }
 
@@ -43,10 +43,10 @@ BorderImage {
 
         anchors {
             fill: parent
-            topMargin: 86
-            bottomMargin: 15
-            leftMargin: 20
-            rightMargin: 20
+            topMargin: 65
+            bottomMargin: 3
+            leftMargin: 15
+            rightMargin: 15
         }
 
         clip: true

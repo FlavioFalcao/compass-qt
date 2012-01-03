@@ -6,19 +6,16 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "../common"
 
-
-
 Page {
     id: mapView
 
     orientationLock: PageOrientation.LockPortrait
 
     tools: ToolBarLayout {
-
         ToolIcon {
             id: infoViewButton
 
-            iconSource: "../images/icon_info_small.png"
+            iconSource: "../images/info.png"
             onClicked: {
                 if (mapView.pageStack.currentPage === mapView) {
                     mapView.pageStack.push(Qt.resolvedUrl("InfoView.qml"));
@@ -29,7 +26,7 @@ Page {
         ToolIcon {
             id: gpsIndicator
 
-            iconSource: "../images/icon_gps_small.png"
+            iconSource: "../images/center.png"
             onClicked: map.panToCoordinate(map.hereCenter)
         }
 
@@ -38,7 +35,8 @@ Page {
 
             property bool checked: false
 
-            iconSource: "../images/icon_compassmode_small.png"
+            iconSource: checked ? "../images/compass_selected.png"
+                                : "../images/compass.png"
             onClicked: { checked = !checked; }
         }
 
@@ -47,7 +45,7 @@ Page {
 
             property bool checked: false
 
-            platformIconId: "toolbar-settings"
+            platformIconId: checked ? "toolbar-settings-selected" : "toolbar-settings"
             onClicked: { checked = !checked; }
         }
     }
@@ -66,8 +64,6 @@ Page {
 
     Mobility {
         id: mobility
-
-        screenSaverInhibited: settingsPane.screenSaverInhibited;
 
         onCompass: {
             // Find if there is already calibration view open in page stack
@@ -121,7 +117,6 @@ Page {
         id: map
 
         anchors.fill: parent
-
         satelliteMap: settingsPane.satelliteMap
     }
 
@@ -141,7 +136,7 @@ Page {
         anchors {
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
+            bottom: parent.bottom; bottomMargin: mapView.tools.height
         }
 
         opacity: settingsToolButton.checked ? 1.0 : 0.0
@@ -169,7 +164,7 @@ Page {
                 target: compass
                 opacity: 1.0; rotation: 0
                 width: 0.483607 * height
-                height: mapView.height
+                height: mapView.height - mapView.tools.height
                 x: (mapView.width - width) / 2; y: 0;
                 movable: false
                 compassRotable: false

@@ -36,7 +36,7 @@ Page {
 
             property bool enabled: true
 
-            iconSource: "../images/icon_info_small.png"
+            iconSource: "../images/info.png"
             onClicked: {
                 if (!enabled) {
                     return;
@@ -119,7 +119,7 @@ Page {
         id: scale
 
         anchors {
-            bottom: parent.bottom; bottomMargin: 45
+            bottom: parent.bottom; bottomMargin: view.tools.height + 5
             left: parent.left; leftMargin: 5
             right: parent.right; rightMargin: 5
         }
@@ -158,13 +158,12 @@ Page {
             }
             smooth: true
             fillMode: Image.PreserveAspectFit
-
             source: "../images/calibration8.png"
         }
 
         Text {
             anchors {
-                top: parent.verticalCenter; topMargin: 20
+                top: parent.verticalCenter; topMargin: 50
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.right
@@ -174,7 +173,7 @@ Page {
                   "the magnetometer sensor."
             color: "black"
             wrapMode: Text.WordWrap
-            font.pixelSize: 25
+            font.pixelSize: 26
         }
     }
 

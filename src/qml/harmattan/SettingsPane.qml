@@ -34,8 +34,6 @@ Item {
         initialCoordinate.latitude = persistentStorage.loadSetting(
                     privateProperties.initialLatitudeString, 62.2410021);
 
-
-        screenTimeoutSwitch.checked = screenSaverInhibited;
         satelliteMapSwitch.checked = satelliteMap;
         trackingSwitch.checked = trackingOn;
 
@@ -113,91 +111,35 @@ Item {
         id: persistentStorage
     }
 
-    Rectangle {
-        id: screenLockSetting
+    Image {
+        id: mapStyleSetting
 
-        color: "#CC000000"
         height: 70
+        source: "../images/harmattan_toolbar.png"
 
         anchors {
             bottom: parent.bottom; bottomMargin: 6
             left: parent.left
-            right: parent.horizontalCenter; rightMargin: 2
-        }
-
-        Text {
-            id: screenTimeoutText
-
-            anchors {
-                left: parent.left; leftMargin: 6
-                top: parent.top; topMargin: 6
-            }
-
-            font.pointSize: 14
-            color: "white"
-            text: "Screen timeout";
-            style: Text.Raised
-            styleColor: "gray"
-        }
-
-        Switch {
-            id: screenTimeoutSwitch
-
-            anchors {
-                verticalCenter: parent.verticalCenter
-                right: parent.right; rightMargin: 12
-            }
-
-            onCheckedChanged: {
-                if (checked) {
-                    pane.screenSaverInhibited = true;
-                    persistentStorage.saveSetting(
-                                privateProperties.screenSaverInhibitedString,
-                                true);
-                }
-                else {
-                    pane.screenSaverInhibited = false;
-                    persistentStorage.saveSetting(
-                                privateProperties.screenSaverInhibitedString,
-                                false);
-                }
-            }
-        }
-    }
-
-    Rectangle {
-        id: mapStyleSetting
-
-        color: "#CC000000"
-        height: 70
-
-        anchors {
-            bottom: parent.bottom; bottomMargin: 6
-            left: parent.horizontalCenter; leftMargin: 2
             right: parent.right
         }
 
-        Text {
+        Label {
             id: mapStyleText
 
             anchors {
-                left: parent.left; leftMargin: 6
-                top: parent.top; topMargin: 6
+                left: parent.left; leftMargin: 30
+                verticalCenter: parent.verticalCenter
             }
 
-            font.pointSize: 14
-            color: "white"
             text: "Satellite map"
-            style: Text.Raised
-            styleColor: "gray"
         }
 
         Switch {
             id: satelliteMapSwitch
 
             anchors {
-                verticalCenter: parent.verticalCenter
-                right: parent.right; rightMargin: 12
+                centerIn: parent
+                horizontalCenterOffset: 66
             }
 
             onCheckedChanged: {
@@ -217,39 +159,35 @@ Item {
         }
     }
 
-    Rectangle {
+    Image {
         id: trackingSetting
 
         anchors {
             left: parent.left
             right: parent.right
-            bottom: screenLockSetting.top; bottomMargin: 6
+            bottom: mapStyleSetting.top; bottomMargin: 6
         }
 
-        color: "#CC000000"
+        source: "../images/harmattan_toolbar.png"
         height: 70
 
-        Text {
+        Label {
             id: trackingText
 
             anchors {
-                left: parent.left; leftMargin: 6
-                top: parent.top; topMargin: 6
+                left: parent.left; leftMargin: 30
+                verticalCenter: parent.verticalCenter
             }
 
-            font.pointSize: 14
-            color: "white"
             text: "Tracking"
-            style: Text.Raised
-            styleColor: "gray"
         }
 
         Switch {
             id: trackingSwitch
 
             anchors {
-                verticalCenter: parent.verticalCenter
-                right: parent.horizontalCenter; rightMargin: 14
+                centerIn: parent
+                horizontalCenterOffset: 66
             }
 
             onCheckedChanged: {
@@ -282,7 +220,7 @@ Item {
         ToolIcon {
             anchors {
                 verticalCenter:  parent.verticalCenter
-                right: parent.right; rightMargin: 6
+                right: parent.right
             }
             platformIconId: "toolbar-delete"
             onClicked: {

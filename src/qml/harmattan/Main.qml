@@ -15,16 +15,14 @@ Window {
             top: statusBar.bottom
             left: parent.left
             right: parent.right
-            bottom: toolBar.top
+            bottom: parent.bottom
         }
 
         toolBar: toolBar
 
         Component.onCompleted: {
             pageStack.push(Qt.resolvedUrl("MapView.qml"));
-
-            // We use the black theme
-            theme.inverted = true;
+            console.log("Toolbar height: " + toolBar.height)
         }
     }
 
@@ -32,6 +30,12 @@ Window {
         id: statusBar
 
         anchors.top: parent.top
+    }
+
+    ToolBarStyle {
+        id: toolBarStyle
+
+        background: "../images/harmattan_toolbar.png"
     }
 
     ToolBar {
@@ -42,5 +46,7 @@ Window {
             right: parent.right
             bottom: parent.bottom
         }
+
+        platformStyle: toolBarStyle
     }
 }

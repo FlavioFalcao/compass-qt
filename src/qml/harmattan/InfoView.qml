@@ -26,14 +26,17 @@ Page {
     BorderDialog {
         id: dialog
 
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            bottomMargin: container.tools.height
+        }
 
+        source: "../images/infoback_harmattan.png"
         heading: Text {
             anchors.verticalCenter: parent.verticalCenter
 
-            color: "#eea604"
+            color: "#333333"
             text: "<h2>Compass v" + container.version + "</h2>"
-            font.bold: true
             font.pixelSize: 26
         }
 
@@ -51,7 +54,7 @@ Page {
                 y: 10
                 width: flickable.width - 14
                 font.pixelSize: 20
-                color: "white"
+                color: "#202020"
                 horizontalAlignment: Text.AlignJustify
                 text: "<p>Compass is a Nokia example application that " +
                       "teaches the use of a traditional compass and allows the " +
@@ -88,7 +91,7 @@ Page {
                       "the route.</ul>" +
                       "<p>Screen timeout:</p>" +
                       "<ul>Prevents the screensaver from getting activated.</ul>" +
-                      "<p>Satellitem map:</p>" +
+                      "<p>Satellite map:</p>" +
                       "<ul>Toggles between satellite and streep map.</ul>" +
                       "<p>Note. The gathered route is stored in " +
                       "<i>/home/user/Compass.kml</i> file and it can be opened "+

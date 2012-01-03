@@ -71,7 +71,7 @@ Item {
 
         anchors {
             fill: parent
-            margins: -40
+            //margins: -40
         }
 
         plugin : Plugin { name : "nokia" }
