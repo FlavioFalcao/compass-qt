@@ -20,6 +20,12 @@ Item {
         noCompassCheck.running = true;
         compassSensor.active = true;
         positionSource.active = true;
+
+        if (compassSensor.active == false) {
+            // There is also noCompass timer that will detect if not
+            // compass sensor readings are retrieved.
+            console.log("Compass sensor rejected to go active!");
+        }
     }
 
     /*!

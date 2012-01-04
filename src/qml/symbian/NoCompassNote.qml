@@ -30,12 +30,12 @@ Page {
             bottomMargin: page.tools.height
         }
 
+        source: "../images/infoback_symbian.png"
         heading: Text {
-
             anchors.verticalCenter: parent.verticalCenter
 
             color: "#eea604"
-            text: "Warning!"
+            text: "<h2>Warning!</h2>"
             font.bold: true
             font.pixelSize: platformStyle.fontSizeLarge
         }

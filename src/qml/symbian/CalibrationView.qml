@@ -188,7 +188,7 @@ Page {
             margins: 5
         }
 
-        iconSource: "../images/icon_info.png"
+        iconSource: "../images/info-white.png"
         onClicked: {
             if (!enabled) {
                 return;

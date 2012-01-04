@@ -17,7 +17,6 @@ BorderImage {
     default property alias children: centerArea.children
 
     anchors.fill: parent
-    source: "../images/infoback.png"
     border {
         top: 70
         bottom: 0

@@ -24,7 +24,7 @@ Page {
         ToolButton {
             id: gpsIndicator
 
-            iconSource: "../images/icon_gps.png"
+            iconSource: "../images/center-white.png"
             onClicked: map.panToCoordinate(map.hereCenter)
         }
 
@@ -32,7 +32,7 @@ Page {
             id: compassMode
 
             checkable: true
-            iconSource: "../images/icon_compassmode.png"
+            iconSource: "../images/compass-white.png"
         }
 
         ToolButton {
@@ -120,6 +120,7 @@ Page {
 
         anchors.fill: parent
 
+        mapElement.anchors.margins: -40
         satelliteMap: settingsPane.satelliteMap
     }
 
@@ -153,7 +154,7 @@ Page {
             margins: 5
         }
 
-        iconSource: "../images/icon_info.png"
+        iconSource: "../images/info-white.png"
         opacity: settingsPane.opacity
         onClicked: {
             if (mapView.pageStack.busy === false) {

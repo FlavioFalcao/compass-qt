@@ -1,4 +1,4 @@
-Compass v1.1
+Compass v2.0
 ============
 
 Compass is a Forum Nokia example application that teaches the use of a
@@ -7,7 +7,7 @@ location using Ovi maps. The main purpose of the example application is to
 demonstrate the use of the Maps and Navigation API.
 
 For more information about the project, see:
-https://projects.developer.nokia.com/compass
+http://projects.developer.nokia.com/compass
 
 
 FILES
@@ -119,7 +119,7 @@ Mobile device (Symbian^1 and Symbian^3)
 Mobile device (MeeGo 1.2 Harmattan)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Copy the compass_v1_1_harmattan.deb file into a specific folder on the
+1. Copy the compass_v2_0_harmattan.deb file into a specific folder on the
    device.
 
 2. Start Terminal. Type 'ssh root@localhost' to get root access. The password
@@ -128,7 +128,7 @@ Mobile device (MeeGo 1.2 Harmattan)
 3. 'cd' to the directory to which you copied the package.
 
 4. As root, install the package:
-   dpkg -i compass_v1_1_harmattan.deb
+   dpkg -i compass_v2_0_harmattan.deb
 
 5. Locate the Compass icon in the Applications view and tap it to launch
    the application.
@@ -178,8 +178,6 @@ Prevent screensaver:
 Satellite map:
     Toggles between the map and the satellite.
 
-Use sound in calibration:
-    Defines whether audio feedback is used during the calibration process.
 
 
 COMPATIBILITY
@@ -209,11 +207,12 @@ Tested on:
 
 Developed with:
 
-- Qt SDK 1.1
+- Qt SDK 1.1.4
 
 
 VERSION HISTORY
 -------------------------------------------------------------------------------
+2.0 New UI with Qt Quick Components.
 1.1 Added support for Symbian^1 and MeeGo 1.2 Harmattan.
 1.0 Compass data via Qt QCompass.
 0.9 Added better graphics. Possibility to disable audio feedback on 

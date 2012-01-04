@@ -10,7 +10,7 @@ import "../common"
 Page {
     id: container
 
-    property string version: "1.3"
+    property string version: "2.0"
 
     orientationLock: PageOrientation.LockPortrait
 
@@ -39,6 +39,7 @@ Page {
             bottomMargin: container.tools.height
         }
 
+        source: "../images/infoback_symbian.png"
         heading: Text {
             anchors.verticalCenter: parent.verticalCenter
 

@@ -137,7 +137,7 @@ Item {
         id: persistentStorage
     }
 
-    Rectangle {
+    Image {
         id: screenLockSetting
 
         anchors {
@@ -147,12 +147,12 @@ Item {
         }
 
         height: 80
-        color: "#7F000000"
+        source: "../images/symbian_toolbar.png"
 
         Text {
             id: screenTimeoutText
 
-            x: 3; y: 3
+            x: 5; y: 5
             font.pointSize: 5
             color: "white"
             text: "Screen timeout";
@@ -199,7 +199,7 @@ Item {
         }
     }
 
-    Rectangle {
+    Image {
         id: mapStyleSetting
 
         anchors {
@@ -209,12 +209,12 @@ Item {
         }
 
         height: 80
-        color: "#7F000000"
+        source: "../images/symbian_toolbar.png"
 
         Text {
             id: mapStyleText
 
-            x: 3; y: 3
+            x: 5; y: 5
             font.pointSize: 5
             color: "white"
             text: "Map style"
@@ -261,7 +261,7 @@ Item {
         }
     }
 
-    Rectangle {
+    Image {
         id: trackingSetting
 
         anchors {
@@ -271,12 +271,12 @@ Item {
         }
 
         height: 80
-        color: "#7F000000"
+        source: "../images/symbian_toolbar.png"
 
         Text {
             id: trackingText
 
-            x: 3; y: 3
+            x: 5; y: 5
             font.pointSize: 5
             color: "white"
             text: "Tracking"

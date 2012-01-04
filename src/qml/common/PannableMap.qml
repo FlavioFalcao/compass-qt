@@ -14,6 +14,7 @@ Item {
     property bool satelliteMap: false
     property alias hereCenter: mapCircle.center
     property alias hereAccuracy: mapCircle.radius
+    property alias mapElement: map
 
     /*
       Adds a coordinate to the walked route.
@@ -71,7 +72,6 @@ Item {
 
         anchors {
             fill: parent
-            //margins: -40
         }
 
         plugin : Plugin { name : "nokia" }

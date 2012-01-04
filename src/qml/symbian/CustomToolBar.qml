@@ -32,6 +32,16 @@ Item {
         ? privateStyle.toolBarHeightPortrait
         : privateStyle.toolBarHeightLandscape
 
+
+    Image {
+        id: background
+
+        anchors.fill: parent
+        opacity: 0.9
+        source: "../images/symbian_toolbar.png"
+    }
+
+    /*
     BorderImage {
         id: background
         anchors.fill: parent
@@ -39,6 +49,7 @@ Item {
         border { left: 20; top: 20; right: 20; bottom: 20 }
         opacity: 0.5
     }
+    */
 
     //Prevents mouse events from propagating to elements below the ToolBar
     MouseArea {
