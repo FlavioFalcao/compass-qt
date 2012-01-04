@@ -58,12 +58,7 @@ symbian {
     qmlfiles.sources = qml/common qml/symbian qml/images
     qmlfiles.path = qml
 
-    # The backup and restore functionality, will install to application's
-    # private folder.
-    backup.sources = backup_registration.xml
-    backup.path = !:/private/E4B73955
-
-    DEPLOYMENT += sound backup qmlfiles
+    DEPLOYMENT += sound qmlfiles
 }
 
 # Harmattan

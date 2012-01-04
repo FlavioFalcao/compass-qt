@@ -35,9 +35,11 @@ Page {
         heading: Text {
             anchors.verticalCenter: parent.verticalCenter
 
-            color: "#333333"
+            color: "#555555"
             text: "<h2>Compass v" + container.version + "</h2>"
             font.pixelSize: 26
+            styleColor: "white"
+            style: Text.Raised
         }
 
         Flickable {
