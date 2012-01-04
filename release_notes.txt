@@ -1,218 +1,186 @@
 Compass v2.0
 ============
 
-Compass is a Forum Nokia example application that teaches the use of a
+Compass is a Nokia Developer example application that teaches the use of a
 traditional compass and allows the user to determine the bearing to the desired
 location using Ovi maps. The main purpose of the example application is to
 demonstrate the use of the Maps and Navigation API.
 
-For more information about the project, see:
-http://projects.developer.nokia.com/compass
+This example application is hosted in Nokia Developer Projects:
+- http://projects.developer.nokia.com/compass
+
+For more information on implementation and porting, visit the wiki pages:
+- http://projects.developer.nokia.com/compass/wiki
 
 
-FILES
+What's new
+----------
+
+The UI of the application has been redesigned and it has been implemented by
+using Qt Quick Components.
+
+
+1. Usage
 -------------------------------------------------------------------------------
 
-bin/*
+The application uses QML code as much as possible. Some custom elements are
+implemented by using Qt code such as Arc element to draw the arc-style progress
+bar in the calibration view and the PersistentStorage element to allow storing
+and retrieving of data to the devices persistent storage.
 
-- Contains the compiled binaries.
+The walked route is stored in KML file format and it can be opened in many
+external map applications.
 
-src/arc.h
-
-- Implements a custom QML element, Arc, that can draw an arc. Arc is used in
-  the calibration view to represent the calibration level.
-
-src/declarativeview.h / cpp
-
-- Derives QDeclarativeView to handle multitouch events.
-
-src/main.cpp
-
-- Locks the orientation to portrait, creates the MainWindow object, and sets
-  the MainWindow object to full screen.
-
-src/mainwindow.h / cpp
-
-- Creates the declarative intepreter, compass sensor / filter, orientation
-  sensor / filter, and geo position information source. Connects the sensor's
-  signals to QML functions and shows the QML UI.
-  
-src/orientationfilter.h
-
-- Multiderives QObject and QOrientationFilter to allow emitting of Qt sinals
-  when the orientation changes.
-  
-src/backup_registration.xml
-
-- Describes the backup / restore logic on how to backup the application in
-  Symbian OS.
-  
-src/qml/BorderDialog.qml
-
-- Implements a dialog that has nice borders. The dialog also handles the
-  orientation changes with animations.
-  
-src/qml/CalibrationView.qml
-
-- Implements the calibration view, shows the compass scale and needle to
-  indicate the calibration level, plays feedback effects, and shows the
-  calibration completed dialog.
-
-src/qml/Compass.qml
-
-- Implements the compass with a compass plate, scale plate, and needle.
-  Contains mouse areas to implement the rotation of the compass and the scale
-  plate as well as moving the compass.
-  
-src/qml/InfoView.qml
-
-- Uses BorderDialog.qml to show the information view.
-
-src/qml/PannableMap.qml
-
-- Implements the map that can be panned. Also shows the "you are here" circle
-  on the map.
-  
-src/qml/setting.js
-
-- Implements the logic to interact with SQLite DB to load / save the
-  application settings.
-  
-src/qml/SettingsPane.qml
-
-- Uses BorderDialog.qml to show the settings view. The ListModel is used to
-  show the settings. The SQLite DB content is used as a data model for the
-  view.
-  
-src/qml/Ui.qml
-
-- The main QML element in this application. Creates all other elements and
-  coordinates the interaction between elements.
+For more information about the KML file format:
+- http://www.opengeospatial.org/standards/kml/
 
 
-KNOWN ISSUES
+2. Prerequisites
 -------------------------------------------------------------------------------
 
-- The walked route cannot be drawn on top of the map by using the MapPolyLine
-  element. This feature will be implemented when Qt Mobility is mature enough 
-  to support it.
-  
-  
-INSTALLATION INSTRUCTIONS
+ - Qt basics
+ - Qt Quick basics
+
+
+3. Project structure and implementation
 -------------------------------------------------------------------------------
 
-Mobile device (Symbian^1 and Symbian^3)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3.1 Folders
+-----------
 
-0. The Qt libraries (4.7.3 or higher) must be installed. See COMPATIBILITY for
-   more information about the installation.
-
-1. Drag the appropriate SIS file to the Nokia Ovi Suite while the device is
-   connected with the USB cable.
-
-2. After the installation is complete, return to the application menu and
-   select the Applications folder.
-   
-3. Locate the Compass icon and select it to launch the application.
-
-
-Mobile device (MeeGo 1.2 Harmattan)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Copy the compass_v2_0_harmattan.deb file into a specific folder on the
-   device.
-
-2. Start Terminal. Type 'ssh root@localhost' to get root access. The password
-   is 'rootme'.
-
-3. 'cd' to the directory to which you copied the package.
-
-4. As root, install the package:
-   dpkg -i compass_v2_0_harmattan.deb
-
-5. Locate the Compass icon in the Applications view and tap it to launch
-   the application.
+ |                    The root folder contains the license information and this
+ |                    file (release notes).
+ |
+ |- bin               Contains the compiled binaries.
+ |
+ |- doc               Contains documents and graphics projects that were used
+ |                    in development of the application.
+ |
+ |- src               Contains the project file of the application and Qt/C++
+    |                 source code.
+    |
+    |- icons          Contains application icons.
+    |
+    |- qml            Root folder for QML and Javascript files.
+    |  |
+    |  |- common      Common, cross-platform QML and Javascript files.
+    |  |
+    |  |- harmattan   Harmattan specific QML and Javascript files.
+    |  |
+    |  |- images      Graphics used in the QML files.
+    |  |
+    |  |- symbian     Symbian specific QML and Javascript files.
+    |
+    |- qtc_packaging  Contains the Harmattan (Debian) packaging files.
 
 
-RUNNING THE APPLICATION
+3.3 Used APIs/QML elements/Qt Quick Components
+----------------------------------------------
+
+The application uses following QML elements that are not so commonly used.
+
+Maps and Navigation API:
+- Map
+- MapPolyLine
+- MapCircle
+
+Gesture handling:
+- PinchArea
+
+Mobility:
+- Compass
+- PositionSource
+
+The Qt Quick Components toolbar is customized in Symbian version, see the code
+in src/qml/symbian/CustomToolBar.qml. In the Harmattan version the toolbar is
+customized by using ToolBarStyle.
+
+
+4. Compatibility
 -------------------------------------------------------------------------------
 
-The application has two modes: Compass mode and Map mode.
+ - Symbian devices with Qt 4.7.4 or higher.
+ - MeeGo 1.2 Harmattan.
 
-In Map mode you can view the map with your current position retrieved by GPS 
-and indicated with a red circle. The radius of the red circle changes 
-according to the GPS fix accuracy. The more accurate the fix, the smaller the 
-circle, indicating your current location more precisely. The map can be panned 
-by dragging it with a finger. The zoom level can be changed by pinching the 
-map with two fingers. The GPS indicator in the upper left corner will iterate 
-when the phone is trying to retrieve the GPS fix. The indicator is steady when 
-the signal is received from the satellites. Tapping the GPS indicator will pan 
-the map to the current location.
+Tested to work on Nokia C7 and Nokia N9. Developed with Qt SDK 1.1.4.
 
-To navigate to a certain position in a map:
+4.1 Required Capabilities
+-------------------------
 
-1. Switch to Map mode, place the edge of the compass on the map so that it
-   connects the current location with the desired destination, and turn the
-   scale of the compass to the grid north.
-
-2. Switch back to Compass mode and turn around with the phone until the 
-   compass needle is positioned on top of the outlined orientating arrow. The
-   desired bearing is now in front of you.
-
-   
-The following on / off settings adjust the behavior of the application:
-
-Auto north in the map:
-    Automatically turn the scale of the compass to the grid north when the
-    compass is rotated in Map mode.
-
-Bearing turnable in the Compass mode:
-    The turnability of the bearing can be prevented in Compass mode. By
-    setting the turnability off you can prevent accidential touch events which
-    would affect the navigation in the field. When turnability is enabled, the 
-    compass application can be used with a real paper map.
-    
-Prevent screensaver:
-    Prevents the screensaver from getting activated.
-
-Satellite map:
-    Toggles between the map and the satellite.
+None; The application can be self signed on Symbian.
 
 
+4.2 Known Issues
+----------------
 
-COMPATIBILITY
+None.
+
+
+5. Building, installing, and running the application
 -------------------------------------------------------------------------------
 
-- Symbian^1 and Symbian^3 with Qt version 4.7.3 or higher.
+5.1 Preparations
+----------------
 
-  1. Download Qt for Symbian (4.7.3 or higher) from qt.nokia.com.
-  
-  2. Drag qt_installer.sis on top of the device in Nokia Ovi Suite while the 
-     device is connected. The SIS package is found in the installation folder 
-     of Qt for Symbian (4.7.3 or higher).
-     
-- MeeGo 1.2 Harmattan
+Check that you have the latest Qt SDK installed in the development environment
+and the latest Qt version on the device.
 
-     
-Tested on:
+Qt Quick Components 1.1 or higher is required.
 
-- Nokia 5800 XpressMusic
-- Nokia C6-01
-- Nokia C7-00
-- Nokia E7-00
-- Nokia N8-00
-- Nokia X7-00
-- Nokia N950
+5.2 Using the Qt SDK
+--------------------
+
+You can install and run the application on the device by using the Qt SDK.
+Open the project in the SDK, set up the correct target (depending on the device
+platform), and click the Run button. For more details about this approach,
+visit the Qt Getting Started section at Nokia Developer
+(http://www.developer.nokia.com/Develop/Qt/Getting_started/).
+
+5.3 Symbian device
+------------------
+
+Make sure your device is connected to your computer. Locate the .sis
+installation file and open it with Ovi Suite. Accept all requests from Ovi
+Suite and the device. Note that you can also install the application by copying
+the installation file onto your device and opening it with the Symbian File
+Manager application.
+
+After the application is installed, locate the application icon from the
+application menu and launch the application by tapping the icon.
+
+5.4 Nokia N9 and Nokia N950
+---------------------------
+
+Copy the application Debian package onto the device. Locate the file with the
+device and run it; this will install the application. Note that you can also
+use the terminal application and install the application by typing the command
+'dpkg -i compass_v2_0_harmattan.deb' on the command line. To install the
+application using the terminal application, make sure you have the right
+privileges to do so (e.g. root access).
+
+Once the application is installed, locate the application icon from the
+application menu and launch the application by tapping the icon.
 
 
-Developed with:
-
-- Qt SDK 1.1.4
-
-
-VERSION HISTORY
+6. License
 -------------------------------------------------------------------------------
-2.0 New UI with Qt Quick Components.
+
+See the license text file delivered with this project. The license file is also
+available online at
+- http://projects.developer.nokia.com/compass/browser/Licence.txt
+
+
+7. Related documentation
+-------------------------------------------------------------------------------
+Qt Quick Components
+- http://doc.qt.nokia.com/qt-components-symbian-1.0/index.html
+- http://harmattan-dev.nokia.com/docs/library/html/qt-components/qt-components.html
+
+
+8. Version history
+-------------------------------------------------------------------------------
+
+2.0 New UI with Qt Quick Components, added tracking feature.
 1.1 Added support for Symbian^1 and MeeGo 1.2 Harmattan.
 1.0 Compass data via Qt QCompass.
 0.9 Added better graphics. Possibility to disable audio feedback on 
