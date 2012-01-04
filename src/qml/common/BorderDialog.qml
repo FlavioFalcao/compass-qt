@@ -45,7 +45,7 @@ BorderImage {
             topMargin: 65
             bottomMargin: 3
             leftMargin: 15
-            rightMargin: 15
+            rightMargin: 5
         }
 
         clip: true

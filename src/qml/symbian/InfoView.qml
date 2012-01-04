@@ -61,7 +61,7 @@ Page {
             Text {
                 id: infoText
 
-                width: flickable.width - 10
+                width: flickable.width - 18
                 font.pixelSize: platformStyle.fontSizeMedium
                 color: "white"
                 horizontalAlignment: Text.AlignJustify

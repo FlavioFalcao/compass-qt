@@ -54,7 +54,7 @@ Page {
                 id: infoText
 
                 y: 10
-                width: flickable.width - 14
+                width: flickable.width - 20
                 font.pixelSize: 20
                 color: "#202020"
                 horizontalAlignment: Text.AlignJustify
