@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2012 Nokia Corporation.
+ */
+
 #ifndef QMLLOADER_H
 #define QMLLOADER_H
 

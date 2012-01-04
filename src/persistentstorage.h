@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2012 Nokia Corporation.
+ */
+
 #ifndef PERSISTENTSTORAGE_H
 #define PERSISTENTSTORAGE_H
 

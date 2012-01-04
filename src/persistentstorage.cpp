@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2012 Nokia Corporation.
+ */
+
 #include <QDebug>
 #include <QDomDocument>
 #include <QDeclarativeItem>

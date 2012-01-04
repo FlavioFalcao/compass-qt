@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2012 Nokia Corporation.
+ */
+
 #include <QtDeclarative>
 #include "arc.h"
 #include "persistentstorage.h"

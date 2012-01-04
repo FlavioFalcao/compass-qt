@@ -1,4 +1,4 @@
-# Copyright (c) 2011 Nokia Corporation.
+# Copyright (c) 2012 Nokia Corporation.
 
 QT       += declarative opengl xml
 CONFIG   += qt-components

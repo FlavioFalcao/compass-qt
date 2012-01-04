@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Nokia Corporation.
+ * Copyright (c) 2012 Nokia Corporation.
  */
 
 import QtQuick 1.1
@@ -22,7 +22,6 @@ Window {
 
         Component.onCompleted: {
             pageStack.push(Qt.resolvedUrl("MapView.qml"));
-            console.log("Toolbar height: " + toolBar.height)
         }
     }
 

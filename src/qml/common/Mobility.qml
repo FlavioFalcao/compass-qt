@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2012 Nokia Corporation.
+ */
+
 import QtQuick 1.1
 import QtMobility.sensors 1.2
 import QtMobility.location 1.2
