@@ -45,7 +45,8 @@ Page {
 
             property bool checked: false
 
-            platformIconId: checked ? "toolbar-settings-selected" : "toolbar-settings"
+            iconSource: checked ? "../images/settings_selected.png"
+                                : "../images/settings.png"
             onClicked: { checked = !checked; }
         }
     }

@@ -91,8 +91,6 @@ Page {
                       "<p>Tracking</p>" +
                       "<ul>Gathers walked route points. The recycle bin clears " +
                       "the route.</ul>" +
-                      "<p>Screen timeout:</p>" +
-                      "<ul>Prevents the screensaver from getting activated.</ul>" +
                       "<p>Satellite map:</p>" +
                       "<ul>Toggles between satellite and streep map.</ul>" +
                       "<p>Note. The gathered route is stored in " +
