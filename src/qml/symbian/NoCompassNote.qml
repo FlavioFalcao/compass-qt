@@ -17,9 +17,17 @@ Page {
             onClicked: {
                 if (!page.pageStack.busy) {
                     page.pageStack.pop();
+
+                    // This is required to show our custom toolbar
+                    page.pageStack.currentPage.showToolBar();
                 }
             }
         }
+    }
+
+    Component.onCompleted: {
+        // Extra step is required to set the custom toolbar
+        window.myTools = tools;
     }
 
     BorderDialog {
@@ -63,8 +71,16 @@ Page {
                       "<p>You can still use the map and location features of " +
                       "the application but the compass will not " +
                       "function properly, i.e. the compass does not give the " +
-                      "correct bearing.</p>";
+                      "correct bearing.</p>" +
+                      "<p><br></p>" +
+                      "<p><br></p>" +
+                      "<p><br></p>" +
+                      "<p><br></p>"
             }
+        }
+
+        ScrollDecorator {
+            flickableItem: flickable
         }
     }
 }
