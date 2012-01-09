@@ -65,12 +65,12 @@ Page {
                 font.pixelSize: platformStyle.fontSizeMedium
                 color: "white"
                 horizontalAlignment: Text.AlignJustify
-                text: "<p>Compass is a Nokia example application that " +
-                      "teaches the use of a traditional compass and allows the " +
-                      "user to determine the bearing to the desired location " +
-                      "using Nokia maps. The main purpose of the example " +
-                      "application is to demonstrate the use of the Maps and " +
-                      "Navigation API.</p>" +
+                text: "<p>Compass is a Nokia Developer example application " +
+                      "that teaches the use of a traditional compass and " +
+                      "allows the user to determine the bearing to the " +
+                      "desired location using Nokia maps. The main purpose " +
+                      "of the example application is to demonstrate the use " +
+                      "of the Maps and Navigation API.</p>" +
                       "<p>For more information about the project, see " +
                       "<a href=\"https://projects.developer.nokia.com/compass\">" +
                       "https://projects.developer.nokia.com/compass</a>.</p>" +
