@@ -53,7 +53,9 @@ Item {
     */
     function clearRoute() {
         while (RouteScript.routes.length > 0) {
-            map.removeMapObject(RouteScript.routes.pop());
+            var mapPolyLine = RouteScript.routes.pop();
+            map.removeMapObject(mapPolyLine);
+            mapPolyLine.destroy();
         }
 
         RouteScript.route = null;
@@ -85,7 +87,7 @@ Item {
     Component {
         id: lineComponent
 
-        MapPolyline {}
+        MapPolyline { }
     }
 
     Map {
