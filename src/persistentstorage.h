@@ -28,14 +28,15 @@ public:
 
     Q_INVOKABLE void addRouteCoordinate(const QVariant &varLongitude,
                                         const QVariant &varLatitude,
-                                        const QVariant &varAltitude);
+                                        const QVariant &varAltitude,
+                                        const QVariant &varNewRoute);
     Q_INVOKABLE void createWaypoint(const QVariant &varName,
                                     const QVariant &varTimestamp,
                                     const QVariant &varLongitude,
                                     const QVariant &varLatitude,
                                     const QVariant &varAltitude);
     Q_INVOKABLE void clearRoute();
-    Q_INVOKABLE void loadRoute(const QVariant &varMapPolyLine);
+    Q_INVOKABLE void loadRoute(const QVariant &varPannableMap);
     
 protected:
     QSettings *m_Settings;
@@ -47,6 +48,7 @@ protected:
     static const QString m_KmlFilePath;
 
     void createDocument();
+    void createRoutePlaceMark();
     bool loadDocument();
     bool saveDocument();
 };

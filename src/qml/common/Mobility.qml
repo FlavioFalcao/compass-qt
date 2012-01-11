@@ -10,7 +10,12 @@ Item {
     id: container
 
     signal compass(real azimuth, real calibrationLevel);
-    signal position(variant coordinate, variant time, real accuracyInMeters);
+    signal position(variant coordinate,
+                    variant time,
+                    bool altitudeValid,
+                    real accuracyInMeters);
+
+    // Signaled only once when no-compass is detected
     signal noCompassDetected();
 
     // Inhibits screen saver if true
@@ -102,6 +107,7 @@ Item {
 
             container.position(position.coordinate,
                                position.timestamp,
+                               position.altitudeValid,
                                accuracyInMeters);
         }
     }

@@ -52,7 +52,7 @@ Page {
         map.hereCenter.longitude = initialCoordinate.longitude;
         map.hereCenter.latitude = initialCoordinate.latitude;
 
-        settingsPane.readRoute(map.route);
+        settingsPane.readRoute(map);
 
         // Extra step is required to set the custom toolbar
         showToolBar();
@@ -87,15 +87,16 @@ Page {
         onPosition: {
             console.log("Position: " + coordinate.latitude +
                         ", " + coordinate.longitude +
+                        " alt " + coordinate.altitude + " m" +
                         " accuracy " + accuracyInMeters + " m");
 
             settingsPane.saveInitialCoordinate(coordinate);
 
-            if (settingsPane.trackingOn === true && accuracyInMeters < 75) {
+            if (settingsPane.trackingOn && accuracyInMeters < 75 && altitudeValid) {
                 // The recording is on and the GPS position is accurate
                 // enough.
-                settingsPane.saveRouteCoordinate(coordinate, time, accuracyInMeters);
-                map.addRoute(coordinate);
+                var newRoute = settingsPane.saveRouteCoordinate(coordinate, time, accuracyInMeters);
+                map.addRoutePoint(coordinate, newRoute);
             }
 
             map.moveHereToCoordinate(coordinate, accuracyInMeters);
@@ -142,7 +143,7 @@ Page {
         }
 
         opacity: settingsToolButton.checked ? 1.0 : 0.0
-        onClearRoute: map.clearRoute()
+        onRouteCleared: map.clearRoute()
     }
 
     Button {

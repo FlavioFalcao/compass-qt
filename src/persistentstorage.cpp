@@ -49,7 +49,6 @@ PersistentStorage::~PersistentStorage()
 }
 
 
-
 /*!
   Saves a given key - value setting by using QSetting to devices persistent
   storage.
@@ -129,46 +128,12 @@ void PersistentStorage::createDocument()
     }
 
     m_Document.appendChild(style);
-
-
-    // Create "PlaceMark"
-    QDomElement placemark = m_DomDocument->createElement("Placemark");
-    QDomElement styleUrl = m_DomDocument->createElement("styleUrl");
-    styleUrl.appendChild(m_DomDocument->createTextNode("#redLine"));
-    placemark.appendChild(styleUrl);
-
-    // Create "PlaceMark.LineString"
-    QDomElement lineString = m_DomDocument->createElement("LineString");
-
-    // Create "PlaceMark.LineString.extrude"
-    QDomElement extrude = m_DomDocument->createElement("extrude");
-    extrude.appendChild(m_DomDocument->createTextNode("1"));
-    lineString.appendChild(extrude);
-
-    // Create "PlaceMark.LineString.tesselate"
-    QDomElement tesselate = m_DomDocument->createElement("tesselate");
-    tesselate.appendChild(m_DomDocument->createTextNode("1"));
-    lineString.appendChild(tesselate);
-
-    // Create "PlaceMark.LineString.altitudeMode"
-    QDomElement altitudeMode = m_DomDocument->createElement("altitudeMode");
-    altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
-    lineString.appendChild(altitudeMode);
-
-
-    // Create "PlaceMark.LineString.coordinates"
-    m_Coordinates = m_DomDocument->createElement("coordinates");
-    lineString.appendChild(m_Coordinates);
-
-    placemark.appendChild(lineString);
-
-    m_Document.appendChild(placemark);
 }
 
 
 /*!
-  Loads the KML from file. Returns false if the loading failed or the file
-  did not exist.
+  Loads the KML from file, sets the m_Document to refer to Document element of
+  the KML. Returns false if the loading failed or the file did not exist.
 */
 bool PersistentStorage::loadDocument()
 {
@@ -210,17 +175,6 @@ bool PersistentStorage::loadDocument()
         return false;
     }
 
-
-    nodeList = m_DomDocument->elementsByTagName("coordinates");
-    if (nodeList.size() == 0) {
-        qDebug() << "Could not find coordinates element";
-        return false;
-    }
-    m_Coordinates = nodeList.item(0).toElement();
-    if (m_Coordinates.isNull()) {
-        qDebug() << "The m_Coordinates was not Element node";
-    }
-
     return true;
 }
 
@@ -257,27 +211,79 @@ bool PersistentStorage::saveDocument()
 
 
 /*!
+  Creates new PlaceMark element for route in the DOM Document. The
+  m_Coordinates element will updated to reference to the just created
+  PlaceMark element.
+  The m_Document must be valid before calling this method.
+*/
+void PersistentStorage::createRoutePlaceMark()
+{
+    // Create "PlaceMark"
+    QDomElement placemark = m_DomDocument->createElement("Placemark");
+    QDomElement styleUrl = m_DomDocument->createElement("styleUrl");
+    styleUrl.appendChild(m_DomDocument->createTextNode("#redLine"));
+    placemark.appendChild(styleUrl);
+
+    // Create "PlaceMark.LineString"
+    QDomElement lineString = m_DomDocument->createElement("LineString");
+
+    // Create "PlaceMark.LineString.extrude"
+    QDomElement extrude = m_DomDocument->createElement("extrude");
+    extrude.appendChild(m_DomDocument->createTextNode("1"));
+    lineString.appendChild(extrude);
+
+    // Create "PlaceMark.LineString.tesselate"
+    QDomElement tesselate = m_DomDocument->createElement("tesselate");
+    tesselate.appendChild(m_DomDocument->createTextNode("1"));
+    lineString.appendChild(tesselate);
+
+    // Create "PlaceMark.LineString.altitudeMode"
+    QDomElement altitudeMode = m_DomDocument->createElement("altitudeMode");
+#ifdef Q_WS_HARMATTAN
+    altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
+#else
+    altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
+#endif
+    lineString.appendChild(altitudeMode);
+
+
+    // Create "PlaceMark.LineString.coordinates"
+    m_Coordinates = m_DomDocument->createElement("coordinates");
+    lineString.appendChild(m_Coordinates);
+
+    placemark.appendChild(lineString);
+
+    m_Document.appendChild(placemark);
+}
+
+
+/*!
   Adds route point to the QDomDocument.
 */
 void PersistentStorage::addRouteCoordinate(const QVariant &varLongitude,
                                            const QVariant &varLatitude,
-                                           const QVariant &varAltitude)
+                                           const QVariant &varAltitude,
+                                           const QVariant &varNewRoute)
 {
     QString longitude = varLongitude.toString();
     QString latitude = varLatitude.toString();
     QString altitude = varAltitude.toString();
+    bool newRoute = varNewRoute.toBool();
 
     // Make sure that the decimal separator is '.'!
     longitude.replace(',', '.');
     latitude.replace(',', '.');
     altitude.replace(',', '.');
 
+    if (newRoute) {
+        createRoutePlaceMark();
+    }
+
     m_Coordinates.appendChild(
                 m_DomDocument->createTextNode(QString("%1,%2,%3\n")
                                               .arg(longitude)
                                               .arg(latitude)
                                               .arg(altitude)));
-
     saveDocument();
 }
 
@@ -317,14 +323,19 @@ void PersistentStorage::createWaypoint(const QVariant &varName,
     point.appendChild(extrude);
 
     QDomElement altitudeMode = m_DomDocument->createElement("altitudeMode");
+#ifdef Q_WS_HARMATTAN
+    altitudeMode.appendChild(m_DomDocument->createTextNode("clampToGround"));
+#else
     altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
+#endif
     point.appendChild(altitudeMode);
 
     QDomElement coordinates = m_DomDocument->createElement("coordinates");
-    coordinates.appendChild(m_DomDocument->createTextNode(QString("%1,%2,%3")
-                                                          .arg(longitude)
-                                                          .arg(latitude)
-                                                          .arg(altitude)));
+
+    coordinates.appendChild(m_DomDocument->createTextNode(
+                                QString("%1,%2,%3").arg(longitude)
+                                                   .arg(latitude)
+                                                   .arg(altitude)));
 
     point.appendChild(coordinates);
 
@@ -354,48 +365,61 @@ void PersistentStorage::clearRoute()
   Loads the route from KML file, if the loading of existing route fails or
   it does not exist, create the new KML file with empty route.
 
-  The parameter must be QML MapPolyLine element, which must have function
-  "addRoutePoint" with two parameters that will be placed longitude and
-  latitude values.
+  The parameter must be QML PannableMap element, which must have function
+  "addRoutePointHelper" with three parameters:
+        longitude (real), latitude (real) and (bool)
 */
-void PersistentStorage::loadRoute(const QVariant &varMapPolyLine)
+void PersistentStorage::loadRoute(const QVariant &varPannableMap)
 {
-    QObject *mapPolyLine = varMapPolyLine.value<QObject*>();
+    QObject *pannableMap = varPannableMap.value<QObject*>();
 
     if (loadDocument() == false) {
         createDocument();
         return;
     }
 
-    QDomNodeList nodeList = m_Coordinates.childNodes();
-    if (nodeList.count() == 0) {
-        // Empty route on coordinates
-        return;
-    }
+    QDomNodeList nodeList = m_DomDocument->elementsByTagName("LineString");
 
-    QDomNode node = nodeList.item(0);
-    if(node.isText() == false) {
-        qDebug() << "coordinate element in KML does not contain TextNode!";
-        return;
-    }
+    for (int i=0; i<nodeList.count(); i++) {
+        QDomElement lineString = nodeList.item(i).toElement();
+        QDomNodeList coordinatesList = lineString.elementsByTagName("coordinates");
 
-    QStringList coordinates = node.nodeValue().split('\n',
-                                                     QString::SkipEmptyParts);
+        if (coordinatesList.count() > 0) {
+            m_Coordinates = coordinatesList.item(0).toElement();
 
-    foreach (const QString &coordinateString, coordinates) {
-        QStringList components = coordinateString.split(',');
-        if (components.size() < 2) {
+            if (m_Coordinates.childNodes().count() == 0)
+                // Empty route on coordinates
+                continue;
+        }
+
+        QDomNode node = m_Coordinates.childNodes().item(0);
+        if(node.isText() == false) {
+            qDebug() << "coordinate element in KML does not contain TextNode!";
             continue;
         }
 
-        // Only read longitude and latitude, we don't know how
-        // to show altitude yet in compass.
-        float longitude = components[0].toFloat();
-        float latitude = components[1].toFloat();
+        QStringList coordinates = node.nodeValue().split('\n',
+                                                         QString::SkipEmptyParts);
 
-        QMetaObject::invokeMethod(mapPolyLine,
-                                  "addRoutePoint",
-                                  Q_ARG(QVariant, longitude),
-                                  Q_ARG(QVariant, latitude));
+        bool firstPointInRoute = true;
+
+        foreach (const QString &coordinateString, coordinates) {
+            QStringList components = coordinateString.split(',');
+            if (components.size() < 2) {
+                continue;
+            }
+
+            // Only read longitude and latitude, we don't know how
+            // to show altitude yet in compass.
+            float longitude = components[0].toFloat();
+            float latitude = components[1].toFloat();
+
+            QMetaObject::invokeMethod(pannableMap,
+                                      "addRoutePointHelper",
+                                      Q_ARG(QVariant, longitude),
+                                      Q_ARG(QVariant, latitude),
+                                      Q_ARG(QVariant, firstPointInRoute));
+            firstPointInRoute = false;
+        }
     }
 }

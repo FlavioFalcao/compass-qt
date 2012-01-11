@@ -4,56 +4,65 @@
 
 import QtQuick 1.1
 import QtMobility.location 1.2
+import "RouteScript.js" as RouteScript
 
 Item {
     id: pannableMap
 
     property alias zoomLevel: map.zoomLevel
     property alias mapCenter: map.center
-    property alias route: route
     property bool satelliteMap: false
     property alias hereCenter: mapCircle.center
     property alias hereAccuracy: mapCircle.radius
     property alias mapElement: map
 
     /*
-      Adds a coordinate to the walked route.
+      Adds a coordinate to the walked route. The coordinate holds the coordinate
+      of the route. Parameter newRoute defines if the coordinate if the first
+      point of a new route (true) or the point should be added to existing
+      route (false).
     */
-    function addRoute(coordinate) {
-        route.addCoordinate(coordinate);
+    function addRoutePoint(coordinate, newRoute) {
+        if (newRoute === true || RouteScript.currentRoute === null) {
+            RouteScript.currentRoute = lineComponent.createObject(null);
+            RouteScript.currentRoute.border.color = "red"
+            RouteScript.currentRoute.border.width = 2
+            map.addMapObject(RouteScript.currentRoute);
 
-        if (route.path.length > 1) {
-            route.visible = true;
+            RouteScript.routes.push(RouteScript.currentRoute);
         }
+
+        RouteScript.currentRoute.addCoordinate(coordinate);
+    }
+
+    /*!
+      Helper function used by the Qt code when the stored route is loaded
+      and shown on the Map. It is not possible to create instances of
+      Coordinate elements in Qt, so we use Coordinate template.
+    */
+    function addRoutePointHelper(longitude, latitude, newRoute) {
+        coordinateTemplate.latitude = latitude;
+        coordinateTemplate.longitude = longitude;
+
+        // coordinateTemplate is used to construct Coordinate element.
+        addRoutePoint(coordinateTemplate, newRoute);
     }
 
     /*
       Clears the walked route.
     */
     function clearRoute() {
-        while (route.path.length > 0) {
-            var coordinate = route.path[route.path.length-1];
-            route.removeCoordinate(coordinate);
+        while (RouteScript.routes.length > 0) {
+            map.removeMapObject(RouteScript.routes.pop());
         }
 
-        // Work around fix
-        route.visible = false;
+        RouteScript.route = null;
     }
 
-    /*
-      Returns the distance of the given coordinate and the last coordinate on
-      walked route. If walked route does not exist, returns -1.
+    /*!
+      Moves the red circle to given coordinate, sets the radius of the circle
+      by the given accuracy.
     */
-    function distanceToLastRouteCoordinate(coordinate) {
-        var length = route.path.length;
-
-        if (length === 0) {
-            return -1;
-        }
-
-        return route.path[length-1].distanceTo(coordinate);
-    }
-
     function moveHereToCoordinate(coordinate, accuracyInMeters) {
         hereCenterAnimation.latitude = coordinate.latitude;
         hereCenterAnimation.longitude = coordinate.longitude;
@@ -61,10 +70,22 @@ Item {
         hereCenterAnimation.restart();
     }
 
+    /*!
+      Pans the map to the given coordinate.
+    */
     function panToCoordinate(coordinate) {
         panAnimation.latitude = coordinate.latitude;
         panAnimation.longitude = coordinate.longitude;
         panAnimation.restart();
+    }
+
+    /*!
+      Component allowing creation of MapPolyLines dynamically.
+    */
+    Component {
+        id: lineComponent
+
+        MapPolyline {}
     }
 
     Map {
@@ -91,25 +112,6 @@ Item {
 
             longitude: 25.7573175
             latitude: 62.2410021
-        }
-
-        MapPolyline {
-            id: route
-
-            /*!
-              Used to add route points when loading the existing route from
-              KML file by PersistentStorage object.
-            */
-            function addRoutePoint(longitude, latitude) {
-                coordinateTemplate.latitude = latitude;
-                coordinateTemplate.longitude = longitude;
-
-                // coordinateTemplate is used to construct Coordinate element.
-                route.addCoordinate(coordinateTemplate);
-            }
-
-            border.color: "red"
-            border.width: 2
         }
 
         MapCircle {
