@@ -57,7 +57,6 @@ Page {
                 width: flickable.width - 20
                 font.pixelSize: 20
                 color: "#202020"
-                horizontalAlignment: Text.AlignJustify
                 text: "<p>Compass is a Nokia Developer example application " +
                       "that teaches the use of a traditional compass and " +
                       "allows the user to determine the bearing to the " +
