@@ -63,7 +63,7 @@ Page {
                       "desired location using Nokia maps. The main purpose " +
                       "of the example application is to demonstrate the use " +
                       "of the Maps and Navigation API.</p>" +
-                      "<p>For more information about the project, see " +
+                      "<p>For more information about the project, please see " +
                       "<a href=\"https://projects.developer.nokia.com/compass\">" +
                       "https://projects.developer.nokia.com/compass</a>.</p>" +
                       "<p>The application has two modes: Compass mode and Map " +
@@ -72,10 +72,10 @@ Page {
                       "current position retrieved by GPS and indicated with a " +
                       "red circle. The radius of the red circle changes " +
                       "according to the GPS fix accuracy. The more accurate the " +
-                      "fix, the smaller the circle; indicating your current " +
-                      "location more precisely. The map can be panned by " +
-                      "dragging it with a finger. The zoom level can be changed " +
-                      "by pinching the map with two fingers.</p>" +
+                      "fix, the smaller the circle, indicating your current " +
+                      "location is presented more precisely. The map can be " +
+                      "panned by dragging it with a finger. The zoom level can " +
+                      "be changed by pinching the map with two fingers.</p>" +
                       "<p>To navigate to a certain position in a map:</p>" +
                       "<ul>1. Switch to the Map mode, place the edge of the " +
                       "compass on the map so that it connects the current " +
@@ -88,10 +88,10 @@ Page {
                       "<p>The following settings adjust the behavior of the " +
                       "application:</p>" +
                       "<p>Tracking</p>" +
-                      "<ul>Gathers walked route points. The recycle bin clears " +
-                      "the route.</ul>" +
+                      "<ul>Gathers walked route points. The recycle bin icon " +
+                      "clears the route.</ul>" +
                       "<p>Satellite map:</p>" +
-                      "<ul>Toggles between satellite and streep map.</ul>" +
+                      "<ul>Toggles between satellite and street map.</ul>" +
                       "<p>Note. The gathered route is stored in " +
                       "<i>/home/user/Compass.kml</i> file and it can be opened "+
                       "in external map application.</p>"

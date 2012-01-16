@@ -9,7 +9,8 @@ demonstrate the use of the Maps and Navigation API.
 This example application is hosted in Nokia Developer Projects:
 - http://projects.developer.nokia.com/compass
 
-For more information on implementation and porting, visit the wiki pages:
+For more information on implementation and porting, visit the product’s wiki
+pages:
 - http://projects.developer.nokia.com/compass/wiki
 
 
@@ -24,7 +25,7 @@ using Qt Quick Components.
 -------------------------------------------------------------------------------
 
 The application uses QML code as much as possible. Some custom elements are
-implemented by using Qt code such as Arc element to draw the arc-style progress
+implemented by using Qt code, such as Arc element to draw the arc-style progress
 bar in the calibration view and the PersistentStorage element to allow storing
 and retrieving of data to the devices persistent storage.
 
@@ -77,7 +78,7 @@ For more information about the KML file format:
 3.3 Used APIs/QML elements/Qt Quick Components
 ----------------------------------------------
 
-The application uses following QML elements that are not so commonly used.
+The application uses the following less commonly used QML elements.
 
 Maps and Navigation API:
 - Map
@@ -91,7 +92,7 @@ Mobility:
 - Compass
 - PositionSource
 
-The Qt Quick Components toolbar is customized in Symbian version, see the code
+The Qt Quick Components toolbar is customized in Symbian version; see the code
 in src/qml/symbian/CustomToolBar.qml. In the Harmattan version the toolbar is
 customized by using ToolBarStyle.
 
@@ -102,12 +103,12 @@ customized by using ToolBarStyle.
  - Symbian devices with Qt 4.7.4 or higher.
  - MeeGo 1.2 Harmattan.
 
-Tested to work on Nokia C7 and Nokia N9. Developed with Qt SDK 1.1.4.
+Tested to work on Nokia C7 and Nokia N9 phones. Developed with Qt SDK 1.1.4.
 
 4.1 Required Capabilities
 -------------------------
 
-None; The application can be self signed on Symbian.
+None; the application can be self-signed on Symbian.
 
 
 4.2 Known Issues
@@ -186,3 +187,4 @@ Qt Quick Components
 0.9 Added better graphics. Possibility to disable audio feedback on 
     calibration. Bug fixes. Work-around for QCompass crash by Symbian code.
 0.1 First public version in Projects Forum Nokia.
+
