@@ -24,8 +24,7 @@ SOURCES += \
 OTHER_FILES += \
     qml/symbian/*.* \
     qml/harmattan/*.* \
-    qml/common/*.* \
-    backup_registration.xml
+    qml/common/*.*
 
 symbian {
     TARGET = Compass
