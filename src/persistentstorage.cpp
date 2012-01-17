@@ -240,7 +240,7 @@ void PersistentStorage::createRoutePlaceMark()
     // Create "PlaceMark.LineString.altitudeMode"
     QDomElement altitudeMode = m_DomDocument->createElement("altitudeMode");
 #ifdef Q_WS_HARMATTAN
-    altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
+    altitudeMode.appendChild(m_DomDocument->createTextNode("clampToGround"));
 #else
     altitudeMode.appendChild(m_DomDocument->createTextNode("absolute"));
 #endif
