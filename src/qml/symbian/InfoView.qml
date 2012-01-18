@@ -64,15 +64,21 @@ Page {
                 width: flickable.width - 18
                 font.pixelSize: platformStyle.fontSizeMedium
                 color: "white"
-                text: "<p>Compass is a Nokia Developer example application " +
-                      "that teaches the use of a traditional compass and " +
-                      "allows the user to determine the bearing to the " +
-                      "desired location using Nokia maps. The main purpose " +
-                      "of the example application is to demonstrate the use " +
-                      "of the Maps and Navigation API.</p>" +
-                      "<p>For more information about the project, please see " +
-                      "<a href=\"https://projects.developer.nokia.com/compass\">" +
-                      "https://projects.developer.nokia.com/compass</a>.</p>" +
+                text: "<p>Compass is a Nokia showcase example application " +
+                      "that demonstrates the use of the " +
+                      "<a href=\"http://doc.qt.nokia.com/qtmobility/location-overview.html\">" +
+                      "Qt Location API</a>. This application can be used as " +
+                      "a traditional compass with Nokia Maps and it allows " +
+                      "the user to determine the bearing to the desired " +
+                      "direction. The tracking function draws the travelled " +
+                      "route to the map and the route can be saved in KML " +
+                      "format. This example is hosted in " +
+                      "<a href=\"http://projects.developer.nokia.com/compass\">" +
+                      "Nokia Developer Projects</a>, where you can download " +
+                      "the source and the binaries, find " +
+                      "<a href=\"http://projects.developer.nokia.com/compass/wiki\">" +
+                      "implementation notes</a>, discover recent revisions, " +
+                      "and contribute to the project.</p>" +
                       "<p>The application has two modes: Compass mode and Map " +
                       "mode.</p>" +
                       "<p>In the Map mode you can view the map with your " +

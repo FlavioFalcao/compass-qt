@@ -1,10 +1,11 @@
 Compass v2.0
 ============
 
-Compass is a Nokia Developer example application that teaches the use of a
-traditional compass and allows the user to determine the bearing to the desired
-location using Ovi maps. The main purpose of the example application is to
-demonstrate the use of the Maps and Navigation API.
+Compass is a Nokia showcase example application that demonstrates the use of the
+Qt Location API. This application can be used as a traditional compass with
+Nokia Maps and it allows the user to determine the bearing to the desired
+direction. The tracking function draws the travelled route to the map and the
+route can be saved in KML format.
 
 This example application is hosted in Nokia Developer Projects:
 - http://projects.developer.nokia.com/compass
