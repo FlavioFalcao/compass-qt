@@ -115,7 +115,13 @@ None; the application can be self-signed on Symbian.
 4.2 Known Issues
 ----------------
 
-None.
+ - The Map element freezes the UI if the map is panned quickly. This has been
+   noticed on Symbian Belle with Nokia 700 and Nokia 701 phones. For more
+   information about the bug see 
+   https://bugreports.qt.nokia.com/browse/QTMOBILITY-2006.
+ 
+ - On the Harmattan version, if the user stays a long time in the info view and
+   goes back to the map view, the UI freezes for a while.
 
 
 5. Building, installing, and running the application
