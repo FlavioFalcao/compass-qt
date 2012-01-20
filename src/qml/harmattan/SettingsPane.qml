@@ -41,6 +41,8 @@ CommonSettings {
                 horizontalCenterOffset: 66
             }
 
+            // Initial value
+            checked: satelliteMap
             onCheckedChanged: { setSatelliteMap(checked); }
         }
     }
@@ -76,6 +78,7 @@ CommonSettings {
                 horizontalCenterOffset: 66
             }
 
+            checked: false
             onCheckedChanged: { setTracking(checked); }
         }
 
