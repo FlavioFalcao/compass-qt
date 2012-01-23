@@ -120,9 +120,6 @@ None; the application can be self-signed on Symbian.
    information about the bug see 
    https://bugreports.qt.nokia.com/browse/QTMOBILITY-2006.
  
- - On the Harmattan version, if the user stays a long time in the info view and
-   goes back to the map view, the UI freezes for a while.
-
 
 5. Building, installing, and running the application
 -------------------------------------------------------------------------------

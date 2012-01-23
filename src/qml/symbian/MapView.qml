@@ -99,7 +99,12 @@ Page {
                 map.addRoutePoint(coordinate, newRoute);
             }
 
-            map.moveHereToCoordinate(coordinate, accuracyInMeters);
+            if (mapView.status === PageStatus.Active) {
+                map.moveHereToCoordinate(coordinate, accuracyInMeters, true);
+            }
+            else {
+                map.moveHereToCoordinate(coordinate, accuracyInMeters, false);
+            }
         }
 
         onNoCompassDetected: {

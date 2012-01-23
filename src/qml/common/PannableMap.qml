@@ -63,13 +63,21 @@ Item {
 
     /*!
       Moves the red circle to given coordinate, sets the radius of the circle
-      by the given accuracy.
+      by the given accuracy. The movement of the circle will be animated if the
+      parameter animate is true.
     */
-    function moveHereToCoordinate(coordinate, accuracyInMeters) {
-        hereCenterAnimation.latitude = coordinate.latitude;
-        hereCenterAnimation.longitude = coordinate.longitude;
-        hereCenterAnimation.accuracyInMeters = accuracyInMeters;
-        hereCenterAnimation.restart();
+    function moveHereToCoordinate(coordinate, accuracyInMeters, animate) {
+        if (animate) {
+            hereCenterAnimation.latitude = coordinate.latitude;
+            hereCenterAnimation.longitude = coordinate.longitude;
+            hereCenterAnimation.accuracyInMeters = accuracyInMeters;
+            hereCenterAnimation.restart();
+        }
+        else {
+            mapCircle.center.longitude = coordinate.longitude;
+            mapCircle.center.latitude = coordinate.latitude;
+            mapCircle.radius = accuracyInMeters;
+        }
     }
 
     /*!
