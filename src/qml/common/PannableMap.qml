@@ -142,8 +142,9 @@ Item {
 
             coordinate: mapCircle.center
             source: "../images/hereicon.png"
-            offset.x: -5
-            offset.y: -5
+            smooth: true
+            offset.x: -10
+            offset.y: -10
         }
     }
 
