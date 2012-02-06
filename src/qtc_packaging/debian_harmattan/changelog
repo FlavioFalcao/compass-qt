@@ -1,3 +1,8 @@
+compass (2.1.0) stable; urgency=low
+  * <Add change description here>
+
+ -- Forum Nokia <FN.Documentation@nokia.com>  Mon, 06 Feb 2012 10:29:04 +0200
+
 compass (2.0.0) stable; urgency=low
   * New UI with Qt Quick Components.
 

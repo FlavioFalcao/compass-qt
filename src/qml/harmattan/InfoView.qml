@@ -10,7 +10,7 @@ import "../common"
 Page {
     id: container
 
-    property string version: "2.0"
+    property string version: "2.1"
 
     orientationLock: PageOrientation.LockPortrait
 

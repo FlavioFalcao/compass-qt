@@ -136,6 +136,15 @@ Item {
             border.color: Qt.darker(color)
             border.width: 3
         }
+
+        MapImage {
+            id: mapImage
+
+            coordinate: mapCircle.center
+            source: "../images/hereicon.png"
+            offset.x: -5
+            offset.y: -5
+        }
     }
 
     PinchArea {

@@ -1,4 +1,4 @@
-Compass v2.0
+Compass v2.1
 ============
 
 Compass is a Nokia showcase example application that demonstrates the use of the
@@ -185,6 +185,7 @@ Qt Quick Components
 8. Version history
 -------------------------------------------------------------------------------
 
+2.1 Added center icon to better show the current place.
 2.0 New UI with Qt Quick Components, added tracking feature.
 1.1 Added support for Symbian^1 and MeeGo 1.2 Harmattan.
 1.0 Compass data via Qt QCompass.

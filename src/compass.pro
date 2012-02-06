@@ -9,7 +9,7 @@ MOBILITY += sensors systeminfo location multimedia #feedback
 TARGET = compass
 TEMPLATE = app
 
-VERSION = 2.0
+VERSION = 2.1
 
 HEADERS += \
     arc.h \
