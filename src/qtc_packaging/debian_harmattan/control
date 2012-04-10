@@ -10,7 +10,7 @@ Package: compass
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Demo application utilizing Maps and Navigation API
- <insert long description, indented with spaces>
+ Qt Quick application demonstrating the use of Maps and Navigation API.
 XSBC-Maemo-Display-Name: Compass
 XB-Meego-Desktop-Entry: 
 XB-MeeGo-Desktop-Entry-Filename: 
