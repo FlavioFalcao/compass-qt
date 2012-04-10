@@ -1,4 +1,4 @@
-Compass v2.1
+Compass v2.2
 ============
 
 Compass is a Nokia showcase example application that demonstrates the use of the
@@ -159,7 +159,7 @@ application menu and launch the application by tapping the icon.
 Copy the application Debian package onto the device. Locate the file with the
 device and run it; this will install the application. Note that you can also
 use the terminal application and install the application by typing the command
-'dpkg -i compass_v2_0_harmattan.deb' on the command line. To install the
+'dpkg -i compass_v2_2_harmattan.deb' on the command line. To install the
 application using the terminal application, make sure you have the right
 privileges to do so (e.g. root access).
 
@@ -185,6 +185,7 @@ Qt Quick Components
 8. Version history
 -------------------------------------------------------------------------------
 
+2.2 Updated the compass graphics.
 2.1 Added center icon to better show the current place.
 2.0 New UI with Qt Quick Components, added tracking feature.
 1.1 Added support for Symbian^1 and MeeGo 1.2 Harmattan.

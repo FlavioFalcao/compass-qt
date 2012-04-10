@@ -24,7 +24,8 @@ SOURCES += \
 OTHER_FILES += \
     qml/symbian/*.* \
     qml/harmattan/*.* \
-    qml/common/*.*
+    qml/common/*.* \
+    qtc_packaging/debian_harmattan/*
 
 symbian {
     TARGET = Compass
