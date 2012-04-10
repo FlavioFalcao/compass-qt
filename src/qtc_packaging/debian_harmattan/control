@@ -9,8 +9,8 @@ Homepage: <insert the upstream URL, if relevant>
 Package: compass
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Demo application utilizing Maps and Navigation API
- Qt Quick application demonstrating the use of Maps and Navigation API.
+Description: Qt Quick example demonstrating the use of Qt Location API
+ A Nokia Developer showcase example application that demonstrates the use of the Qt Location API. This application can be used as a traditional compass with Nokia Maps and it allows the user to determine the bearing to the desired direction. The tracking function draws the travelled route to the map and the route can be saved in KML format.
 XSBC-Maemo-Display-Name: Compass
 XB-Meego-Desktop-Entry: 
 XB-MeeGo-Desktop-Entry-Filename: 
