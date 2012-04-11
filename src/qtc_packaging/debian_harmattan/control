@@ -1,7 +1,7 @@
 Source: compass
 Section: user/navigation
 Priority: optional
-Maintainer: Forum Nokia <FN.Documentation@nokia.com>
+Maintainer: Nokia Developer <FN.Documentation@nokia.com>
 Build-Depends: debhelper (>= 5), libqt4-dev
 Standards-Version: 3.7.3
 Homepage: <insert the upstream URL, if relevant>
