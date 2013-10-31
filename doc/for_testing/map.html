@@ -1,0 +1,38 @@
+<html>
+<head>
+<script type="text/javascript" charset="UTF-8" src="http://api.maps.nokia.com/2.0.0/jsl.js?kml=auto"></script>
+</head>
+<body>
+<div id="map" style="width:100%; height:100%;"></div>
+<script type="text/javascript">
+var map = new nokia.maps.map.Display(document.getElementById("map"),
+   {    components: [new nokia.maps.map.component.Behavior()],
+             'zoomLevel': 14});
+
+var kml = new nokia.maps.kml.Manager(), resultSet, container;
+
+// Create a callback function for parsing the KML file
+// then push the parsing result to map display:
+var onParsed = function (kmlManager) {
+    // Check if the parsing was successfully finished:    
+    if (kmlManager.state == "finished") {
+        // If all OK, go ahead and parse the KML file by KMLResultSet:
+        resultSet = new nokia.maps.kml.component.KMLResultSet(kmlManager.kmlDocument, map);
+        container = resultSet.container;
+ 
+        // Push map objects & container to the map Display:
+        map.objects.add(container);
+ 
+        // Zoom the map to cover the area, uncomment this if you want.
+        map.zoomTo(container.getBoundingBox()); 
+    }
+};
+ 
+// Add an observer to the KML Manager  
+kml.addObserver("state", onParsed);
+ 
+// Start parsing a kml file with given url
+kml.parseKML("./Compass.kml");
+</script>
+</body>
+</html>
